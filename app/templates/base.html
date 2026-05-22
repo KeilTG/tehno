@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ТехноСервис</title>
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- Ваши CSS -->
+    <link rel="stylesheet" href="/static/styles/reset.css">
+    <link rel="stylesheet" href="/static/styles/variables.css">
+    <link rel="stylesheet" href="/static/styles/global.css">
+    <link rel="stylesheet" href="/static/styles/header.css">
+    <link rel="stylesheet" href="/static/styles/index.css">
+    <link rel="stylesheet" href="/static/styles/services.css">
+    <link rel="stylesheet" href="/static/styles/catalog.css">
+    <link rel="stylesheet" href="/static/styles/about.css">
+    <link rel="stylesheet" href="/static/styles/cases.css">
+    <link rel="stylesheet" href="/static/styles/contacts.css">
+    <link rel="stylesheet" href="/static/styles/cart.css">
+    <link rel="stylesheet" href="/static/styles/main.css">
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script src="/static/js/main.js" defer></script>
+    <script src="/static/js/catalog.js" type="module" defer></script>
+    <script src="/static/js/about.js" defer></script>
+    <script src="/static/js/cases.js" defer></script>
+    <script src="/static/js/contacts.js" type="module" defer></script>
+    <script src="/static/js/cart.js" type="module" defer></script>
+    <script src="/static/js/api.js" type="module" defer></script>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollSmoother.min.js"></script>
+</head>
+<body>
+    {% include 'includes/header.html' %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    {% include 'includes/footer.html' %}
+    {% block scripts %}{% endblock %}
+
+    <!-- Скрипт для подтягивания номера телефона из админки -->
+    <script>
+        fetch('/api/contacts')
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    // Ищем контакт с типом 'phone'
+                    const phoneContact = data.find(contact => contact.contact_type === 'phone');
+                    if (phoneContact && phoneContact.contact_value) {
+                        const phoneNumber = phoneContact.contact_value;
+                        // Обновляем ссылку в хедере
+                        const phoneLinks = document.querySelectorAll('.header-phone a, .footer-phone a, [data-phone-link]');
+                        phoneLinks.forEach(link => {
+                            link.href = `tel:${phoneNumber}`;
+                            link.textContent = phoneNumber;
+                        });
+                        // Также обновляем любой элемент с классом .phone-number
+                        const phoneElements = document.querySelectorAll('.phone-number, .header__phone');
+                        phoneElements.forEach(el => {
+                            el.textContent = phoneNumber;
+                        });
+                    }
+                }
+            })
+            .catch(error => console.warn('Не удалось загрузить контакты:', error));
+    </script>
+</body>
+</html>

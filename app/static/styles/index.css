@@ -1,0 +1,844 @@
+/* Герой-секция */
+.former-swiper {
+  background: #0d2c5f; /* Тёмно-синий фон, как на макете */
+  color: white;
+  padding: 80px 0;
+}
+
+.rectangle-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.rectangle-block-img {
+  width: 663px;
+  height: 434px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
+}
+
+.rectangle-block-content {
+  width: 664px;
+}
+
+.rectangle-block-content-title {
+  font-family: Arial;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 100%;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.rectangle-block-content-paragraph {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 140%;
+  margin-bottom: 30px;
+  color: #d1d5dc;
+  width: 508px;
+}
+
+.rectangle-block-content-button {
+  display: flex;
+  gap: 20px;
+}
+
+.rectangle-block-content-button-audit-free,
+.rectangle-block-content-button-our-services {
+  display: inline-block;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s ease; 
+}
+
+.rectangle-block-content-button-audit-free {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 298px;
+  height: 60px;
+  gap: 6px;
+  background: #00C2D2; 
+  color: white;
+}
+.rectangle-block-content-button-audit-free p{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #fff;
+}
+.rectangle-block-content-button-audit-free img{
+  margin-top: 2px;
+  width: 20px;
+  height: 20px;
+}
+
+.rectangle-block-content-button-audit-free:hover {
+  background: #01acbb; /* Чуть темнее при наведении */
+  transform: translateY(-2px);
+}
+
+.rectangle-block-content-button-our-services {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 161px;
+  height: 60px;
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.rectangle-block-content-button-our-services{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #fff;
+}
+
+.rectangle-block-content-button-our-services:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+
+
+/* СТРАНИЦА С УСЛУГАМИ (НАШИ ОСНОВНЫЕ УСЛУГИ) */
+/* Секция "Наши основные услуги" */
+
+
+
+.main-services {
+  padding: 80px 0;
+  background-color: var(--color-white);
+}
+.section-title{
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 120%;
+  color: #0a2463;
+}
+.section-paragraph{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: #4a5565;
+  width: 580px;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 32px;
+  margin-top: 40px;
+}
+
+/* Карточка услуги */
+.service-card {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease ;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid #00d1ff;
+}
+
+/* Иконка */
+.service-card-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.service-card-icon img {
+  width: 100%;
+  height: auto;
+  max-width: 48px;
+  filter: grayscale(100%) opacity(0.8);
+  transition: filter  0.3s ease;
+  
+}
+.arrow-right-blue{
+  transition: transform  0.3s ease;
+}
+
+.service-card:hover .service-card-icon img {
+  filter: grayscale(0%) opacity(1);
+}
+.service-card:hover .arrow-right-blue{
+  transform: translateX(10px);
+}
+/* Заголовок */
+.service-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--color-dark-blue);
+}
+
+/* Описание */
+.service-card-desc {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+/* Ссылка */
+.service-card-link {
+  color: var(--color-teal);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  padding: 4px 0;
+}
+
+.service-card-link__container{
+  display: flex;
+}
+
+
+.service-card-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-teal);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.service-card-link:hover::after {
+  transform: scaleX(1);
+}
+
+
+/* <!-- СТРАНИЦА С КАРТОЧКАМИ ВЛЕВО ВПРАВО (Наши основные услуги) --> */
+
+/* Секция "Что такое аутсорсинг" */
+.what-is-outsourcing {
+  padding: 80px 0;
+  background-color: var(--color-white);
+}
+
+.what-is-outsourcing-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 60px;
+  color: var(--color-dark-blue);
+}
+
+
+/* СЕКЦИЯ (ПОЧЕМУ ВЫБИРАЮТ НАС) */
+
+/* Секция "Почему выбирают нас" */
+.why-choose-us {
+  padding: 80px 0;
+  background-color: var(--color-white);
+}
+
+.why-choose-us-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.why-choose-us-block {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.why-choose-us-block-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-dark-blue);
+}
+
+.why-choose-us-block-paragraph {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.why-choose-us-block-points {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.why-choose-us-block-points-elements {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.why-choose-us-block-points-elements a {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  background: var(--color-teal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.why-choose-us-block-points-elements a::after {
+  content: '✓';
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.why-choose-us-block-points-text {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+.why-choose-us-block-img {
+  flex: 0 0 500px;
+  height: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.why-choose-us-block-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* СЕКЦИЯ (КАК МЫ РАБОТАЕМ: 4 ПРОСТЫХ ШАГА) */
+
+.work-steps {
+  padding: 80px 0;
+  background-color: var(--color-white);
+}
+
+.simple-work-steps {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.simple-work-steps-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.simple-work-steps-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--color-dark-blue);
+}
+
+.simple-work-steps-paragraph {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.simple-works-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  position: relative;
+  padding: 40px 0;
+}
+
+.simple-works-card::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-top: 2px dashed #ccc;
+  z-index: 0;
+}
+
+.simple-works-card-pin {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  background: var(--color-white);
+  padding: 0 10px;
+}
+
+.simple-works-card-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--color-teal);
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.simple-works-card-parametr {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-dark-blue);
+  margin-bottom: 8px;
+}
+
+.simple-works-card-text {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* СЕКЦИЯ (РАБОТАЕМ ПО ВСЕМУ МИРУ) */
+
+.rectangle-blue-2 {
+  background: var(--color-dark-blue);
+  color: white;
+  padding: 80px 0;
+}
+
+.rectangle-block-2-world {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.rectangle-block-2-all-world {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.rectangle-block-2-all-world-content {
+  flex: 1;
+}
+
+.rectangle-block-2-all-world-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.rectangle-block-2-all-world-paragraph {
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+  opacity: 0.9;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.rectangle-block-2-all-world-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.rectangle-block-2-all-world-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 24px 32px;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 150px;
+  flex: 1 1 calc(25% - 15px);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.rectangle-block-2-all-world-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.rectangle-block-2-all-world-card-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-teal);
+  margin-bottom: 8px;
+}
+
+.rectangle-block-2-all-world-card-text {
+  font-size: 0.9rem;
+  color: white;
+  opacity: 0.9;
+}
+
+.rectangle-block-2-all-world-img {
+  flex: 0 0 400px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rectangle-block-2-all-world-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* СЕКЦИЯ (ИСТОРИЯ КОМПАНИИ И ТАЙМЛАЙН) */
+
+.history-company {
+  padding: 80px 0;
+  background-color: var(--color-white);
+}
+
+.history-company-and-timeline {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.history-company-block {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.history-company-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--color-dark-blue);
+}
+
+.history-company-content {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.timeline-block {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--color-teal);
+  transform: translateX(-50%);
+}
+
+.timeline-card {
+  position: relative;
+  width: 45%;
+  padding: 24px;
+  background: var(--color-pink);
+  border-radius: 12px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.timeline-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+}
+
+.timeline-card:nth-child(even):hover {
+  transform: translateX(-5px);
+}
+
+.timeline-card:nth-child(odd) {
+  left: 0;
+  margin-left: 0;
+}
+
+.timeline-card:nth-child(even) {
+  left: 55%;
+  margin-left: 0;
+}
+
+.timeline-card::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--color-teal);
+  border: 4px solid white;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.timeline-card:nth-child(odd)::before {
+  right: -35px;
+}
+
+.timeline-card:nth-child(even)::before {
+  left: -35px;
+}
+
+.timeline-card-year {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.timeline-card-text {
+  font-size: 0.95rem;
+  color: white;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* СЕКЦИЯ (ГОТОВЫ ОПТИМИЗИРОВАТЬ ВАШИ IT-РАСХОДЫ?) */
+
+.optimization-cost {
+  background: var(--color-dark-blue);
+  padding: 80px 0;
+}
+
+.optimization-cost-block {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.optimization-cost-content {
+  text-align: center;
+}
+
+.optimization-cost-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.optimization-cost-text {
+  font-size: 1.1rem;
+  color: #ccc;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+.optimization-cost-button {
+  display: inline-block;
+  padding: 16px 32px;
+  background: var(--color-teal);
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.optimization-cost-button:hover {
+  background: #00b8e6;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 209, 255, 0.3);
+}
+
+/* ИСПРАВЛЕНИЯ ДЛЯ СЕКЦИИ "ЧТО ТАКОЕ АУТСОРСИНГ" */
+/* Делаем карточки с чередованием слева-справа */
+
+.what-is-outsourcing-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.what-is-outsourcing-block {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.what-is-outsourcing-block:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.what-is-outsourcing-block:nth-child(odd) {
+  flex-direction: row;
+}
+
+.what-is-outsourcing-block:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.what-is-outsourcing-card-img {
+  flex: 0 0 400px;
+  height: 250px;
+  background: #eee;
+  position: relative;
+  overflow: hidden;
+}
+
+.what-is-outsourcing-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.what-is-outsourcing-card-block {
+  flex: 1;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.what-is-outsourcing-card-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: var(--color-dark-blue);
+}
+
+.what-is-outsourcing-card-paragraph {
+  font-size: 1rem;
+  color: #555;
+  margin: 0 0 20px;
+  line-height: 1.6;
+}
+
+.what-is-outsourcing-card-more {
+  color: var(--color-teal);
+  font-weight: 600;
+  text-decoration: none;
+  position: relative;
+  padding: 4px 0;
+  transition: color 0.2s ease;
+  align-self: flex-start;
+}
+
+.what-is-outsourcing-card-more::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-teal);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.what-is-outsourcing-card-more:hover::after {
+  transform: scaleX(1);
+}
+
+/* АДАПТИВНОСТЬ */
+
+@media (max-width: 768px) {
+  .rectangle-block {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .rectangle-block-img {
+    width: 100%;
+    height: auto;
+  }
+
+  .rectangle-block-content-title {
+    font-size: 2rem;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .what-is-outsourcing-block {
+    flex-direction: column !important;
+  }
+
+  .what-is-outsourcing-card-img {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .why-choose-us-block {
+    flex-direction: column;
+  }
+
+  .why-choose-us-block-img {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 250px;
+  }
+
+  .rectangle-block-2-all-world-stats {
+    flex-direction: column;
+  }
+
+  .rectangle-block-2-all-world-card {
+    flex: 1 1 100%;
+  }
+
+  .simple-works-card {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .simple-works-card::before {
+    display: none;
+  }
+
+  .rectangle-block-2-all-world {
+    flex-direction: column;
+  }
+
+  .rectangle-block-2-all-world-img {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .timeline-card {
+    width: 100%;
+    left: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .timeline-card::before {
+    left: -35px !important;
+    right: auto !important;
+  }
+
+  .timeline-line {
+    left: 20px;
+  }
+}

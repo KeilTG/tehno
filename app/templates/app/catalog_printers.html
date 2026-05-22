@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <section class="catalog-title">
+        <div class="container">
+            <div class="catalog-title__text">
+                <h1 class="catalog-title__h1">Принтеры и МФУ</h1>
+                <p class="catalog-title__p">Оборудование для печати и копирования</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="catalog-section">
+        <div class="container">
+            <div class="catalog-tabs">
+                <a href="/catalog.html" class="catalog-tab">Подписки на услуги</a>
+                <a href="/catalog_printers.html" class="catalog-tab catalog-tab--active">Принтеры и МФУ</a>
+            </div>
+
+            <div class="catalog-grid">
+                {% for item in catalog_items %}
+                <article class="catalog-card card-hover" data-product-id="{{ item.id }}">
+                    <div class="catalog-card__image-wrapper">
+                        <img src="{{ item.image_url or '/static/img/placeholder.png' }}" alt="{{ item.name }}" class="catalog-card__image">
+                    </div>
+                    <div class="catalog-card__content">
+                        <h3 class="catalog-card__title">{{ item.name }}</h3>
+                        <p class="catalog-card__description">{{ item.description }}</p>
+                        <div class="catalog-card__divider"></div>
+                        <div class="catalog-card__footer">
+                            <div class="catalog-card__price">
+                                <div class="catalog-card__price-value">{{ "{:,}".format(item.price).replace(',', ' ') }}</div>
+                                <div class="catalog-card__price-period">₽</div>
+                            </div>
+                            <button type="button" class="catalog-card__button">
+                                <img src="/static/img/svg/basket-card-white.svg" alt="" class="catalog-card__button-icon">
+                                <span class="catalog-card__button-text">В корзину</span>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

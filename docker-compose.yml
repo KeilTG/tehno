@@ -1,0 +1,114 @@
+# НЕ ИСПОЛЬЗУЙТЕ "docker-compose down -v" — это удалит ВСЕ данные!
+
+services:
+  # --- PostgreSQL: БД для Directus и FastAPI ---
+  db:
+    image: postgres:16-alpine
+    container_name: technoservice_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-technoservice}
+      POSTGRES_USER: ${POSTGRES_USER:-technoservice}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - technoservice_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-technoservice}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+    networks:
+      - techno_network
+
+  # --- Directus CMS ---
+  directus:
+    image: directus/directus:11.17.0
+    container_name: technoservice_directus
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SECRET: ${DIRECTUS_SECRET:-supersecretchangeme}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:-admin@example.com}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:-admin123}
+      DB_CLIENT: pg
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: ${POSTGRES_DB:-technoservice}
+      DB_USER: ${POSTGRES_USER:-technoservice}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      DB_SCHEMA: directus
+      WEBSOCKETS_ENABLED: true
+      CORS_ENABLED: true
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000,http://localhost:5173,http://localhost:8000}
+    volumes:
+      - technoservice_directus_uploads:/directus/uploads
+      - technoservice_directus_extensions:/directus/extensions
+    ports:
+      - "8055:8055"
+    networks:
+      - techno_network
+
+  # --- FastAPI: ваше приложение ---
+  fastapi:
+    build: .
+    container_name: technoservice_fastapi
+    restart: unless-stopped
+    depends_on:
+      - directus
+    environment:
+      - DEBUG=${DEBUG:-True}
+      - DIRECTUS_URL=http://directus:8055
+      - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
+    volumes:
+      - ./app:/app
+      - technoservice_media_data:/app/media
+    ports:
+      - "8000:8000"
+    networks:
+      - techno_network
+
+  # --- pgAdmin: GUI для PostgreSQL ---
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: technoservice_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@pgadmin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    volumes:
+      - technoservice_pgadmin_data:/var/lib/pgadmin
+    networks:
+      - techno_network
+
+volumes:
+  # Все тома имеют явные имена (начинаются с technoservice_)
+  # Это защищает от случайного удаления другими проектами
+  technoservice_postgres_data:
+    name: technoservice_postgres_data
+    external: false
+  technoservice_media_data:
+    name: technoservice_media_data
+    external: false
+  technoservice_directus_uploads:
+    name: technoservice_directus_uploads
+    external: false
+  technoservice_directus_extensions:
+    name: technoservice_directus_extensions
+    external: false
+  technoservice_pgadmin_data:
+    name: technoservice_pgadmin_data
+    external: false
+
+networks:
+  techno_network:
+    driver: bridge

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content">
+    <section class="cases-hero">
+        <div class="container">
+            <div class="cases-hero__text">
+                <h1 class="cases-hero__title">Кейсы</h1>
+                <p class="cases-hero__subtitle">Истории успеха наших клиентов</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cases-list">
+        <div class="container">
+            {% for case in cases %}
+            <article class="case-card card-hover">
+                <div class="case-card__image-wrapper">
+                    <img src="{{ case.image_url or '/static/img/MainTeam.png' }}" alt="{{ case.client }}" class="case-card__image">
+                </div>
+                <div class="case-card__content">
+                    <header class="case-card__header">
+                        <div class="case-card__title-row">
+                            <div class="case-card__icon"><img src="/static/img/svg/cases.svg" alt="Кейс"></div>
+                            <div class="case-card__title-block">
+                                <h2 class="case-card__title">{{ case.client }}</h2>
+                                <div class="case-card__meta">
+                                    <div class="case-card__meta-item"><img src="/static/img/svg/cases-icon-1.svg" alt="" class="case-card__meta-icon"><span>{{ case.industry }}</span></div>
+                                    <div class="case-card__meta-item"><img src="/static/img/svg/cases-icon-2.svg" alt="" class="case-card__meta-icon"><span>{{ case.employees }} сотрудников</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <section class="case-card__section">
+                        <h3 class="case-card__section-title">ВЫЗОВ</h3>
+                        <p class="case-card__section-text">{{ case.challenge }}</p>
+                    </section>
+                    
+                    <section class="case-card__section">
+                        <h3 class="case-card__section-title">РЕШЕНИЕ</h3>
+                        <p class="case-card__section-text">{{ case.solution }}</p>
+                    </section>
+                    
+                    <section class="case-card__section">
+                        <h3 class="case-card__section-title">РЕЗУЛЬТАТЫ</h3>
+                        <ul class="case-card__results">
+                            {% set results_list = case.results | from_json %}
+                            {% for result in results_list %}
+                            <li class="case-card__result-item">
+                                <img src="/static/img/svg/check-point-icon.svg" alt="" class="case-card__result-icon">
+                                <span>{{ result }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                    
+                    <footer class="case-card__quote">
+                        <p class="case-card__quote-text">{{ case.quote_text }}</p>
+                        <p class="case-card__quote-author">{{ case.quote_author }}</p>
+                        <p class="case-card__quote-role">{{ case.quote_role }}</p>
+                    </footer>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

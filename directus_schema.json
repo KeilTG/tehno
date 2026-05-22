@@ -1,0 +1,157 @@
+{
+  "collections": [
+    {
+      "collection": "content_pages",
+      "schema": {
+        "name": "content_pages"
+      },
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "page_name", "type": "string"},
+        {"field": "title", "type": "string"},
+        {"field": "content", "type": "text"},
+        {"field": "created_at", "type": "timestamp"}
+      ]
+    },
+    {
+      "collection": "banners",
+      "schema": {"name": "banners"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "page_id", "type": "integer"},
+        {"field": "image_url", "type": "string"},
+        {"field": "title", "type": "string"},
+        {"field": "link", "type": "string"},
+        {"field": "position", "type": "integer"},
+        {"field": "is_active", "type": "boolean"}
+      ]
+    },
+    
+    {
+  "collection": "services",
+  "schema": {"name": "services"},
+  "fields": [
+    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+    {"field": "category_id", "type": "integer"},
+    {"field": "name", "type": "string"},
+    {"field": "description", "type": "text", "schema": {"nullable": true}},
+    {"field": "icon", "type": "string", "schema": {"nullable": true}},
+    {"field": "image_url", "type": "string", "schema": {"nullable": true}},
+    {"field": "price", "type": "float", "schema": {"nullable": true}},
+    {"field": "position", "type": "integer", "schema": {"default_value": 0, "nullable": true}}
+  ]
+},
+    {
+      "collection": "contacts",
+      "schema": {"name": "contacts"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "contact_type", "type": "string"},
+        {"field": "contact_value", "type": "string"},
+        {"field": "label", "type": "string"},
+        {"field": "sort_order", "type": "integer"}
+      ]
+    },
+    {
+      "collection": "seo",
+      "schema": {"name": "seo"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "page_id", "type": "integer"},
+        {"field": "meta_title", "type": "string"},
+        {"field": "meta_description", "type": "text"},
+        {"field": "meta_keywords", "type": "string"},
+        {"field": "url_slug", "type": "string"}
+      ]
+    },
+    {
+      "collection": "requests",
+      "schema": {"name": "requests"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "user_id", "type": "integer"},
+        {"field": "service_id", "type": "integer"},
+        {"field": "client_name", "type": "string"},
+        {"field": "client_phone", "type": "string"},
+        {"field": "client_email", "type": "string"},
+        {"field": "message", "type": "text"},
+        {"field": "status", "type": "string"},
+        {"field": "created_at", "type": "timestamp"}
+      ]
+    },
+    {
+      "collection": "users",
+      "schema": {"name": "users"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "role_id", "type": "integer"},
+        {"field": "username", "type": "string"},
+        {"field": "email", "type": "string"},
+        {"field": "password_hash", "type": "string"},
+        {"field": "full_name", "type": "string"},
+        {"field": "is_active", "type": "boolean"},
+        {"field": "created_at", "type": "timestamp"}
+      ]
+    },
+    {
+      "collection": "roles",
+      "schema": {"name": "roles"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "role_name", "type": "string"}
+      ]
+    },
+    {
+  "collection": "catalog_categories",
+  "schema": {"name": "catalog_categories"},
+  "fields": [
+    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+    {"field": "name", "type": "string"},
+    {"field": "description", "type": "text", "schema": {"nullable": true}},
+    {"field": "position", "type": "integer", "schema": {"default_value": 0}}
+  ]
+},
+{
+  "collection": "catalog_items",
+  "schema": {"name": "catalog_items"},
+  "fields": [
+    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+    {"field": "category_id", "type": "integer"},
+    {"field": "name", "type": "string"},
+    {"field": "description", "type": "text", "schema": {"nullable": true}},
+    {"field": "price", "type": "float"},
+    {"field": "image_url", "type": "string", "schema": {"nullable": true}},
+    {"field": "position", "type": "integer", "schema": {"default_value": 0}}
+  ]
+},
+{
+  "collection": "about_content",
+  "schema": {"name": "about_content"},
+  "fields": [
+    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+    {"field": "title", "type": "string", "schema": {"nullable": true}},
+    {"field": "content", "type": "text", "schema": {"nullable": true}},
+    {"field": "image_url", "type": "string", "schema": {"nullable": true}},
+    {"field": "updated_at", "type": "timestamp", "schema": {"nullable": true}}
+  ]
+},
+{
+  "collection": "cases",
+  "schema": {"name": "cases"},
+  "fields": [
+    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+    {"field": "client", "type": "string"},
+    {"field": "industry", "type": "string", "schema": {"nullable": true}},
+    {"field": "employees", "type": "string", "schema": {"nullable": true}},
+    {"field": "challenge", "type": "text", "schema": {"nullable": true}},
+    {"field": "solution", "type": "text", "schema": {"nullable": true}},
+    {"field": "results", "type": "json", "schema": {"nullable": true}},
+    {"field": "quote_text", "type": "text", "schema": {"nullable": true}},
+    {"field": "quote_author", "type": "string", "schema": {"nullable": true}},
+    {"field": "quote_role", "type": "string", "schema": {"nullable": true}},
+    {"field": "image_url", "type": "string", "schema": {"nullable": true}},
+    {"field": "position", "type": "integer", "schema": {"default_value": 0}}
+  ]
+}
+  ]
+}

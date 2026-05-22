@@ -1,0 +1,27 @@
+/* Универсальный сброс */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* Ширина = содержимое + padding + border */
+  margin: 0;
+  padding: 0;
+}
+
+/* Убираем подчёркивание у ссылок */
+a {
+  text-decoration: none;
+  color: inherit; /* Наследуем цвет от родителя */
+}
+
+/* Убираем маркеры у списков */
+ul, ol {
+  list-style: none;
+}
+
+/* Формы и кнопки — без стилей по умолчанию */
+button, input, textarea, select {
+  font: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}

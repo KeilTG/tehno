@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content" style="padding: 0;">
+    <section class="amenities-title" style="margin: 0; padding: 0px 0;">
+        <div class="container">
+            <div class="amenities-text">
+                <h1 class="amenities-text__h1">{{ about.title or 'О компании' }}</h1>
+                <p class="amenities-text__p">{{ about.subtitle or 'Технологии для вашего бизнеса' }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-content" style="padding: 30px 0;">
+        <div class="container">
+            <div class="about-content__wrapper" style="display: flex; gap: 50px; align-items: center;">
+                <div class="about-content__text" style="flex: 1; line-height: 1.8; font-size: 16px; color: #333;">
+                    {{ about.content | safe if about.content else 'Текст пока не добавлен в админку.' }}
+                </div>
+                {% if about.image_url %}
+                <div class="about-content__image" style="flex: 1;">
+                    <img src="{{ about.image_url }}" alt="{{ about.title }}" style="width: 100%; max-width: 500px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

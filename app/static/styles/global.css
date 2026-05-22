@@ -1,0 +1,39 @@
+body {
+  font-family: var(--font-family);
+  line-height: var(--line-height-base);
+  overflow-x: hidden; /* Защита от горизонтального скролла */
+  background-color: #f9fafb;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+::root {
+    --font-family: 'Arial', system-ui, sans-serif;
+    --font-size-base: 16px;
+    --line-height-base: 1.6;
+}
+
+/* Унифицированный hover-эффект для карточек на всех страницах */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid #00c2d2;
+}
+
+/* Иконки в карточках: серые по умолчанию, цветные при наведении на блок (как на главной) */
+.card-hover [class*="icon"] img {
+  filter: grayscale(100%) opacity(0.8);
+  transition: filter 0.3s ease;
+}
+.card-hover:hover [class*="icon"] img {
+  filter: grayscale(0%) opacity(1);
+}
+

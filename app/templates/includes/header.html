@@ -1,0 +1,76 @@
+<div class="wrapper">
+    <header class="main-header">
+        <div class="header container">
+            <a href="/" class="logo">
+                <div class="logo__pin"><img src="/static/img/svg/LogoImg.svg" alt=""></div>
+                <div class="logo__text">
+                    <p class="logo__text-1">ТехноСервис</p>
+                    <p class="logo__text-2">IT Аутсорсинг</p>
+                </div>
+            </a>
+            <nav class="nav">
+                <ul>
+                    <li><a href="/services.html" class="navbar-link">Услуги</a></li>
+                    <li><a href="/catalog.html" class="navbar-link">Каталог</a></li>
+                    <li><a href="/about.html" class="navbar-link">О компании</a></li>
+                    <li><a href="/cases.html" class="navbar-link">Кейсы</a></li>
+                    <li><a href="/contacts.html" class="navbar-link">Контакты</a></li>
+                </ul>
+            </nav>
+            <div class="taskbar">
+                <a class="contact" href="tel:+74951234567" data-phone-link>
+                    <img src="/static/img/svg/IconPhone.svg" class="contact-ico" alt="phone">
+                    <p class="header-phone">+7 (495) 123 45 67</p>
+                </a>
+                <button class="basket-btn" type="button" data-cart-open>
+                    <img src="/static/img/svg/IconBasket.svg" class="basket-ico" alt="Корзина">
+                    <span class="basket-btn__counter" data-cart-count></span>
+                </button>
+                <button class="burger-btn">
+                    <img src="/static/img/svg/burger-menu-img.svg" class="burger-menu-img" alt="menu">
+                </button>
+                <a href="/contacts.html#audit-form" class="consultation-btn">
+                    <p>Получить консультацию</p>
+                </a>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-menu-overlay" data-mobile-menu-overlay>
+        <div class="mobile-menu">
+            <div class="mobile-menu__header">
+                <span class="mobile-menu__title">Меню</span>
+                <button type="button" class="mobile-menu__close" data-mobile-menu-close aria-label="Закрыть">&times;</button>
+            </div>
+            <nav class="mobile-menu__nav">
+                <a href="/services.html" class="mobile-menu__link">Услуги</a>
+                <a href="/catalog.html" class="mobile-menu__link">Каталог</a>
+                <a href="/about.html" class="mobile-menu__link">О компании</a>
+                <a href="/cases.html" class="mobile-menu__link">Кейсы</a>
+                <a href="/contacts.html" class="mobile-menu__link">Контакты</a>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт для подтягивания номера из админки -->
+<script>
+    fetch('/api/contacts')
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data) && data.length > 0) {
+                const phoneContact = data.find(contact => contact.contact_type === 'phone');
+                if (phoneContact && phoneContact.contact_value) {
+                    const phoneNumber = phoneContact.contact_value;
+                    const phoneLink = document.querySelector('.contact');
+                    const phoneText = document.querySelector('.header-phone');
+                    if (phoneLink) {
+                        phoneLink.href = `tel:${phoneNumber}`;
+                    }
+                    if (phoneText) {
+                        phoneText.textContent = phoneNumber;
+                    }
+                }
+            }
+        })
+        .catch(error => console.warn('Не удалось загрузить контакты:', error));
+</script>

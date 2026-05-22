@@ -1,0 +1,206 @@
+.cases-hero{
+    background: linear-gradient(180deg, #0a2463 0%, #2e3a59 100%);
+}
+
+.cases-hero__title{
+    font-weight: 400;
+    font-size: 33px;
+    line-height: 111%;
+    color: #ffffff;
+    padding-top: 59px;
+    margin-bottom: 15px;
+}
+
+.cases-hero__subtitle{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 140%;
+    color: #d1d5dc;
+    padding-bottom: 59px;
+}
+
+.cases-list{
+    padding: 60px 0 80px 0;
+    background-color: #f9fafb;
+}
+
+.case-card{
+    display: flex;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+    margin-bottom: 32px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.case-card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.18);
+}
+
+.case-card__image-wrapper{
+    flex: 0 0 45%;
+    max-width: 520px;
+}
+
+.case-card__image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.case-card__content{
+    flex: 1;
+    padding: 32px 32px 28px 32px;
+}
+
+.case-card__header{
+    margin-bottom: 20px;
+}
+
+.case-card__title-row{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.case-card__icon img{
+    width: 36px;
+    height: 36px;
+}
+
+.case-card__title{
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 140%;
+    color: #0a2463;
+    margin-bottom: 4px;
+}
+
+.case-card__meta{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.case-card__meta-item{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 150%;
+    color: #6b7280;
+}
+
+.case-card__meta-icon{
+    width: 16px;
+    height: 16px;
+}
+
+.case-card__section{
+    margin-bottom: 16px;
+}
+
+.case-card__section-title{
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 4px;
+}
+
+.case-card__section-text{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #111827;
+}
+
+.case-card__results{
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 40px;
+    row-gap: 6px;
+}
+
+.case-card__result-item{
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 150%;
+    color: #111827;
+}
+
+.case-card__result-icon{
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.case-card__quote{
+    margin-top: 18px;
+    padding: 14px 16px 16px 18px;
+    border-radius: 10px;
+    background-color: #f1fbfd;
+    border-left: 3px solid #00c2d2;
+}
+
+.case-card__quote-text{
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 150%;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.case-card__quote-author{
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 150%;
+    color: #111827;
+}
+
+.case-card__quote-role{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 150%;
+    color: #6b7280;
+}
+
+@media (max-width: 1024px){
+    .case-card{
+        flex-direction: column;
+    }
+
+    .case-card__image-wrapper{
+        flex: 0 0 auto;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px){
+    .case-card__content{
+        padding: 24px 18px 20px 18px;
+    }
+
+    .cases-list{
+        padding: 40px 0 60px 0;
+    }
+
+    .case-card__results{
+        grid-template-columns: 1fr;
+    }
+}
+

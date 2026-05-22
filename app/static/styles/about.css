@@ -1,0 +1,294 @@
+.about-hero{
+    background: linear-gradient(180deg, #0a2463 0%, #2e3a59 100%);
+}
+
+.about-hero__title{
+    font-weight: 400;
+    font-size: 33px;
+    line-height: 111%;
+    color: #ffffff;
+    padding-top: 59px;
+    margin-bottom: 15px;
+}
+
+
+.about-hero__subtitle{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 140%;
+    color: #d1d5dc;
+    padding-bottom: 59px;
+}
+
+/* History */
+.about-history{
+    padding: 60px 0 40px 0;
+    background-color: #f9fafb;
+}
+
+.about-history__layout{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.about-history__text{
+    width: 50%;
+}
+
+.about-history__title{
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 140%;
+    color: #0a2463;
+    margin-bottom: 20px;
+}
+
+.about-history__paragraph{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #4a5565;
+    margin-bottom: 12px;
+}
+
+.about-history__image-wrapper{
+    width: 50%;
+}
+
+.about-history__image{
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 24px 40px rgba(15, 23, 42, 0.25);
+    display: block;
+}
+
+/* Benefits */
+.about-benefits{
+    background-color: #0a2463;
+    padding: 40px 0;
+}
+
+.about-benefits__layout{
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.about-benefits__item{
+    flex: 1;
+    text-align: center;
+    color: #ffffff;
+}
+
+.about-benefits__number{
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 140%;
+    margin-bottom: 4px;
+    color: #00c2d2;
+}
+
+.about-benefits__label{
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 150%;
+    color: #d1d5dc;
+}
+
+/* Values */
+.about-values{
+    padding: 60px 0;
+    background-color: #f9fafb;
+}
+
+.about-values__head{
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.about-values__title{
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 140%;
+    color: #0a2463;
+    margin-bottom: 8px;
+}
+
+.about-values__subtitle{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #4a5565;
+}
+
+.about-values__grid{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.about-values__card{
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px 18px 22px 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-values__icon img{
+    width: 40px;
+    height: 40px;
+    margin-bottom: 12px;
+    transition: transform 0.3s ease;
+}
+
+.about-values__card-title{
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 140%;
+    color: #0a2463;
+    margin-bottom: 8px;
+}
+
+.about-values__card-text{
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 150%;
+    color: #4a5565;
+}
+
+.about-values__card:hover{
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.about-values__card:hover .about-values__icon img{
+    transform: scale(1.05);
+}
+
+/* Team */
+.about-team{
+    padding: 60px 0 80px 0;
+    background-color: #f5f7fb;
+}
+
+.about-team__head{
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.about-team__title{
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 140%;
+    color: #0a2463;
+    margin-bottom: 8px;
+}
+
+.about-team__subtitle{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #4a5565;
+}
+
+.about-team__grid{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.about-team__card{
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-team__image-wrapper{
+    width: 100%;
+    overflow: hidden;
+}
+
+.about-team__image{
+    width: 100%;
+    display: block;
+}
+
+.about-team__info{
+    padding: 18px 18px 20px 18px;
+    text-align: center;
+}
+
+.about-team__name{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.about-team__position{
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 143%;
+    color: #4a5565;
+    margin-bottom: 4px;
+}
+
+.about-team__experience{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 143%;
+    color: #00c2d2;
+}
+
+.about-team__card:hover{
+    transform: translateY(-8px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 992px){
+    .about-history__layout{
+        flex-direction: column;
+    }
+
+    .about-history__text,
+    .about-history__image-wrapper{
+        width: 100%;
+    }
+
+    .about-benefits__layout{
+        flex-wrap: wrap;
+    }
+
+    .about-benefits__item{
+        flex: 1 1 45%;
+        margin-bottom: 12px;
+    }
+
+    .about-values__grid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .about-team__grid{
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px){
+    .about-values__grid{
+        grid-template-columns: 1fr;
+    }
+
+    .about-team__grid{
+        grid-template-columns: 1fr;
+    }
+}
+

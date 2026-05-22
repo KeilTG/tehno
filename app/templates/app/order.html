@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="content content--order">
+    <section class="contacts-hero">
+        <div class="container">
+            <div class="contacts-hero__text">
+                <h1 class="contacts-hero__title">Оформление заказа</h1>
+                <p class="contacts-hero__subtitle">Заполните данные, и мы свяжемся с вами для подтверждения заказа</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contacts-main">
+        <div class="container contacts-main__layout">
+            <section class="form-control">
+                <h2 class="contacts-form__title">Контактные данные</h2>
+                <div id="order-message" class="contacts-form__success" style="display:none;"></div>
+
+                <form class="contacts-form__body" id="order-form" novalidate>
+                    <input type="hidden" name="cart_items" id="cart-items-input" value="[]">
+                
+                    <label class="contacts-form__field">
+                        <span class="contacts-form__label">Ваше имя</span>
+                        <input type="text" name="client_name" required>
+                    </label>
+                
+                    <label class="contacts-form__field">
+                        <span class="contacts-form__label">Компания (необязательно)</span>
+                        <input type="text" name="company" id="company-field">
+                    </label>
+                
+                    <div class="contacts-form__row">
+                        <label class="contacts-form__field contacts-form__field--half">
+                            <span class="contacts-form__label">Телефон *</span>
+                            <input type="tel" name="client_phone" required>
+                        </label>
+                        <label class="contacts-form__field contacts-form__field--half">
+                            <span class="contacts-form__label">Email *</span>
+                            <input type="email" name="client_email" required>
+                        </label>
+                    </div>
+                
+                    <label class="contacts-form__field">
+                        <span class="contacts-form__label">Комментарий к заказу</span>
+                        <textarea name="message" rows="3" id="message-field"></textarea>
+                    </label>
+                
+                    <button type="submit" class="contacts-form__submit">Отправить заказ</button>
+                    <p class="contacts-form__policy">
+                        Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+                    </p>
+                </form>
+            </section>
+
+            <section class="contacts-faq">
+                <h2 class="contacts-faq__title">Что будет дальше</h2>
+                <div class="contacts-faq__list">
+                    <article class="contacts-faq__item">
+                        <h3 class="contacts-faq__question">1. Мы получим список ваших товаров</h3>
+                        <p class="contacts-faq__answer">Все позиции из корзины сохраняются в заказе вместе с количеством и ценой.</p>
+                    </article>
+                    <article class="contacts-faq__item">
+                        <h3 class="contacts-faq__question">2. Менеджер свяжется с вами</h3>
+                        <p class="contacts-faq__answer">Мы уточним детали заказа и срок поставки.</p>
+                    </article>
+                </div>
+            </section>
+        </div>
+    </section>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        document.getElementById('cart-items-input').value = JSON.stringify(cart);
+    });
+
+    document.getElementById('order-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const company = formData.get('company') || '';
+        const cartItems = formData.get('cart_items') || '[]';
+        let extraMessage = '';
+        if (company.trim()) {
+            extraMessage += 'Компания: ' + company + '\n';
+        }
+        if (cartItems !== '[]') {
+            extraMessage += 'Корзина: ' + cartItems;
+        }
+        const mainMessage = formData.get('message') || '';
+        const combinedMessage = (mainMessage + '\n' + extraMessage).trim();
+
+        const data = {
+            client_name: formData.get('client_name'),
+            client_phone: formData.get('client_phone'),
+            client_email: formData.get('client_email'),
+            message: combinedMessage
+        };
+
+        try {
+            const response = await fetch('/api/requests', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            document.getElementById('order-message').style.display = 'block';
+            document.getElementById('order-message').textContent = result.message || 'Заказ отправлен!';
+            this.reset();
+        } catch (err) {
+            alert('Ошибка при отправке');
+        }
+    });
+</script>
+{% endblock %}
