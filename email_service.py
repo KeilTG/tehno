@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Загружаем .env из папки проекта
+# Загружаем переменные окружения из .env (файл лежит в той же папке)
 env_path = Path(__file__).parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
@@ -17,8 +17,7 @@ SMTP_FROM = os.getenv("SMTP_FROM")
 SMTP_TO = os.getenv("SMTP_TO")
 
 async def send_request_email(request_data: dict):
-    """Отправляет заявку на email"""
-    # Проверка наличия обязательных параметров
+    """Отправляет заявку на email (асинхронная обёртка над синхронным SMTP)"""
     if not SMTP_USER or not SMTP_PASSWORD:
         print("❌ SMTP_USER или SMTP_PASSWORD не заданы в .env")
         return False
