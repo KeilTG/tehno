@@ -2,9 +2,12 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+# Загружаем .env из папки проекта
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.yandex.ru")
 SMTP_PORT = int(os.getenv("SMTP_PORT", 465))
@@ -15,6 +18,11 @@ SMTP_TO = os.getenv("SMTP_TO")
 
 async def send_request_email(request_data: dict):
     """Отправляет заявку на email"""
+    # Проверка наличия обязательных параметров
+    if not SMTP_USER or not SMTP_PASSWORD:
+        print("❌ SMTP_USER или SMTP_PASSWORD не заданы в .env")
+        return False
+
     try:
         msg = MIMEMultipart()
         msg["From"] = SMTP_FROM
@@ -45,10 +53,6 @@ async def send_request_email(request_data: dict):
                 <tr style="background: #f5f5f5;">
                     <td style="padding: 10px; border: 1px solid #ddd;"><strong>Услуга/Товар ID:</strong></td>
                     <td style="padding: 10px; border: 1px solid #ddd;">{request_data.get('service_id', 'Не указан')}</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Дата:</strong></td>
-                    <td style="padding: 10px; border: 1px solid #ddd;">{request_data.get('created_at') or 'Сейчас'}</td>
                 </tr>
             </table>
             <p style="margin-top: 20px; color: #666; font-size: 12px;">
