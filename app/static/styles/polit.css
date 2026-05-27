@@ -1,0 +1,141 @@
+/* Триггер-ссылка */
+.pp-trigger {
+  color: #185FA5;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: color 0.15s;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.pp-trigger:hover {
+  color: #0C447C;
+}
+
+/* Оверлей */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Модальная плашка */
+.modal {
+  background: #ffffff;
+  border: 1.5px solid #B5D4F4;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-20px) scale(0.97);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.overlay.open .modal {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Шапка */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #B5D4F4;
+  flex-shrink: 0;
+}
+
+.modal-header h2 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #0C447C;
+}
+
+/* Кнопка закрытия */
+.close-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #B5D4F4;
+  background: #E6F1FB;
+  color: #185FA5;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+
+.close-btn:hover {
+  background: #185FA5;
+  color: #ffffff;
+  border-color: #185FA5;
+}
+
+/* Тело */
+.modal-body {
+  padding: 18px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-body p {
+  font-size: 14px;
+  line-height: 1.75;
+  color: #2c3e50;
+  margin-bottom: 0.85rem;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #185FA5;
+  margin-top: 1rem;
+  margin-bottom: 4px !important;
+}
+
+.section-title:first-child {
+  margin-top: 0;
+}
+
+/* Скроллбар */
+.modal-body::-webkit-scrollbar { width: 5px; }
+.modal-body::-webkit-scrollbar-track { background: #E6F1FB; border-radius: 3px; }
+.modal-body::-webkit-scrollbar-thumb { background: #85B7EB; border-radius: 3px; }
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .modal { border-radius: 12px; }
+  .modal-header { padding: 14px 16px 12px; }
+  .modal-body { padding: 14px 16px; }
+}
