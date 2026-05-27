@@ -18,16 +18,16 @@
                 </ul>
             </nav>
             <div class="taskbar">
-                <a class="contact" href="tel:+74951234567" data-phone-link>
+                <a class="contact" href="tel:+74951234567">
                     <img src="/static/img/svg/IconPhone.svg" class="contact-ico" alt="phone">
-                    <p class="header-phone">+7 (495) 123 45 67</p>
+                    <p>+7 (495) 123 45 67</p>
                 </a>
                 <button class="basket-btn" type="button" data-cart-open>
                     <img src="/static/img/svg/IconBasket.svg" class="basket-ico" alt="Корзина">
                     <span class="basket-btn__counter" data-cart-count></span>
                 </button>
-                <button class="burger-btn">
-                    <img src="/static/img/svg/burger-menu-img.svg" class="burger-menu-img" alt="menu">
+                <button class="burger-btn" type="button">
+                    <img src="/static/img/svg/burger-menu-img.svg" alt="menu">
                 </button>
                 <a href="/contacts.html#audit-form" class="consultation-btn">
                     <p>Получить консультацию</p>
@@ -35,6 +35,7 @@
             </div>
         </div>
     </header>
+    
     <div class="mobile-menu-overlay" data-mobile-menu-overlay>
         <div class="mobile-menu">
             <div class="mobile-menu__header">
@@ -52,25 +53,31 @@
     </div>
 </div>
 
-<!-- Скрипт для подтягивания номера из админки -->
 <script>
-    fetch('/api/contacts')
-        .then(response => response.json())
-        .then(data => {
-            if (Array.isArray(data) && data.length > 0) {
-                const phoneContact = data.find(contact => contact.contact_type === 'phone');
-                if (phoneContact && phoneContact.contact_value) {
-                    const phoneNumber = phoneContact.contact_value;
-                    const phoneLink = document.querySelector('.contact');
-                    const phoneText = document.querySelector('.header-phone');
-                    if (phoneLink) {
-                        phoneLink.href = `tel:${phoneNumber}`;
-                    }
-                    if (phoneText) {
-                        phoneText.textContent = phoneNumber;
-                    }
-                }
+document.addEventListener('DOMContentLoaded', function() {
+    const burgerBtn = document.querySelector('.burger-btn');
+    const mobileMenu = document.querySelector('.mobile-menu-overlay');
+    const closeBtn = document.querySelector('.mobile-menu__close');
+    
+    if (burgerBtn && mobileMenu) {
+        burgerBtn.addEventListener('click', function() {
+            mobileMenu.classList.add('mobile-menu-overlay--visible');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                mobileMenu.classList.remove('mobile-menu-overlay--visible');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        mobileMenu.addEventListener('click', function(e) {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.remove('mobile-menu-overlay--visible');
+                document.body.style.overflow = '';
             }
-        })
-        .catch(error => console.warn('Не удалось загрузить контакты:', error));
+        });
+    }
+});
 </script>
