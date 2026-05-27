@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>ТехноСервис</title>
 
     <!-- Swiper CSS -->
@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="/static/styles/contacts.css">
     <link rel="stylesheet" href="/static/styles/cart.css">
     <link rel="stylesheet" href="/static/styles/main.css">
+    <link rel="stylesheet" href="/static/styles/responsive.css">
 
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -45,32 +46,5 @@
     </main>
     {% include 'includes/footer.html' %}
     {% block scripts %}{% endblock %}
-
-    <!-- Скрипт для подтягивания номера телефона из админки -->
-    <script>
-        fetch('/api/contacts')
-            .then(response => response.json())
-            .then(data => {
-                if (Array.isArray(data) && data.length > 0) {
-                    // Ищем контакт с типом 'phone'
-                    const phoneContact = data.find(contact => contact.contact_type === 'phone');
-                    if (phoneContact && phoneContact.contact_value) {
-                        const phoneNumber = phoneContact.contact_value;
-                        // Обновляем ссылку в хедере
-                        const phoneLinks = document.querySelectorAll('.header-phone a, .footer-phone a, [data-phone-link]');
-                        phoneLinks.forEach(link => {
-                            link.href = `tel:${phoneNumber}`;
-                            link.textContent = phoneNumber;
-                        });
-                        // Также обновляем любой элемент с классом .phone-number
-                        const phoneElements = document.querySelectorAll('.phone-number, .header__phone');
-                        phoneElements.forEach(el => {
-                            el.textContent = phoneNumber;
-                        });
-                    }
-                }
-            })
-            .catch(error => console.warn('Не удалось загрузить контакты:', error));
-    </script>
 </body>
 </html>
