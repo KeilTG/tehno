@@ -32,13 +32,9 @@ app = FastAPI(title="TechNo API", version="1.0.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:8000",
-        "http://localhost:8081",
-        "http://5.42.113.201:8081",
-        "http://5.42.113.201:8000",
-        "http://5.42.113.201",
-        "http://5.42.113.201:8080"   # для Directus, если нужно
+        "http://localhost:8888",
+        "http://5.42.113.201:8888",
+        "http://5.42.113.201"
     ],
     allow_methods=["*"],
     allow_headers=["*"],
