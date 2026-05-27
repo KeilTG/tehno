@@ -1,4 +1,4 @@
-const API_URL = 'http://5.42.113.201:8081/api';
+const API_URL = 'http://5.42.113.201:8888/api'; 
 
 async function handleResponse(response) {
     if (!response.ok) {
