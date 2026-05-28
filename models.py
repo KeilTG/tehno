@@ -117,3 +117,9 @@ class Case(BaseModel):
     description: Optional[str] = None
     image_url: Optional[str] = None
     position: Optional[int] = 0
+# 15. Политика конфиденциальности
+class PrivacyPolicy(BaseModel):
+    id: Optional[int] = None
+    title: Optional[str] = None
+    content: Optional[str] = None
+    updated_at: Optional[datetime] = None

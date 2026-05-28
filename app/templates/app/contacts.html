@@ -218,29 +218,58 @@ textarea:focus {
 <div class="overlay" id="pp-overlay" role="dialog" aria-modal="true" aria-label="Политика конфиденциальности">
     <div class="modal">
         <div class="modal-header">
-            <h2>Политика конфиденциальности</h2>
+            <h2 id="pp-title">Политика конфиденциальности</h2>
             <button class="close-btn" id="pp-close-btn" aria-label="Закрыть">×</button>
         </div>
-        <div class="modal-body">
-            <p class="section-title">1. Общие положения</p>
-            <p>Настоящая политика конфиденциальности описывает, каким образом мы собираем, используем и защищаем
-                персональные данные пользователей нашего сервиса. Используя сервис, вы соглашаетесь с условиями данной
-                политики в полном объёме.</p>
-            <p class="section-title">2. Сбор данных</p>
-            <p>Мы можем собирать следующую информацию: имя и контактные данные, предоставленные вами добровольно;
-                технические данные об устройстве и браузере; данные об использовании сервиса. Сбор данных осуществляется
-                только с вашего согласия или на иных законных основаниях.</p>
-            <p class="section-title">3. Использование данных</p>
-            <p>Собранные данные используются исключительно для улучшения качества сервиса, персонализации контента, а
-                также выполнения договорных обязательств перед пользователем. Мы не передаём ваши данные третьим лицам
-                без вашего явного согласия.</p>
-            <p class="section-title">4. Хранение и защита</p>
-            <p>Данные хранятся на защищённых серверах с применением современных методов шифрования. Мы принимаем
-                технические и организационные меры для предотвращения несанкционированного доступа.</p>
-            <p class="section-title">5. Ваши права</p>
-            <p>Вы вправе в любой момент запросить доступ к своим персональным данным, их исправление, удаление или
-                ограничение обработки. Для реализации своих прав обратитесь к нам по контактным данным на сайте.</p>
+        <div class="modal-body" id="pp-content">
+            <!-- Сюда загрузится текст из Directus -->
+            <p>Загрузка...</p>
         </div>
     </div>
 </div>
+
+<script>
+    // Загрузка политики конфиденциальности из Directus
+    async function loadPrivacyPolicy() {
+        try {
+            const response = await fetch('/api/privacy-policy');
+            const data = await response.json();
+            if (data && data.content) {
+                document.getElementById('pp-title').textContent = data.title || 'Политика конфиденциальности';
+                document.getElementById('pp-content').innerHTML = data.content;
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки политики:', error);
+            document.getElementById('pp-content').innerHTML = '<p>Не удалось загрузить политику конфиденциальности</p>';
+        }
+    }
+    
+    // Открытие/закрытие модалки
+    const overlay = document.getElementById('pp-overlay');
+    const trigger = document.getElementById('pp-trigger');
+    const closeBtn = document.getElementById('pp-close-btn');
+    
+    if (trigger) {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            loadPrivacyPolicy();
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        });
+    }
+    
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
+</script>
 {% endblock %}

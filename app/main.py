@@ -296,6 +296,18 @@ async def get_catalog_categories(client: httpx.AsyncClient = Depends(get_db)):
     data = response.json()
     return data.get("data", [])
 
+@app.get("/api/privacy-policy", response_model=PrivacyPolicy)
+async def get_privacy_policy(client: httpx.AsyncClient = Depends(get_db)):
+    response = await client.get("/items/privacy_policy", params={"limit": 1, "sort": "-updated_at"})
+    data = response.json()
+    items = data.get("data", [])
+    if items:
+        return items[0]
+    return {
+        "title": "Политика конфиденциальности",
+        "content": "<p>Текст политики конфиденциальности...</p>"
+    }
+
 @app.get("/api/catalog-items", response_model=List[CatalogItem])
 async def get_catalog_items(client: httpx.AsyncClient = Depends(get_db)):
     response = await client.get("/items/catalog_items", params={"sort": "position"})
