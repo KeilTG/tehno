@@ -47,5 +47,42 @@
     </main>
     {% include 'includes/footer.html' %}
     {% block scripts %}{% endblock %}
+
+    <!-- Скрипт для обновления номера телефона из Directus -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/contacts')
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data) && data.length > 0) {
+                        const phoneContact = data.find(contact => contact.contact_type === 'phone');
+                        if (phoneContact && phoneContact.contact_value) {
+                            const phoneNumber = phoneContact.contact_value;
+                            
+                            // Обновляем ссылку в хедере
+                            const phoneLink = document.querySelector('.contact');
+                            if (phoneLink) {
+                                phoneLink.href = `tel:${phoneNumber}`;
+                                const phoneText = phoneLink.querySelector('p');
+                                if (phoneText) {
+                                    phoneText.textContent = phoneNumber;
+                                }
+                            }
+                            
+                            // Обновляем в мобильном меню, если есть
+                            const mobilePhoneLinks = document.querySelectorAll('.mobile-menu .contact');
+                            mobilePhoneLinks.forEach(link => {
+                                link.href = `tel:${phoneNumber}`;
+                                const phoneText = link.querySelector('p');
+                                if (phoneText) {
+                                    phoneText.textContent = phoneNumber;
+                                }
+                            });
+                        }
+                    }
+                })
+                .catch(error => console.warn('Не удалось загрузить контакты:', error));
+        });
+    </script>
 </body>
 </html>

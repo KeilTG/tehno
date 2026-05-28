@@ -1,5 +1,3 @@
-# НЕ ИСПОЛЬЗУЙТЕ "docker-compose down -v" — это удалит ВСЕ данные!
-
 services:
   # --- PostgreSQL: БД для Directus и FastAPI ---
   db:
@@ -48,7 +46,7 @@ services:
       - technoservice_directus_uploads:/directus/uploads
       - technoservice_directus_extensions:/directus/extensions
     ports:
-      - "8055:8055"
+      - "8080:8055"
     networks:
       - techno_network
 
@@ -61,13 +59,13 @@ services:
       - directus
     environment:
       - DEBUG=${DEBUG:-True}
-      - DIRECTUS_URL=http://directus:8055
+      - DIRECTUS_URL=${DIRECTUS_URL:-http://directus:8055}
       - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
     volumes:
       - ./app:/app
-      - technoservice_media_data:/app/media
+      - ./:/app
     ports:
-      - "8000:8000"
+      - "8888:8000"
     networks:
       - techno_network
 
@@ -91,8 +89,6 @@ services:
       - techno_network
 
 volumes:
-  # Все тома имеют явные имена (начинаются с technoservice_)
-  # Это защищает от случайного удаления другими проектами
   technoservice_postgres_data:
     name: technoservice_postgres_data
     external: false

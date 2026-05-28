@@ -1,0 +1,213 @@
+[
+    {
+        "Id": "ef87688fc1cdde04fe0d0100075c66935eb0d854347c8ecee5411a269a669303",
+        "Created": "2026-05-27T09:36:25.975874721Z",
+        "Path": "/docker-entrypoint.sh",
+        "Args": [],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 2775330,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-05-27T09:36:57.331515112Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:bea8778ce9abea501509e2013f5288c6c13d51c65e2d6b40f780bd6276a0d575",
+        "ResolvConfPath": "/var/lib/docker/containers/ef87688fc1cdde04fe0d0100075c66935eb0d854347c8ecee5411a269a669303/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/ef87688fc1cdde04fe0d0100075c66935eb0d854347c8ecee5411a269a669303/hostname",
+        "HostsPath": "/var/lib/docker/containers/ef87688fc1cdde04fe0d0100075c66935eb0d854347c8ecee5411a269a669303/hosts",
+        "LogPath": "/var/lib/docker/containers/ef87688fc1cdde04fe0d0100075c66935eb0d854347c8ecee5411a269a669303/ef87688fc1cdde04fe0d0100075c66935eb0d854347c8ecee5411a269a669303-json.log",
+        "Name": "/technoservice_fastapi",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/opt/tehno:/app:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "tehno_techno_network",
+            "PortBindings": {
+                "8000/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "8888"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "unless-stopped",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/opt/tehno",
+                "Destination": "/app",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "ef87688fc1cd",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "DEBUG=True",
+                "DIRECTUS_URL=http://directus:8055",
+                "DIRECTUS_TOKEN=D_nnxvWJfPErZ0F3QiDC4nNxtGhXFq5W",
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.13",
+                "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+                "PYTHONDONTWRITEBYTECODE=1",
+                "PYTHONUNBUFFERED=1"
+            ],
+            "Cmd": null,
+            "Image": "tehno-fastapi",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": [
+                "/docker-entrypoint.sh"
+            ],
+            "Labels": {
+                "com.docker.compose.config-hash": "48dd197585c788af812171f196a33873b1f7454949b4fe74fa5daa902072a03d",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "directus:service_started:false",
+                "com.docker.compose.image": "sha256:bea8778ce9abea501509e2013f5288c6c13d51c65e2d6b40f780bd6276a0d575",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "tehno",
+                "com.docker.compose.project.config_files": "/opt/tehno/docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/opt/tehno",
+                "com.docker.compose.service": "fastapi",
+                "com.docker.compose.version": "5.1.3"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "13f804bc4d97a8853ca41fe89712c0c6d60614c9a77069d5b9cd841bb0889ec7",
+            "SandboxKey": "/var/run/docker/netns/13f804bc4d97",
+            "Ports": {},
+            "Networks": {}
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:fcf852daa35b5c3626356966737d5c56e776f8a3dceec8b850210c9a4c05e4a0",
+            "size": 2573,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]
