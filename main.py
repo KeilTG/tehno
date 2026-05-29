@@ -15,7 +15,7 @@ from models import (
     ContentPage, Banner, CatalogCategory, CatalogItem, Service,
     Contact, Request as RequestModel
 )
-from email_service import send_request_email   # только один раз
+from email_service import send_request_email
 
 # ============ LIFESPAN ============
 @asynccontextmanager
@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI):
 # ============ СОЗДАНИЕ ПРИЛОЖЕНИЯ ============
 app = FastAPI(title="TechNo API", version="1.0.0", lifespan=lifespan)
 
-# ============ CORS (добавлены реальные адреса сервера) ============
+# ============ CORS ============
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -56,7 +56,7 @@ def from_json(value):
 
 templates.env.filters['from_json'] = from_json
 
-# ============ ФРОНТЕНД (все страницы) ============
+# ============ ФРОНТЕНД ============
 @app.get("/", response_class=HTMLResponse)
 async def index(request: FastAPIRequest):
     return templates.TemplateResponse("app/index.html", {"request": request})
@@ -274,11 +274,9 @@ async def get_seo(page_id: int, client: httpx.AsyncClient = Depends(get_db)):
 @app.post("/api/requests", status_code=status.HTTP_201_CREATED)
 async def create_request(request_data: RequestModel, client: httpx.AsyncClient = Depends(get_db)):
     print("📬 Получена заявка:", request_data.dict())
-    # Сохраняем в Directus
     response = await client.post("/items/requests", json=request_data.dict(exclude_unset=True))
     data = response.json()
     print("💾 Сохранено в Directus, id =", data.get("data", {}).get("id"))
-    # Отправляем email
     email_result = await send_request_email(request_data.dict())
     print("📧 Результат отправки email:", email_result)
     return {"message": "Заявка отправлена", "id": data.get("data", {}).get("id")}
@@ -289,7 +287,7 @@ async def get_requests(client: httpx.AsyncClient = Depends(get_db)):
     data = response.json()
     return data.get("data", [])
 
-# API КАТАЛОГА
+# ============ API КАТАЛОГА ============
 @app.get("/api/catalog-categories", response_model=List[CatalogCategory])
 async def get_catalog_categories(client: httpx.AsyncClient = Depends(get_db)):
     response = await client.get("/items/catalog_categories", params={"sort": "position"})
@@ -302,6 +300,14 @@ async def get_catalog_items(client: httpx.AsyncClient = Depends(get_db)):
     data = response.json()
     return data.get("data", [])
 
+@app.get("/api/catalog-items/{item_id}", response_model=CatalogItem)
+async def get_catalog_item(item_id: int, client: httpx.AsyncClient = Depends(get_db)):
+    response = await client.get(f"/items/catalog_items/{item_id}")
+    data = response.json()
+    if not data.get("data"):
+        raise HTTPException(status_code=404, detail="Item not found")
+    return data["data"]
+
 @app.get("/api/catalog-items/by-category/{category_id}", response_model=List[CatalogItem])
 async def get_catalog_items_by_category(category_id: int, client: httpx.AsyncClient = Depends(get_db)):
     response = await client.get("/items/catalog_items", params={
@@ -311,11 +317,31 @@ async def get_catalog_items_by_category(category_id: int, client: httpx.AsyncCli
     data = response.json()
     return data.get("data", [])
 
+# ============ ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ ============
+@app.get("/api/privacy-policy")
+async def get_privacy_policy(client: httpx.AsyncClient = Depends(get_db)):
+    try:
+        response = await client.get("/items/privacy_policy", params={"limit": 1, "sort": "-updated_at"})
+        if response.status_code == 200:
+            data = response.json()
+            items = data.get("data", [])
+            if items:
+                return items[0]
+        return {
+            "title": "Политика конфиденциальности",
+            "content": "<p>Текст политики конфиденциальности...</p>"
+        }
+    except Exception as e:
+        print(f"Ошибка загрузки политики: {e}")
+        return {
+            "title": "Политика конфиденциальности",
+            "content": "<p>Не удалось загрузить текст</p>"
+        }
+
 @app.get("/api/prices")
 async def get_prices_empty():
     return {"data": []}
 
 if __name__ == "__main__":
     import uvicorn
-    # Запускаем на порту 8081, как указано в api.js
     uvicorn.run(app, host="0.0.0.0", port=8888)

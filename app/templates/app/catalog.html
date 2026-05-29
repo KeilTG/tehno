@@ -45,4 +45,130 @@
         </div>
     </section>
 </div>
+
+<!-- Модальное окно для товара -->
+<div class="catalog-modal-overlay" id="productModal">
+    <div class="catalog-modal">
+        <div class="catalog-modal__header">
+            <h2 class="catalog-modal__title" id="modalTitle">Загрузка...</h2>
+            <button type="button" class="catalog-modal__close-icon" id="modalCloseBtn">&times;</button>
+        </div>
+        <div class="catalog-modal__body">
+            <div class="catalog-modal__left">
+                <div class="catalog-modal__left-image">
+                    <img id="modalImage" src="" alt="">
+                </div>
+                <div class="catalog-modal__price-panel">
+                    <div class="catalog-modal__price-label">Стоимость подписки</div>
+                    <div class="catalog-modal__price-main">
+                        <span class="catalog-modal__price-number" id="modalPrice">0</span>
+                        <span class="catalog-modal__price-currency">₽</span>
+                    </div>
+                    <div class="catalog-modal__price-note">в месяц</div>
+                </div>
+            </div>
+            <div class="catalog-modal__right">
+                <div class="catalog-modal__section">
+                    <div class="catalog-modal__section-title">Описание</div>
+                    <p class="catalog-modal__section-text" id="modalDescription"></p>
+                </div>
+                <div class="catalog-modal__divider"></div>
+                <div class="catalog-modal__section">
+                    <div class="catalog-modal__section-title">Возможности</div>
+                    <ul class="catalog-modal__features-list" id="modalFeatures"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="catalog-modal__bottom">
+            <p class="catalog-modal__note">Подписка активируется после оформления заказа и подтверждения оплаты.</p>
+            <div class="catalog-modal__bottom-buttons">
+                <button type="button" class="catalog-modal__btn-secondary" id="modalCloseBtn2">Закрыть</button>
+                <button type="button" class="catalog-modal__btn-primary" id="modalAddToCart">
+                    <img src="/static/img/svg/basket-card-white.svg" class="catalog-modal__btn-primary-icon">
+                    <span>Добавить в корзину</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Модальное окно для каталога
+    const modal = document.getElementById('productModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalFeatures = document.getElementById('modalFeatures');
+    let currentProductId = null;
+    
+    function openModal(productId) {
+        currentProductId = productId;
+        modal.classList.add('catalog-modal-overlay--visible');
+        document.body.classList.add('catalog-modal-open');
+        
+        // Загружаем данные товара
+        fetch(`/api/catalog-items/${productId}`)
+            .then(r => r.json())
+            .then(item => {
+                modalTitle.textContent = item.name;
+                modalImage.src = item.image_url || '/static/img/placeholder.png';
+                modalPrice.textContent = item.price;
+                modalDescription.textContent = item.description || 'Нет описания';
+            })
+            .catch(err => console.error('Ошибка загрузки товара:', err));
+        
+        // Загружаем характеристики (если есть)
+        fetch(`/api/catalog-features/by-item/${productId}`)
+            .then(r => r.json())
+            .then(features => {
+                if (features && features.length) {
+                    modalFeatures.innerHTML = features.map(f => `
+                        <li class="catalog-modal__features-item">
+                            <img src="/static/img/svg/check-point-icon.svg" alt="">
+                            <span>${f.feature_name}: ${f.feature_value}</span>
+                        </li>
+                    `).join('');
+                } else {
+                    modalFeatures.innerHTML = '<li class="catalog-modal__features-item">Нет дополнительных характеристик</li>';
+                }
+            })
+            .catch(err => {
+                console.warn('Нет характеристик:', err);
+                modalFeatures.innerHTML = '<li class="catalog-modal__features-item">Нет дополнительных характеристик</li>';
+            });
+    }
+    
+    function closeModal() {
+        modal.classList.remove('catalog-modal-overlay--visible');
+        document.body.classList.remove('catalog-modal-open');
+    }
+    
+    // Обработчики
+    document.querySelectorAll('.catalog-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (e.target.closest('.catalog-card__button')) return;
+            const productId = card.getAttribute('data-product-id');
+            if (productId) openModal(productId);
+        });
+    });
+    
+    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+    document.getElementById('modalCloseBtn2').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    
+    document.getElementById('modalAddToCart').addEventListener('click', () => {
+        if (currentProductId && window.TechnoServiceCart) {
+            const card = document.querySelector(`.catalog-card[data-product-id="${currentProductId}"]`);
+            const cardButton = card?.querySelector('.catalog-card__button');
+            if (cardButton) {
+                window.TechnoServiceCart.addFromCard(cardButton);
+                window.TechnoServiceCart.openCart();
+                closeModal();
+            }
+        }
+    });
+</script>
 {% endblock %}
