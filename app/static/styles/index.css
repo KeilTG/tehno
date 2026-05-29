@@ -811,7 +811,8 @@
 
   .simple-works-card {
     flex-direction: column;
-    gap: 30px;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   .simple-works-card::before {
