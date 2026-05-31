@@ -124,3 +124,9 @@ class ConsentText(BaseModel):
     content: Optional[str] = None
     checkbox_text: Optional[str] = None
     updated_at: Optional[datetime] = None
+
+class PrivacyPolicy(BaseModel):
+    id: Optional[int] = None
+    title: Optional[str] = None
+    content: Optional[str] = None
+    updated_at: Optional[datetime] = None
