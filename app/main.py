@@ -352,5 +352,4 @@ async def get_consent_text(client: httpx.AsyncClient = Depends(get_db)):
 
 if __name__ == "__main__":
     import uvicorn
-    # Запускаем на порту 8081, как указано в api.js
     uvicorn.run(app, host="0.0.0.0", port=8888)
