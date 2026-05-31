@@ -117,3 +117,10 @@ class Case(BaseModel):
     description: Optional[str] = None
     image_url: Optional[str] = None
     position: Optional[int] = 0
+# 16. Текст согласия на обработку персональных данных
+class ConsentText(BaseModel):
+    id: Optional[int] = None
+    title: Optional[str] = None
+    content: Optional[str] = None
+    checkbox_text: Optional[str] = None
+    updated_at: Optional[datetime] = None

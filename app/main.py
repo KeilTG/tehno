@@ -327,6 +327,28 @@ async def get_catalog_items_by_category(category_id: int, client: httpx.AsyncCli
 async def get_prices_empty():
     return {"data": []}
 
+@app.get("/api/consent-text")
+async def get_consent_text(client: httpx.AsyncClient = Depends(get_db)):
+    try:
+        response = await client.get("/items/consent_text", params={"limit": 1, "sort": "-updated_at"})
+        if response.status_code == 200:
+            data = response.json()
+            items = data.get("data", [])
+            if items:
+                return items[0]
+        return {
+            "title": "Согласие на обработку персональных данных",
+            "content": "<p>Я даю согласие на обработку моих персональных данных...</p>",
+            "checkbox_text": "Я даю согласие на обработку <a href='#' class='consent-link' onclick='openConsentModal(); return false;'>персональных данных</a>"
+        }
+    except Exception as e:
+        print(f"Ошибка загрузки текста согласия: {e}")
+        return {
+            "title": "Согласие на обработку персональных данных",
+            "content": "<p>Не удалось загрузить текст</p>",
+            "checkbox_text": "Я даю согласие на обработку <a href='#' class='consent-link' onclick='openConsentModal(); return false;'>персональных данных</a>"
+        }
+
 if __name__ == "__main__":
     import uvicorn
     # Запускаем на порту 8081, как указано в api.js

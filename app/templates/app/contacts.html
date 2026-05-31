@@ -58,7 +58,16 @@
                         <span class="contacts-form__label">Сообщение</span>
                         <textarea name="message" rows="3"></textarea>
                     </label>
-                    <button type="submit" class="contacts-form__submit">Отправить заявку</button>
+                    
+                    <!-- ЧЕКБОКС С СОГЛАСИЕМ -->
+                    <div class="contacts-form__consent" id="consent-container">
+                        <label class="consent-checkbox">
+                            <input type="checkbox" id="consent-checkbox" required>
+                            <span id="consent-text">Загрузка текста согласия...</span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="contacts-form__submit" id="submit-btn">Отправить заявку</button>
                     <p class="contacts-form__policy">Нажимая кнопку, вы соглашаетесь с 
                         <a href="#" class="pp-trigger" id="pp-trigger">политикой конфиденциальности</a>
                     </p>
@@ -99,21 +108,279 @@
     </section>
 </div>
 
+<!-- Модалка политики конфиденциальности -->
+<div class="overlay" id="pp-overlay" role="dialog" aria-modal="true" aria-label="Политика конфиденциальности">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 id="pp-title">Политика конфиденциальности</h2>
+            <button class="close-btn" id="pp-close-btn" aria-label="Закрыть">×</button>
+        </div>
+        <div class="modal-body" id="pp-content">
+            <p>Загрузка...</p>
+        </div>
+    </div>
+</div>
+
+<!-- Модалка текста согласия -->
+<div class="overlay" id="consent-overlay" role="dialog" aria-modal="true" aria-label="Согласие на обработку персональных данных">
+    <div class="modal">
+        <div class="modal-header">
+            <h2 id="consent-title">Согласие на обработку персональных данных</h2>
+            <button class="close-btn" id="consent-close-btn" aria-label="Закрыть">×</button>
+        </div>
+        <div class="modal-body" id="consent-content">
+            <p>Загрузка...</p>
+        </div>
+    </div>
+</div>
+
+<style>
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+select,
+textarea {
+    border: 1px solid #D0D5DD;
+    border-radius: 6px;
+    padding: 10px 14px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #185FA5;
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.15);
+}
+
+.contacts-form__success {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #c3e6cb;
+}
+
+.contacts-form__error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+}
+
+/* ЧЕКБОКС И СОГЛАСИЕ */
+.contacts-form__consent {
+    margin: 20px 0;
+    padding: 10px 0;
+}
+
+.consent-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.consent-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.consent-checkbox span {
+    flex: 1;
+}
+
+.consent-link {
+    color: #007aff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.consent-link:hover {
+    text-decoration: underline;
+}
+
+/* Модальное окно */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(80vh - 60px);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+</style>
+
 <script>
-    // Отправка формы заявки
+    // Загрузка политики конфиденциальности
+    async function loadPrivacyPolicy() {
+        try {
+            const response = await fetch('/api/privacy-policy');
+            const data = await response.json();
+            if (data && data.content) {
+                document.getElementById('pp-title').textContent = data.title || 'Политика конфиденциальности';
+                document.getElementById('pp-content').innerHTML = data.content;
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки политики:', error);
+            document.getElementById('pp-content').innerHTML = '<p>Не удалось загрузить политику конфиденциальности</p>';
+        }
+    }
+    
+    // Загрузка текста согласия
+    async function loadConsentText() {
+        try {
+            const response = await fetch('/api/consent-text');
+            const data = await response.json();
+            if (data && data.content) {
+                document.getElementById('consent-title').textContent = data.title || 'Согласие на обработку персональных данных';
+                document.getElementById('consent-content').innerHTML = data.content;
+                // Обновляем текст в чекбоксе
+                const consentTextSpan = document.getElementById('consent-text');
+                if (consentTextSpan && data.checkbox_text) {
+                    consentTextSpan.innerHTML = data.checkbox_text;
+                }
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки текста согласия:', error);
+            document.getElementById('consent-content').innerHTML = '<p>Не удалось загрузить текст согласия</p>';
+        }
+    }
+    
+    // Модалка политики
+    const ppOverlay = document.getElementById('pp-overlay');
+    const ppTrigger = document.getElementById('pp-trigger');
+    const ppCloseBtn = document.getElementById('pp-close-btn');
+    
+    if (ppTrigger) {
+        ppTrigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            loadPrivacyPolicy();
+            ppOverlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    if (ppCloseBtn) {
+        ppCloseBtn.addEventListener('click', () => {
+            ppOverlay.style.display = 'none';
+            document.body.style.overflow = '';
+        });
+    }
+    
+    ppOverlay.addEventListener('click', (e) => {
+        if (e.target === ppOverlay) {
+            ppOverlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Модалка текста согласия (при клике на ссылку в чекбоксе)
+    const consentOverlay = document.getElementById('consent-overlay');
+    const consentCloseBtn = document.getElementById('consent-close-btn');
+    
+    // Функция для открытия модалки согласия (будет вызвана при клике на ссылку)
+    window.openConsentModal = function() {
+        loadConsentText();
+        consentOverlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
+    
+    if (consentCloseBtn) {
+        consentCloseBtn.addEventListener('click', () => {
+            consentOverlay.style.display = 'none';
+            document.body.style.overflow = '';
+        });
+    }
+    
+    consentOverlay.addEventListener('click', (e) => {
+        if (e.target === consentOverlay) {
+            consentOverlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Отправка формы с проверкой чекбокса
     const form = document.getElementById('audit-form-element');
     const successDiv = document.getElementById('form-message');
     const errorDiv = document.getElementById('form-error');
+    const consentCheckbox = document.getElementById('consent-checkbox');
+    const submitBtn = document.getElementById('submit-btn');
+    
+    // Загрузка текста согласия при загрузке страницы
+    loadConsentText();
     
     if (form) {
+        // Валидация чекбокса при отправке
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Скрываем предыдущие сообщения
+            // Проверяем чекбокс
+            if (!consentCheckbox || !consentCheckbox.checked) {
+                errorDiv.innerHTML = '❌ Подтвердите согласие на обработку персональных данных';
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+                return;
+            }
+            
             successDiv.style.display = 'none';
             errorDiv.style.display = 'none';
             
-            // Собираем данные
             const formData = new FormData(form);
             const data = {
                 client_name: formData.get('client_name'),
@@ -124,19 +391,16 @@
                 status: 'new'
             };
             
-            // Добавляем компанию в сообщение, если есть
             const company = formData.get('company');
             if (company) {
                 data.message = `Компания: ${company}\n\n${data.message}`;
             }
             
-            // Добавляем услугу в сообщение
             const service = formData.get('service');
             if (service) {
                 data.message = `Услуга: ${service}\n\n${data.message}`;
             }
             
-            const submitBtn = form.querySelector('.contacts-form__submit');
             const originalText = submitBtn.textContent;
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправка...';
@@ -154,8 +418,8 @@
                     successDiv.innerHTML = '✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.';
                     successDiv.style.display = 'block';
                     form.reset();
+                    if (consentCheckbox) consentCheckbox.checked = false;
                     
-                    // Скрыть сообщение через 5 секунд
                     setTimeout(() => {
                         successDiv.style.display = 'none';
                     }, 5000);
@@ -172,104 +436,5 @@
             }
         });
     }
-</script>
-
-<style>
-input[type="text"],
-input[type="tel"],
-input[type="email"],
-select,
-textarea {
-    border: 1px solid #D0D5DD;       /* светло-серая рамка */
-    border-radius: 6px;              /* скругление углов */
-    padding: 10px 14px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 14px;
-    background: #fff;
-    transition: border-color 0.2s;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: #185FA5;           /* синяя рамка при фокусе */
-    box-shadow: 0 0 0 3px rgba(24,95,165,0.15);
-}
-.contacts-form__success {
-    background: #d4edda;
-    color: #155724;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #c3e6cb;
-}
-.contacts-form__error {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #f5c6cb;
-}
-</style>
-<!-- Модалка политики конфиденциальности -->
-<div class="overlay" id="pp-overlay" role="dialog" aria-modal="true" aria-label="Политика конфиденциальности">
-    <div class="modal">
-        <div class="modal-header">
-            <h2 id="pp-title">Политика конфиденциальности</h2>
-            <button class="close-btn" id="pp-close-btn" aria-label="Закрыть">×</button>
-        </div>
-        <div class="modal-body" id="pp-content">
-            <!-- Сюда загрузится текст из Directus -->
-            <p>Загрузка...</p>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Загрузка политики конфиденциальности из Directus
-    async function loadPrivacyPolicy() {
-        try {
-            const response = await fetch('/api/privacy-policy');
-            const data = await response.json();
-            if (data && data.content) {
-                document.getElementById('pp-title').textContent = data.title || 'Политика конфиденциальности';
-                document.getElementById('pp-content').innerHTML = data.content;
-            }
-        } catch (error) {
-            console.error('Ошибка загрузки политики:', error);
-            document.getElementById('pp-content').innerHTML = '<p>Не удалось загрузить политику конфиденциальности</p>';
-        }
-    }
-    
-    // Открытие/закрытие модалки
-    const overlay = document.getElementById('pp-overlay');
-    const trigger = document.getElementById('pp-trigger');
-    const closeBtn = document.getElementById('pp-close-btn');
-    
-    if (trigger) {
-        trigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            loadPrivacyPolicy();
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        });
-    }
-    
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            overlay.style.display = 'none';
-            document.body.style.overflow = '';
-        });
-    }
-    
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            overlay.style.display = 'none';
-            document.body.style.overflow = '';
-        }
-    });
 </script>
 {% endblock %}
