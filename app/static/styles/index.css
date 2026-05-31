@@ -245,7 +245,6 @@
 
 
 /* СЕКЦИЯ (ПОЧЕМУ ВЫБИРАЮТ НАС) */
-
 /* Секция "Почему выбирают нас" */
 .why-choose-us {
   padding: 80px 0;
@@ -280,14 +279,18 @@
 
 .why-choose-us-block-points {
   display: flex;
-  flex-direction: column;
-  gap: 24px;
+  flex-direction: row;          
+  flex-wrap: wrap;              
+  gap: 24px;                    
+  justify-content: space-between;
+  margin-bottom: 0;             
 }
 
 .why-choose-us-block-points-elements {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex: 1 1 200px;              
 }
 
 .why-choose-us-block-points-elements a {
@@ -554,7 +557,7 @@
   position: relative;
   width: 45%;
   padding: 24px;
-  background: var(--color-pink);
+  background: var(--color-dark-blue);
   border-radius: 12px;
   margin-bottom: 40px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
