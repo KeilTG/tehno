@@ -327,6 +327,7 @@ async def get_catalog_items_by_category(category_id: int, client: httpx.AsyncCli
 async def get_prices_empty():
     return {"data": []}
 
+# ============ СОГЛАСИЕ НА ОБРАБОТКУ ДАННЫХ ============
 @app.get("/api/consent-text")
 async def get_consent_text(client: httpx.AsyncClient = Depends(get_db)):
     try:
@@ -338,11 +339,11 @@ async def get_consent_text(client: httpx.AsyncClient = Depends(get_db)):
                 return items[0]
         return {
             "title": "Согласие на обработку персональных данных",
-            "content": "<p>Я даю согласие на обработку моих персональных данных...</p>",
+            "content": "<p>Я даю согласие на обработку моих персональных данных: ФИО, телефон, email. Данные используются только для связи со мной и не передаются третьим лицам.</p>",
             "checkbox_text": "Я даю согласие на обработку <a href='#' class='consent-link' onclick='openConsentModal(); return false;'>персональных данных</a>"
         }
     except Exception as e:
-        print(f"Ошибка загрузки текста согласия: {e}")
+        print(f"Ошибка: {e}")
         return {
             "title": "Согласие на обработку персональных данных",
             "content": "<p>Не удалось загрузить текст</p>",
