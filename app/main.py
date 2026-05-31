@@ -332,6 +332,7 @@ async def get_prices_empty():
 async def get_consent_text(client: httpx.AsyncClient = Depends(get_db)):
     try:
         response = await client.get("/items/consent_text", params={"limit": 1, "sort": "-updated_at"})
+        print(f"Consent API status: {response.status_code}")
         if response.status_code == 200:
             data = response.json()
             items = data.get("data", [])
@@ -339,11 +340,11 @@ async def get_consent_text(client: httpx.AsyncClient = Depends(get_db)):
                 return items[0]
         return {
             "title": "Согласие на обработку персональных данных",
-            "content": "<p>Я даю согласие на обработку моих персональных данных: ФИО, телефон, email. Данные используются только для связи со мной и не передаются третьим лицам.</p>",
+            "content": "<p>Я даю согласие на обработку моих персональных данных...</p>",
             "checkbox_text": "Я даю согласие на обработку <a href='#' class='consent-link' onclick='openConsentModal(); return false;'>персональных данных</a>"
         }
     except Exception as e:
-        print(f"Ошибка: {e}")
+        print(f"Ошибка в consent-text: {e}")
         return {
             "title": "Согласие на обработку персональных данных",
             "content": "<p>Не удалось загрузить текст</p>",
