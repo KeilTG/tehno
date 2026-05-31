@@ -244,8 +244,11 @@
 }
 
 
-/* СЕКЦИЯ (ПОЧЕМУ ВЫБИРАЮТ НАС) */
-/* Секция "Почему выбирают нас" */
+/* =========================== */
+/*  ПОЛНЫЙ CSS ДЛЯ СЕКЦИИ      */
+/*  "ПОЧЕМУ ВЫБИРАЮТ НАС"      */
+/* =========================== */
+
 .why-choose-us {
   padding: 80px 0;
   background-color: var(--color-white);
@@ -257,42 +260,54 @@
   padding: 0 20px;
 }
 
+/* Основной контейнер: текст слева, картинка справа */
 .why-choose-us-block {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 500px;   /* левая колонка гибкая, правая 500px */
+  grid-template-rows: auto auto auto; /* три строки под заголовок, параграф, преимущества */
+  gap: 0 60px;                        /* отступ только между колонками */
   align-items: center;
-  gap: 60px;
 }
 
+/* ----- Заголовок ----- */
 .why-choose-us-block-title {
+  grid-column: 1;
+  grid-row: 1;
   font-size: 2.2rem;
   font-weight: 700;
   margin-bottom: 20px;
   color: var(--color-dark-blue);
 }
 
+/* ----- Параграф ----- */
 .why-choose-us-block-paragraph {
+  grid-column: 1;
+  grid-row: 2;
   font-size: 1.1rem;
   color: #555;
   margin-bottom: 40px;
   line-height: 1.6;
 }
 
+/* ----- Блок с преимуществами (горизонтально) ----- */
 .why-choose-us-block-points {
+  grid-column: 1;
+  grid-row: 3;
   display: flex;
-  flex-direction: row;          
-  flex-wrap: wrap;              
-  gap: 24px;                    
-  justify-content: space-between;
-  margin-bottom: 0;             
+  flex-direction: row;          /* элементы в ряд */
+  flex-wrap: wrap;              /* перенос на маленьких экранах */
+  gap: 24px;
 }
 
+/* Один пункт преимущества (иконка + текст) */
 .why-choose-us-block-points-elements {
   display: flex;
   align-items: center;
   gap: 16px;
-  flex: 1 1 200px;              
+  flex: 1 1 200px;              /* минимальная ширина 200px, растягиваются */
 }
 
+/* Иконка-кружок */
 .why-choose-us-block-points-elements a {
   width: 24px;
   height: 24px;
@@ -303,8 +318,10 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  text-decoration: none;        /* на всякий случай убираем подчёркивание */
 }
 
+/* Галочка внутри кружка */
 .why-choose-us-block-points-elements a::after {
   content: '✓';
   color: white;
@@ -312,14 +329,18 @@
   font-size: 14px;
 }
 
+/* Текст преимущества */
 .why-choose-us-block-points-text {
   font-size: 1rem;
   color: #333;
   line-height: 1.5;
 }
 
+/* ----- Картинка справа ----- */
 .why-choose-us-block-img {
-  flex: 0 0 500px;
+  grid-column: 2;
+  grid-row: 1 / 4;             /* занимает все три строки */
+  flex: unset;                 /* сброс, если было наследование */
   height: 350px;
   border-radius: 12px;
   overflow: hidden;
