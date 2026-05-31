@@ -49,7 +49,9 @@
     color: #364153;
 }
 .catalog-tab--active{
-    background-color: #0a2463;
+    background: #0a2463;  /* синий фон */
+    color: white !important;  /* белый текст */
+    border-color: #0a2463;
 }
 .catalog-tab--active p{
     font-weight: 400;
