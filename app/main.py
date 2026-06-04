@@ -13,7 +13,8 @@ from contextlib import asynccontextmanager
 from database import get_db
 from models import (
     ContentPage, Banner, CatalogCategory, CatalogItem, Service,
-    Contact, Request as RequestModel
+    Contact, Request as RequestModel, AboutContent, Case,
+    PrivacyPolicy, ConsentText
 )
 from email_service import send_request_email   # только один раз
 
