@@ -20,14 +20,14 @@ class Banner(BaseModel):
     position: Optional[int] = 0
     is_active: Optional[bool] = True
 
-# 3. Категории каталога (НОВЫЕ, вместо ServiceCategories)
+# 3. Категории каталога
 class CatalogCategory(BaseModel):
     id: Optional[int] = None
     name: str
     description: Optional[str] = None
     position: Optional[int] = 0
 
-# 4. Каталог товаров/услуг (НОВЫЙ)
+# 4. Каталог товаров/услуг
 class CatalogItem(BaseModel):
     id: Optional[int] = None
     category_id: int
@@ -37,18 +37,18 @@ class CatalogItem(BaseModel):
     image_url: Optional[str] = None
     position: Optional[int] = 0
 
-# 5. Услуги (старые, если нужны)
+# 5. Услуги
 class Service(BaseModel):
     id: Optional[int] = None
     category_id: int
-    name: str                           
-    description: Optional[str] = None   
-    icon: Optional[str] = None          
-    image_url: Optional[str] = None    
-    price: Optional[float] = None       
-    position: Optional[int] = 0  
+    name: str
+    description: Optional[str] = None
+    icon: Optional[str] = None
+    image_url: Optional[str] = None
+    price: Optional[float] = None
+    position: Optional[int] = 0
 
-# 6. Цены (можно удалить или оставить)
+# 6. Цены
 class Price(BaseModel):
     id: Optional[int] = None
     service_id: int
@@ -103,30 +103,40 @@ class User(BaseModel):
     is_active: Optional[bool] = True
     created_at: Optional[datetime] = None
 
-# 13. О компании
+# 12. О компании
 class AboutContent(BaseModel):
     id: Optional[int] = None
     title: Optional[str] = None
-    content: Optional[str] = None  
+    content: Optional[str] = None
     image_url: Optional[str] = None
     updated_at: Optional[datetime] = None
-# 14. Кейсы
+
+# 13. Кейсы
 class Case(BaseModel):
     id: Optional[int] = None
-    title: str
-    description: Optional[str] = None
+    client: str
+    industry: Optional[str] = None
+    employees: Optional[str] = None
+    challenge: Optional[str] = None
+    solution: Optional[str] = None
+    results: Optional[str] = None
+    quote_text: Optional[str] = None
+    quote_author: Optional[str] = None
+    quote_role: Optional[str] = None
     image_url: Optional[str] = None
     position: Optional[int] = 0
-# 16. Текст согласия на обработку персональных данных
+
+# 14. Политика конфиденциальности
+class PrivacyPolicy(BaseModel):
+    id: Optional[int] = None
+    title: Optional[str] = None
+    content: Optional[str] = None
+    updated_at: Optional[datetime] = None
+
+# 15. Согласие на обработку данных
 class ConsentText(BaseModel):
     id: Optional[int] = None
     title: Optional[str] = None
     content: Optional[str] = None
     checkbox_text: Optional[str] = None
-    updated_at: Optional[datetime] = None
-
-class PrivacyPolicy(BaseModel):
-    id: Optional[int] = None
-    title: Optional[str] = None
-    content: Optional[str] = None
     updated_at: Optional[datetime] = None

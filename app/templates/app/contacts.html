@@ -281,66 +281,104 @@ textarea:focus {
             if (data && data.content) {
                 document.getElementById('consent-title').textContent = data.title || 'Согласие на обработку персональных данных';
                 document.getElementById('consent-content').innerHTML = data.content;
-                const consentTextSpan = document.getElementById('consent-text');
-                if (consentTextSpan && data.checkbox_text) {
-                    consentTextSpan.innerHTML = data.checkbox_text;
+            }
+            if (data && data.checkbox_text) {
+                const consentSpan = document.getElementById('consent-text');
+                if (consentSpan) {
+                    consentSpan.innerHTML = data.checkbox_text;
+                    // Находим ссылку и вешаем обработчик
+                    const link = consentSpan.querySelector('.consent-link');
+                    if (link) {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            openConsentModal();
+                        });
+                    }
                 }
             }
         } catch (error) {
             console.error('Ошибка загрузки текста согласия:', error);
+            document.getElementById('consent-text').innerHTML = 'Я даю согласие на обработку персональных данных';
         }
     }
 
-    // Модалка политики
-    const ppOverlay = document.getElementById('pp-overlay');
-    const ppTrigger = document.getElementById('pp-trigger');
-    const ppCloseBtn = document.getElementById('pp-close-btn');
-
-    if (ppTrigger) {
-        ppTrigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            loadPrivacyPolicy();
-            ppOverlay.style.display = 'flex';
+    // Открытие модалки согласия
+    function openConsentModal() {
+        const overlay = document.getElementById('consent-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
             document.body.style.overflow = 'hidden';
-        });
+        }
     }
 
-    if (ppCloseBtn) {
-        ppCloseBtn.addEventListener('click', () => {
-            ppOverlay.style.display = 'none';
-            document.body.style.overflow = '';
-        });
-    }
-
-    ppOverlay.addEventListener('click', (e) => {
-        if (e.target === ppOverlay) {
-            ppOverlay.style.display = 'none';
+    // Закрытие модалки согласия
+    function closeConsentModal() {
+        const overlay = document.getElementById('consent-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
             document.body.style.overflow = '';
         }
-    });
+    }
 
-    // Модалка согласия
-    const consentOverlay = document.getElementById('consent-overlay');
-    const consentCloseBtn = document.getElementById('consent-close-btn');
+    // Открытие модалки политики
+    function openPolicyModal() {
+        loadPrivacyPolicy();
+        const overlay = document.getElementById('pp-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
 
-    window.openConsentModal = function() {
+    // Закрытие модалки политики
+    function closePolicyModal() {
+        const overlay = document.getElementById('pp-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Обработчики модалок
+    document.addEventListener('DOMContentLoaded', function() {
+        // Политика конфиденциальности
+        const ppTrigger = document.getElementById('pp-trigger');
+        const ppCloseBtn = document.getElementById('pp-close-btn');
+        const ppOverlay = document.getElementById('pp-overlay');
+
+        if (ppTrigger) {
+            ppTrigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                openPolicyModal();
+            });
+        }
+
+        if (ppCloseBtn) {
+            ppCloseBtn.addEventListener('click', closePolicyModal);
+        }
+
+        if (ppOverlay) {
+            ppOverlay.addEventListener('click', function(e) {
+                if (e.target === ppOverlay) closePolicyModal();
+            });
+        }
+
+        // Согласие
+        const consentCloseBtn = document.getElementById('consent-close-btn');
+        const consentOverlay = document.getElementById('consent-overlay');
+
+        if (consentCloseBtn) {
+            consentCloseBtn.addEventListener('click', closeConsentModal);
+        }
+
+        if (consentOverlay) {
+            consentOverlay.addEventListener('click', function(e) {
+                if (e.target === consentOverlay) closeConsentModal();
+            });
+        }
+
+        // Загружаем текст согласия
         loadConsentText();
-        consentOverlay.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    };
-
-    if (consentCloseBtn) {
-        consentCloseBtn.addEventListener('click', () => {
-            consentOverlay.style.display = 'none';
-            document.body.style.overflow = '';
-        });
-    }
-
-    consentOverlay.addEventListener('click', (e) => {
-        if (e.target === consentOverlay) {
-            consentOverlay.style.display = 'none';
-            document.body.style.overflow = '';
-        }
     });
 
     // Отправка формы
@@ -350,12 +388,11 @@ textarea:focus {
     const consentCheckbox = document.getElementById('consent-checkbox');
     const submitBtn = document.getElementById('submit-btn');
 
-    loadConsentText();
-
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // Проверка чекбокса
             if (!consentCheckbox || !consentCheckbox.checked) {
                 errorDiv.innerHTML = '❌ Подтвердите согласие на обработку персональных данных';
                 errorDiv.style.display = 'block';

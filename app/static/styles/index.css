@@ -2,7 +2,7 @@
 .former-swiper {
   background: #0d2c5f; /* Тёмно-синий фон, как на макете */
   color: white;
-  padding: 80px 0;
+  padding: 40px 0;
 }
 
 .rectangle-block {
@@ -112,7 +112,7 @@
 
 
 .main-services {
-  padding: 20px 0px 0px 0px;
+  padding: 40px 0px 0px 0px;
   background-color: var(--color-white);
 }
 .section-title{ 
@@ -232,7 +232,7 @@
 
 /* Секция "Что такое аутсорсинг" */
 .what-is-outsourcing {
-  padding: 20px 0;
+  padding: 80px 0;
   background-color: var(--color-white);
 }
 
@@ -357,7 +357,7 @@
 /* СЕКЦИЯ (КАК МЫ РАБОТАЕМ: 4 ПРОСТЫХ ШАГА) */
 
 .work-steps {
-  padding: 20px 0;
+  padding: 80px 0 40px 0;
   background-color: var(--color-white);
 }
 
@@ -442,7 +442,7 @@
 .rectangle-blue-2 {
   background: var(--color-dark-blue);
   color: white;
-  padding: 80px 0;
+  padding: 40px 0;
 }
 
 .rectangle-block-2-world {
@@ -528,7 +528,7 @@
 /* СЕКЦИЯ (ИСТОРИЯ КОМПАНИИ И ТАЙМЛАЙН) */
 
 .history-company {
-  padding: 80px 0;
+  padding: 40px 0;
   background-color: var(--color-white);
 }
 
@@ -644,7 +644,7 @@
 
 .optimization-cost {
   background: var(--color-dark-blue);
-  padding: 80px 0;
+  padding: 40px 0 50px 0;
 }
 
 .optimization-cost-block {
@@ -743,8 +743,10 @@
   flex: 1;
   padding: 32px;
   display: flex;
+  border-radius: 12px;
   flex-direction: column;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .what-is-outsourcing-card-title {
@@ -790,9 +792,10 @@
 /* АДАПТИВНОСТЬ */
 
 @media (max-width: 768px) {
-   .history-company {
-    display:none;        /* Убираем блок "история компании" с телефонов  */
+  .history-company {
+    display: none;
   }
+
   .rectangle-block {
     flex-direction: column;
     text-align: center;
@@ -811,21 +814,38 @@
     grid-template-columns: 1fr;
   }
 
-  .what-is-outsourcing-block {
-    flex-direction: column !important;
+  .what-is-outsourcing-block,
+  .what-is-outsourcing-block:nth-child(odd),
+  .what-is-outsourcing-block:nth-child(even) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .what-is-outsourcing-card-block {
+    order: -1;
+    padding: 20px 16px;
   }
 
   .what-is-outsourcing-card-img {
-    flex: 0 0 100%;
+    flex: 0 0 auto;
     width: 100%;
-  }
-    .why-choose-us-block {
-    display: flex;               
-    flex-direction: column;
-    gap: 20px;                   
+    height: auto;
+    background: transparent;
   }
 
-  
+  .what-is-outsourcing-card-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .why-choose-us-block {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
   .why-choose-us-block-title,
   .why-choose-us-block-paragraph,
   .why-choose-us-block-points,
@@ -836,23 +856,31 @@
     max-width: 100%;
   }
 
- .why-choose-us-block-img {
+  .why-choose-us-block-img {
     width: 100%;
-    height: auto;             
+    height: auto;
     margin-top: 20px;
-}
+  }
 
-.why-choose-us-block-img img {
+  .why-choose-us-block-img img {
     width: 100%;
-    height: auto;             
-    object-fit: contain;      
-    display: block;           
-}
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
 
   .why-choose-us-container {
     padding: 0 16px;
   }
 
+  .rectangle-block-2-all-world {
+    flex-direction: column;
+  }
+
+  .rectangle-block-2-all-world-img {
+    flex: 0 0 100%;
+    width: 100%;
+  }
 
   .rectangle-block-2-all-world-stats {
     flex-direction: column;
@@ -870,15 +898,6 @@
 
   .simple-works-card::before {
     display: none;
-  }
-
-  .rectangle-block-2-all-world {
-    flex-direction: column;
-  }
-
-  .rectangle-block-2-all-world-img {
-    flex: 0 0 100%;
-    width: 100%;
   }
 
   .timeline-card {
