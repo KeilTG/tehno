@@ -287,26 +287,32 @@ async def get_requests(client: httpx.AsyncClient = Depends(get_db)):
     data = response.json()
     return data.get("data", [])
 
-# ============ API КАТАЛОГА ============
+# API КАТАЛОГА
 @app.get("/api/catalog-categories", response_model=List[CatalogCategory])
 async def get_catalog_categories(client: httpx.AsyncClient = Depends(get_db)):
     response = await client.get("/items/catalog_categories", params={"sort": "position"})
     data = response.json()
     return data.get("data", [])
 
+@app.get("/api/privacy-policy")
+async def get_privacy_policy(client: httpx.AsyncClient = Depends(get_db)):
+    async with httpx.AsyncClient() as direct_client:
+        response = await direct_client.get("http://directus:8055/items/privacy_policy", params={"limit": 1})
+        if response.status_code == 200:
+            data = response.json()
+            items = data.get("data", [])
+            if items:
+                return items[0]
+    return {
+        "title": "Политика конфиденциальности",
+        "content": "<p>Текст политики конфиденциальности...</p>"
+    }
+
 @app.get("/api/catalog-items", response_model=List[CatalogItem])
 async def get_catalog_items(client: httpx.AsyncClient = Depends(get_db)):
     response = await client.get("/items/catalog_items", params={"sort": "position"})
     data = response.json()
     return data.get("data", [])
-
-@app.get("/api/catalog-items/{item_id}", response_model=CatalogItem)
-async def get_catalog_item(item_id: int, client: httpx.AsyncClient = Depends(get_db)):
-    response = await client.get(f"/items/catalog_items/{item_id}")
-    data = response.json()
-    if not data.get("data"):
-        raise HTTPException(status_code=404, detail="Item not found")
-    return data["data"]
 
 @app.get("/api/catalog-items/by-category/{category_id}", response_model=List[CatalogItem])
 async def get_catalog_items_by_category(category_id: int, client: httpx.AsyncClient = Depends(get_db)):
@@ -317,30 +323,25 @@ async def get_catalog_items_by_category(category_id: int, client: httpx.AsyncCli
     data = response.json()
     return data.get("data", [])
 
-# ============ ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ ============
-@app.get("/api/privacy-policy")
-async def get_privacy_policy(client: httpx.AsyncClient = Depends(get_db)):
-    try:
-        response = await client.get("/items/privacy_policy", params={"limit": 1, "sort": "-updated_at"})
+@app.get("/api/prices")
+async def get_prices_empty():
+    return {"data": []}
+
+# ============ СОГЛАСИЕ НА ОБРАБОТКУ ДАННЫХ ============
+@app.get("/api/consent-text")
+async def get_consent_text(client: httpx.AsyncClient = Depends(get_db)):
+    async with httpx.AsyncClient() as direct_client:
+        response = await direct_client.get("http://directus:8055/items/consent_text", params={"limit": 1})
         if response.status_code == 200:
             data = response.json()
             items = data.get("data", [])
             if items:
                 return items[0]
-        return {
-            "title": "Политика конфиденциальности",
-            "content": "<p>Текст политики конфиденциальности...</p>"
-        }
-    except Exception as e:
-        print(f"Ошибка загрузки политики: {e}")
-        return {
-            "title": "Политика конфиденциальности",
-            "content": "<p>Не удалось загрузить текст</p>"
-        }
-
-@app.get("/api/prices")
-async def get_prices_empty():
-    return {"data": []}
+    return {
+        "title": "Согласие на обработку персональных данных",
+        "content": "<p>Я даю согласие на обработку моих персональных данных...</p>",
+        "checkbox_text": "Я даю согласие на обработку <a href='#' class='consent-link' onclick='openConsentModal(); return false;'>персональных данных</a>"
+    }
 
 if __name__ == "__main__":
     import uvicorn
