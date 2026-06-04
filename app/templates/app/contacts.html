@@ -59,17 +59,17 @@
                         <textarea name="message" rows="3"></textarea>
                     </label>
 
-                    <!-- ЧЕКБОКС С СОГЛАСИЕМ -->
-                    <div class="contacts-form__consent" id="consent-container">
+                    <!-- ЧЕКБОКС -->
+                    <div class="contacts-form__consent">
                         <label class="consent-checkbox">
                             <input type="checkbox" id="consent-checkbox" required>
-                            <span id="consent-text">Загрузка текста согласия...</span>
+                            <span id="checkbox-text">Загрузка...</span>
                         </label>
                     </div>
 
-                    <button type="submit" class="contacts-form__submit" id="submit-btn">Отправить заявку</button>
+                    <button type="submit" class="contacts-form__submit">Отправить заявку</button>
                     <p class="contacts-form__policy">Нажимая кнопку, вы соглашаетесь с 
-                        <a href="#" class="pp-trigger" id="pp-trigger">политикой конфиденциальности</a>
+                        <a href="#" id="policy-link">политикой конфиденциальности</a>
                     </p>
                 </form>
             </section>
@@ -109,111 +109,33 @@
 </div>
 
 <!-- Модалка политики конфиденциальности -->
-<div class="overlay" id="pp-overlay" role="dialog" aria-modal="true" aria-label="Политика конфиденциальности">
-    <div class="modal">
+<div id="policy-modal" class="modal-overlay">
+    <div class="modal-container">
         <div class="modal-header">
-            <h2 id="pp-title">Политика конфиденциальности</h2>
-            <button class="close-btn" id="pp-close-btn" aria-label="Закрыть">×</button>
+            <h2 id="policy-title">Политика конфиденциальности</h2>
+            <button class="modal-close" id="policy-close">&times;</button>
         </div>
-        <div class="modal-body" id="pp-content">
-            <p>Загрузка...</p>
+        <div class="modal-body" id="policy-content">
+            Загрузка...
         </div>
     </div>
 </div>
 
-<!-- Модалка текста согласия -->
-<div class="overlay" id="consent-overlay" role="dialog" aria-modal="true" aria-label="Согласие на обработку персональных данных">
-    <div class="modal">
+<!-- Модалка согласия -->
+<div id="consent-modal" class="modal-overlay">
+    <div class="modal-container">
         <div class="modal-header">
-            <h2 id="consent-title">Согласие на обработку персональных данных</h2>
-            <button class="close-btn" id="consent-close-btn" aria-label="Закрыть">×</button>
+            <h2 id="consent-title">Согласие на обработку данных</h2>
+            <button class="modal-close" id="consent-close">&times;</button>
         </div>
         <div class="modal-body" id="consent-content">
-            <p>Загрузка...</p>
+            Загрузка...
         </div>
     </div>
 </div>
 
 <style>
-input[type="text"],
-input[type="tel"],
-input[type="email"],
-select,
-textarea {
-    border: 1px solid #D0D5DD;
-    border-radius: 6px;
-    padding: 10px 14px;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: 14px;
-    background: #fff;
-    transition: border-color 0.2s;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: #185FA5;
-    box-shadow: 0 0 0 3px rgba(24,95,165,0.15);
-}
-
-.contacts-form__success {
-    background: #d4edda;
-    color: #155724;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #c3e6cb;
-}
-
-.contacts-form__error {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #f5c6cb;
-}
-
-.contacts-form__consent {
-    margin: 20px 0;
-    padding: 10px 0;
-}
-
-.consent-checkbox {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #333;
-    line-height: 1.4;
-}
-
-.consent-checkbox input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-top: 2px;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-
-.consent-checkbox span {
-    flex: 1;
-}
-
-.consent-link {
-    color: #007aff;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.consent-link:hover {
-    text-decoration: underline;
-}
-
-.overlay {
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -225,8 +147,7 @@ textarea:focus {
     align-items: center;
     z-index: 1000;
 }
-
-.modal {
+.modal-container {
     background: white;
     max-width: 600px;
     width: 90%;
@@ -234,7 +155,6 @@ textarea:focus {
     border-radius: 12px;
     overflow: hidden;
 }
-
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -242,223 +162,197 @@ textarea:focus {
     padding: 15px 20px;
     border-bottom: 1px solid #eee;
 }
-
 .modal-body {
     padding: 20px;
     overflow-y: auto;
     max-height: calc(80vh - 60px);
 }
-
-.close-btn {
+.modal-close {
     background: none;
     border: none;
     font-size: 28px;
     cursor: pointer;
 }
+.consent-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+}
+.consent-checkbox input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+}
+.consent-link {
+    color: #007aff;
+    text-decoration: none;
+    cursor: pointer;
+}
+.contacts-form__consent {
+    margin: 20px 0;
+}
+input, select, textarea {
+    border: 1px solid #D0D5DD;
+    border-radius: 6px;
+    padding: 10px 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.contacts-form__submit {
+    background: #007aff;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+}
+.contacts-form__success {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.contacts-form__error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
 </style>
 
 <script>
-    // Загрузка политики конфиденциальности
-    async function loadPrivacyPolicy() {
-        try {
-            const response = await fetch('/api/privacy-policy');
-            const data = await response.json();
-            if (data && data.content) {
-                document.getElementById('pp-title').textContent = data.title || 'Политика конфиденциальности';
-                document.getElementById('pp-content').innerHTML = data.content;
-            }
-        } catch (error) {
-            console.error('Ошибка загрузки политики:', error);
-            document.getElementById('pp-content').innerHTML = '<p>Не удалось загрузить политику конфиденциальности</p>';
-        }
-    }
+// Загрузка политики
+async function loadPolicy() {
+    const res = await fetch('/api/privacy-policy');
+    const data = await res.json();
+    document.getElementById('policy-title').textContent = data.title || 'Политика конфиденциальности';
+    document.getElementById('policy-content').innerHTML = data.content || 'Нет данных';
+}
 
-    // Загрузка текста согласия
-    async function loadConsentText() {
-        try {
-            const response = await fetch('/api/consent-text');
-            const data = await response.json();
-            if (data && data.content) {
-                document.getElementById('consent-title').textContent = data.title || 'Согласие на обработку персональных данных';
-                document.getElementById('consent-content').innerHTML = data.content;
-            }
-            if (data && data.checkbox_text) {
-                const consentSpan = document.getElementById('consent-text');
-                if (consentSpan) {
-                    consentSpan.innerHTML = data.checkbox_text;
-                    // Находим ссылку и вешаем обработчик
-                    const link = consentSpan.querySelector('.consent-link');
-                    if (link) {
-                        link.addEventListener('click', function(e) {
-                            e.preventDefault();
-                            openConsentModal();
-                        });
-                    }
-                }
-            }
-        } catch (error) {
-            console.error('Ошибка загрузки текста согласия:', error);
-            document.getElementById('consent-text').innerHTML = 'Я даю согласие на обработку персональных данных';
-        }
-    }
-
-    // Открытие модалки согласия
-    function openConsentModal() {
-        const overlay = document.getElementById('consent-overlay');
-        if (overlay) {
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    // Закрытие модалки согласия
-    function closeConsentModal() {
-        const overlay = document.getElementById('consent-overlay');
-        if (overlay) {
-            overlay.style.display = 'none';
-            document.body.style.overflow = '';
-        }
-    }
-
-    // Открытие модалки политики
-    function openPolicyModal() {
-        loadPrivacyPolicy();
-        const overlay = document.getElementById('pp-overlay');
-        if (overlay) {
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-    }
-
-    // Закрытие модалки политики
-    function closePolicyModal() {
-        const overlay = document.getElementById('pp-overlay');
-        if (overlay) {
-            overlay.style.display = 'none';
-            document.body.style.overflow = '';
-        }
-    }
-
-    // Обработчики модалок
-    document.addEventListener('DOMContentLoaded', function() {
-        // Политика конфиденциальности
-        const ppTrigger = document.getElementById('pp-trigger');
-        const ppCloseBtn = document.getElementById('pp-close-btn');
-        const ppOverlay = document.getElementById('pp-overlay');
-
-        if (ppTrigger) {
-            ppTrigger.addEventListener('click', function(e) {
+// Загрузка согласия
+async function loadConsent() {
+    const res = await fetch('/api/consent-text');
+    const data = await res.json();
+    document.getElementById('consent-title').textContent = data.title || 'Согласие на обработку данных';
+    document.getElementById('consent-content').innerHTML = data.content || 'Нет данных';
+    const checkboxSpan = document.getElementById('checkbox-text');
+    if (checkboxSpan && data.checkbox_text) {
+        checkboxSpan.innerHTML = data.checkbox_text;
+        // Вешаем обработчик на ссылку
+        const link = checkboxSpan.querySelector('.consent-link');
+        if (link) {
+            link.addEventListener('click', (e) => {
                 e.preventDefault();
-                openPolicyModal();
+                loadConsent();
+                document.getElementById('consent-modal').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
             });
         }
-
-        if (ppCloseBtn) {
-            ppCloseBtn.addEventListener('click', closePolicyModal);
-        }
-
-        if (ppOverlay) {
-            ppOverlay.addEventListener('click', function(e) {
-                if (e.target === ppOverlay) closePolicyModal();
-            });
-        }
-
-        // Согласие
-        const consentCloseBtn = document.getElementById('consent-close-btn');
-        const consentOverlay = document.getElementById('consent-overlay');
-
-        if (consentCloseBtn) {
-            consentCloseBtn.addEventListener('click', closeConsentModal);
-        }
-
-        if (consentOverlay) {
-            consentOverlay.addEventListener('click', function(e) {
-                if (e.target === consentOverlay) closeConsentModal();
-            });
-        }
-
-        // Загружаем текст согласия
-        loadConsentText();
-    });
-
-    // Отправка формы
-    const form = document.getElementById('audit-form-element');
-    const successDiv = document.getElementById('form-message');
-    const errorDiv = document.getElementById('form-error');
-    const consentCheckbox = document.getElementById('consent-checkbox');
-    const submitBtn = document.getElementById('submit-btn');
-
-    if (form) {
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            // Проверка чекбокса
-            if (!consentCheckbox || !consentCheckbox.checked) {
-                errorDiv.innerHTML = '❌ Подтвердите согласие на обработку персональных данных';
-                errorDiv.style.display = 'block';
-                setTimeout(() => {
-                    errorDiv.style.display = 'none';
-                }, 5000);
-                return;
-            }
-
-            successDiv.style.display = 'none';
-            errorDiv.style.display = 'none';
-
-            const formData = new FormData(form);
-            const data = {
-                client_name: formData.get('client_name'),
-                client_phone: formData.get('client_phone'),
-                client_email: formData.get('client_email'),
-                message: formData.get('message') || '—',
-                service_id: null,
-                status: 'new'
-            };
-
-            const company = formData.get('company');
-            if (company) {
-                data.message = `Компания: ${company}\n\n${data.message}`;
-            }
-
-            const service = formData.get('service');
-            if (service) {
-                data.message = `Услуга: ${service}\n\n${data.message}`;
-            }
-
-            const originalText = submitBtn.textContent;
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Отправка...';
-
-            try {
-                const response = await fetch('/api/requests', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    successDiv.innerHTML = '✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.';
-                    successDiv.style.display = 'block';
-                    form.reset();
-                    if (consentCheckbox) consentCheckbox.checked = false;
-
-                    setTimeout(() => {
-                        successDiv.style.display = 'none';
-                    }, 5000);
-                } else {
-                    errorDiv.innerHTML = `❌ Ошибка: ${result.message || 'Что-то пошло не так'}`;
-                    errorDiv.style.display = 'block';
-                }
-            } catch (error) {
-                errorDiv.innerHTML = '❌ Ошибка соединения. Попробуйте позже.';
-                errorDiv.style.display = 'block';
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-            }
-        });
     }
+}
+
+// Модалка политики
+document.getElementById('policy-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    loadPolicy();
+    document.getElementById('policy-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+});
+document.getElementById('policy-close').addEventListener('click', () => {
+    document.getElementById('policy-modal').style.display = 'none';
+    document.body.style.overflow = '';
+});
+document.getElementById('policy-modal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('policy-modal')) {
+        document.getElementById('policy-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+});
+
+// Модалка согласия
+document.getElementById('consent-close').addEventListener('click', () => {
+    document.getElementById('consent-modal').style.display = 'none';
+    document.body.style.overflow = '';
+});
+document.getElementById('consent-modal').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('consent-modal')) {
+        document.getElementById('consent-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+});
+
+// Отправка формы
+const form = document.getElementById('audit-form-element');
+const successDiv = document.getElementById('form-message');
+const errorDiv = document.getElementById('form-error');
+const consentCheckbox = document.getElementById('consent-checkbox');
+
+loadConsent();
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (!consentCheckbox.checked) {
+        errorDiv.innerHTML = '❌ Подтвердите согласие на обработку персональных данных';
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 5000);
+        return;
+    }
+    
+    successDiv.style.display = 'none';
+    errorDiv.style.display = 'none';
+    
+    const formData = new FormData(form);
+    const data = {
+        client_name: formData.get('client_name'),
+        client_phone: formData.get('client_phone'),
+        client_email: formData.get('client_email'),
+        message: formData.get('message') || '—',
+        status: 'new'
+    };
+    
+    const company = formData.get('company');
+    if (company) data.message = `Компания: ${company}\n\n${data.message}`;
+    
+    const service = formData.get('service');
+    if (service) data.message = `Услуга: ${service}\n\n${data.message}`;
+    
+    const submitBtn = form.querySelector('.contacts-form__submit');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправка...';
+    
+    try {
+        const response = await fetch('/api/requests', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        
+        if (response.ok) {
+            successDiv.innerHTML = '✅ Заявка отправлена!';
+            successDiv.style.display = 'block';
+            form.reset();
+            consentCheckbox.checked = false;
+            setTimeout(() => successDiv.style.display = 'none', 5000);
+        } else {
+            errorDiv.innerHTML = `❌ Ошибка: ${result.message || 'Что-то пошло не так'}`;
+            errorDiv.style.display = 'block';
+        }
+    } catch (err) {
+        errorDiv.innerHTML = '❌ Ошибка соединения';
+        errorDiv.style.display = 'block';
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
+});
 </script>
 {% endblock %}
