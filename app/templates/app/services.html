@@ -1,10 +1,8 @@
 {% extends 'base.html' %}
 
-{% block extra_head %}
-<link rel="stylesheet" href="/static/css/services.css">
-{% endblock %}
-
 {% block content %}
+<link rel="stylesheet" href="/static/styles/services.css?v=3">
+
 <div class="content">
     <section class="amenities-title">
         <div class="container">
@@ -18,8 +16,6 @@
     {% for service in services %}
     <section class="service-card" data-service-id="{{ service.id }}">
         <div class="service-card__inner {% if loop.index is even %}service-card__inner--reverse{% endif %}">
-
-            <!-- Текстовая колонка -->
             <div class="service-card__content">
                 <img class="service-card__icon" src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
                 <h2 class="service-card__title">{{ service.name }}</h2>
@@ -30,7 +26,6 @@
                 </div>
                 {% endif %}
 
-                <!-- Динамические цены -->
                 <div class="price-container" data-service-id="{{ service.id }}"></div>
 
                 <a href="/contacts.html#audit-form" class="service-card__button">
@@ -38,12 +33,9 @@
                     <img src="/static/img/svg/arrow-right.svg" alt="" class="service-card__button-icon">
                 </a>
             </div>
-
-            <!-- Изображение -->
             <div class="service-card__image">
                 <img src="{{ service.image_url or '/static/img/Image-one.png' }}" alt="{{ service.name }}">
             </div>
-
         </div>
     </section>
     {% endfor %}
