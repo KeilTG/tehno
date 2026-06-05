@@ -67,7 +67,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="contacts-form__submit">Отправить заявку</button>
+                    <button type="submit" class="contacts-form__submit" id="submitBtn">Отправить заявку</button>
                     <p class="contacts-form__policy">Нажимая кнопку, вы соглашаетесь с 
                         <a href="#" id="policy-link">политикой конфиденциальности</a>
                     </p>
@@ -261,71 +261,84 @@ document.getElementById('consent-modal').addEventListener('click', (e) => {
     }
 });
 
-// ОТПРАВКА ФОРМЫ — ТОЛЬКО С ГАЛОЧКОЙ
-const form = document.getElementById('audit-form-element');
-const successDiv = document.getElementById('form-message');
-const errorDiv = document.getElementById('form-error');
-const consentCheckbox = document.getElementById('consent-checkbox');
-
-loadConsent();
-
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+// === ОТПРАВКА ФОРМЫ С ПРОВЕРКОЙ ЧЕКБОКСА ===
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('audit-form-element');
+    const successDiv = document.getElementById('form-message');
+    const errorDiv = document.getElementById('form-error');
+    const consentCheckbox = document.getElementById('consent-checkbox');
+    const submitBtn = document.getElementById('submitBtn');
     
-    // ГЛАВНАЯ ПРОВЕРКА — БЕЗ ГАЛОЧКИ НЕ ОТПРАВЛЯЕМ
-    if (!consentCheckbox.checked) {
-        errorDiv.innerHTML = '❌ Подтвердите согласие на обработку персональных данных';
-        errorDiv.style.display = 'block';
-        setTimeout(() => errorDiv.style.display = 'none', 5000);
-        return;
-    }
+    // Загружаем текст согласия
+    loadConsent();
     
-    successDiv.style.display = 'none';
-    errorDiv.style.display = 'none';
-    
-    const formData = new FormData(form);
-    const data = {
-        client_name: formData.get('client_name'),
-        client_phone: formData.get('client_phone'),
-        client_email: formData.get('client_email'),
-        message: formData.get('message') || '—',
-        status: 'new'
-    };
-    
-    const company = formData.get('company');
-    if (company) data.message = `Компания: ${company}\n\n${data.message}`;
-    
-    const service = formData.get('service');
-    if (service) data.message = `Услуга: ${service}\n\n${data.message}`;
-    
-    const submitBtn = form.querySelector('.contacts-form__submit');
-    const originalText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Отправка...';
-    
-    try {
-        const response = await fetch('/api/requests', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // === ПРОВЕРКА ЧЕКБОКСА ===
+            if (!consentCheckbox.checked) {
+                errorDiv.innerHTML = '❌ Подтвердите согласие на обработку персональных данных';
+                errorDiv.style.display = 'block';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
+                return; // === ЗДЕСЬ ОСТАНАВЛИВАЕМ ОТПРАВКУ ===
+            }
+            
+            // Скрываем старые сообщения
+            successDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+            
+            // Собираем данные
+            const formData = new FormData(form);
+            const data = {
+                client_name: formData.get('client_name'),
+                client_phone: formData.get('client_phone'),
+                client_email: formData.get('client_email'),
+                message: formData.get('message') || '—',
+                status: 'new'
+            };
+            
+            const company = formData.get('company');
+            if (company) data.message = `Компания: ${company}\n\n${data.message}`;
+            
+            const service = formData.get('service');
+            if (service) data.message = `Услуга: ${service}\n\n${data.message}`;
+            
+            // Блокируем кнопку
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Отправка...';
+            
+            try {
+                const response = await fetch('/api/requests', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                
+                if (response.ok) {
+                    successDiv.innerHTML = '✅ Заявка успешно отправлена! Мы свяжемся с вами в ближайшее время.';
+                    successDiv.style.display = 'block';
+                    form.reset();
+                    consentCheckbox.checked = false;
+                    setTimeout(() => {
+                        successDiv.style.display = 'none';
+                    }, 5000);
+                } else {
+                    errorDiv.innerHTML = `❌ Ошибка: ${result.message || 'Что-то пошло не так'}`;
+                    errorDiv.style.display = 'block';
+                }
+            } catch (err) {
+                errorDiv.innerHTML = '❌ Ошибка соединения. Попробуйте позже.';
+                errorDiv.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
         });
-        const result = await response.json();
-        if (response.ok) {
-            successDiv.innerHTML = '✅ Заявка отправлена!';
-            successDiv.style.display = 'block';
-            form.reset();
-            consentCheckbox.checked = false;
-            setTimeout(() => successDiv.style.display = 'none', 5000);
-        } else {
-            errorDiv.innerHTML = `❌ Ошибка: ${result.message || 'Что-то пошло не так'}`;
-            errorDiv.style.display = 'block';
-        }
-    } catch (err) {
-        errorDiv.innerHTML = '❌ Ошибка соединения';
-        errorDiv.style.display = 'block';
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
     }
 });
 </script>
