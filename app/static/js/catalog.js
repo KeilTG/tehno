@@ -92,24 +92,4 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        const catalogCardsGsap = document.querySelectorAll('.catalog-card');
-        catalogCardsGsap.forEach((card, index) => {
-            gsap.fromTo(card, 
-                { opacity: 0, y: 30 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    delay: index * 0.1,
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 85%',
-                        toggleActions: 'play none none none'
-                    }
-                }
-            );
-        });
-    }
 });
