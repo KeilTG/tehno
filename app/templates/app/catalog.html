@@ -33,7 +33,7 @@
                                 <div class="catalog-card__price-value">{{ "{:,}".format(item.price).replace(',', ' ') }}</div>
                                 <div class="catalog-card__price-period">₽/месяц</div>
                             </div>
-                            <button type="button" class="catalog-card__button">
+                            <button type="button" class="catalog-card__button" data-product-id="{{ item.id }}">
                                 <img src="/static/img/svg/basket-card-white.svg" alt="" class="catalog-card__button-icon">
                                 <span class="catalog-card__button-text">В корзину</span>
                             </button>
@@ -93,8 +93,64 @@
 </div>
 
 <script>
+    // Функция обновления состояния всех кнопок "В корзину" на странице
+    function updateAllCartButtons() {
+        const cart = JSON.parse(localStorage.getItem('ts_cart') || '[]');
+        document.querySelectorAll('.catalog-card__button').forEach(btn => {
+            const productId = btn.getAttribute('data-product-id');
+            const cartItem = cart.find(item => item.id == productId);
+            const textSpan = btn.querySelector('.catalog-card__button-text');
+            if (cartItem && cartItem.qty > 0) {
+                textSpan.textContent = `Добавлено! (${cartItem.qty})`;
+                btn.classList.add('btn-added');
+            } else {
+                textSpan.textContent = 'В корзину';
+                btn.classList.remove('btn-added');
+            }
+        });
+    }
+
+    // Функция добавления в корзину с обновлением кнопки
+    function addToCart(productId, button) {
+        let cart = JSON.parse(localStorage.getItem('ts_cart') || '[]');
+        const existing = cart.find(item => item.id == productId);
+        
+        if (existing) {
+            existing.qty += 1;
+        } else {
+            const card = button.closest('.catalog-card');
+            const title = card.querySelector('.catalog-card__title').textContent;
+            const priceText = card.querySelector('.catalog-card__price-value').textContent;
+            const price = parseInt(priceText.replace(/\D/g, ''));
+            const image = card.querySelector('.catalog-card__image').src;
+            cart.push({ id: productId, title, price, qty: 1, image, subtitle: 'Подписка' });
+        }
+        
+        localStorage.setItem('ts_cart', JSON.stringify(cart));
+        
+        // Обновляем текст кнопки
+        const textSpan = button.querySelector('.catalog-card__button-text');
+        const newQty = existing ? existing.qty + 1 : 1;
+        textSpan.textContent = `Добавлено! (${newQty})`;
+        button.classList.add('btn-added');
+        
+        // Обновляем счётчик в шапке
+        if (window.TechnoServiceCart && window.TechnoServiceCart.updateCounter) {
+            window.TechnoServiceCart.updateCounter();
+        } else {
+            const counter = document.querySelector('[data-cart-count]');
+            if (counter) {
+                const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+                counter.textContent = totalCount;
+                if (totalCount > 0) {
+                    counter.classList.add('basket-btn__counter--visible');
+                }
+            }
+        }
+    }
+
     // Модальное окно для каталога
-    const modal = document.getElementById('productModal');
+    const productModal = document.getElementById('productModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalImage = document.getElementById('modalImage');
     const modalPrice = document.getElementById('modalPrice');
@@ -104,10 +160,9 @@
     
     function openModal(productId) {
         currentProductId = productId;
-        modal.classList.add('catalog-modal-overlay--visible');
+        productModal.classList.add('catalog-modal-overlay--visible');
         document.body.classList.add('catalog-modal-open');
         
-        // Загружаем данные товара
         fetch(`/api/catalog-items/${productId}`)
             .then(r => r.json())
             .then(item => {
@@ -118,7 +173,6 @@
             })
             .catch(err => console.error('Ошибка загрузки товара:', err));
         
-        // Загружаем характеристики (если есть)
         fetch(`/api/catalog-features/by-item/${productId}`)
             .then(r => r.json())
             .then(features => {
@@ -140,11 +194,11 @@
     }
     
     function closeModal() {
-        modal.classList.remove('catalog-modal-overlay--visible');
+        productModal.classList.remove('catalog-modal-overlay--visible');
         document.body.classList.remove('catalog-modal-open');
     }
     
-    // Обработчики
+    // Обработчики клика по карточке (открытие модалки)
     document.querySelectorAll('.catalog-card').forEach(card => {
         card.addEventListener('click', (e) => {
             if (e.target.closest('.catalog-card__button')) return;
@@ -155,20 +209,50 @@
     
     document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
     document.getElementById('modalCloseBtn2').addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
+    productModal.addEventListener('click', (e) => {
+        if (e.target === productModal) closeModal();
     });
     
+    // Обработчик кнопки "В корзину" в модалке
     document.getElementById('modalAddToCart').addEventListener('click', () => {
-        if (currentProductId && window.TechnoServiceCart) {
+        if (currentProductId) {
             const card = document.querySelector(`.catalog-card[data-product-id="${currentProductId}"]`);
             const cardButton = card?.querySelector('.catalog-card__button');
             if (cardButton) {
-                window.TechnoServiceCart.addFromCard(cardButton);
-                window.TechnoServiceCart.openCart();
+                addToCart(currentProductId, cardButton);
+                if (window.TechnoServiceCart && window.TechnoServiceCart.openCart) {
+                    window.TechnoServiceCart.openCart();
+                }
                 closeModal();
             }
         }
     });
+    
+    // Обработчики кнопок "В корзину" на карточках
+    document.querySelectorAll('.catalog-card__button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const productId = btn.getAttribute('data-product-id');
+            if (productId) {
+                addToCart(productId, btn);
+            }
+        });
+    });
+    
+    // Обновляем все кнопки при загрузке страницы
+    updateAllCartButtons();
+    
+    // Стили для добавленной кнопки
+    const style = document.createElement('style');
+    style.textContent = `
+        .catalog-card__button.btn-added {
+            background: #009f35 !important;
+        }
+        .catalog-card__button.btn-added:hover {
+            background: #00a040 !important;
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 {% endblock %}

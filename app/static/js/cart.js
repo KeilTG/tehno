@@ -104,6 +104,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function openCart() {
+        const items = loadCart();
+        if (!items.length) {
+            if (window.showEmptyCartModal) {
+                window.showEmptyCartModal();
+            }
+            return;
+        }
         overlay.classList.add('cart-overlay--visible');
         body.classList.add('cart-open');
         renderCart();
@@ -118,12 +125,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const card = button.closest('.catalog-card');
         if (!card) return;
 
-        const id = card.getAttribute('data-product-id') || card.querySelector('.catalog-card__title')?.textContent.trim();
+        const id = card.getAttribute('data-product-id');
         const title = card.querySelector('.catalog-card__title')?.textContent.trim() || '';
         const priceText = card.querySelector('.catalog-card__price-value')?.textContent || '0';
         const imageEl = card.querySelector('.catalog-card__image');
         const image = imageEl ? imageEl.getAttribute('src') : '/static/img/placeholder.png';
-
         const numericPrice = parseInt(priceText.replace(/\D/g, ''), 10) || 0;
 
         let items = loadCart();
@@ -142,11 +148,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         saveCart(items);
         renderCart();
+        updateCartCounter();
+        return items;
     }
 
     window.TechnoServiceCart = {
         addFromCard: addItemFromCard,
-        openCart: openCart
+        openCart: openCart,
+        updateCounter: updateCartCounter
     };
 
     document.querySelectorAll('[data-cart-open]').forEach(btn => {
@@ -171,11 +180,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const checkoutBtn = overlay.querySelector('[data-cart-checkout]');
-    if (checkoutBtn && orderUrl) {
+    if (checkoutBtn) {
         checkoutBtn.addEventListener('click', function () {
             const items = loadCart();
             if (!items.length) return;
-            window.location.href = orderUrl;
+            window.location.href = '/contacts.html#audit-form';
         });
     }
 
@@ -202,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         saveCart(items);
         renderCart();
+        updateCartCounter();
     });
 
     document.addEventListener('click', function (e) {
