@@ -180,11 +180,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const checkoutBtn = overlay.querySelector('[data-cart-checkout]');
-    if (checkoutBtn && orderUrl) {
+    if (checkoutBtn) {
         checkoutBtn.addEventListener('click', function () {
             const items = loadCart();
             if (!items.length) return;
-            window.location.href = orderUrl;
+            window.location.href = '/contacts.html#audit-form';
         });
     }
 
