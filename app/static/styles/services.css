@@ -3,7 +3,7 @@
 /* ==================== */
 .service-card {
   margin: 60px 0;
-  padding: 0 2vw; /* как у .container */
+  padding: 0 2vw;
 }
 
 .service-card__inner {
@@ -55,7 +55,7 @@
   line-height: 1.7;
   color: #333;
   margin-bottom: 20px;
-  white-space: pre-line; /* как было */
+  white-space: pre-line;
 }
 
 /* ---------- кнопка ---------- */
@@ -99,14 +99,12 @@
   width: 100%;
   max-width: 450px;
   height: 300px;
-  object-fit: cover;           /* сохраняет пропорции, обрезая лишнее */
+  object-fit: cover;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* ==================== */
-/* ЦЕНЫ (переопределяем стили из JS) */
-/* ==================== */
+/* ---------- цены ---------- */
 .price-container {
   margin: 16px 0;
   display: flex;
@@ -142,9 +140,7 @@
   padding: 4px 0;
 }
 
-/* ==================== */
-/* АДАПТИВ (дополняем существующие media) */
-/* ==================== */
+/* ---------- адаптив ---------- */
 @media (max-width: 768px) {
   .service-card__inner,
   .service-card__inner--reverse {
@@ -154,7 +150,6 @@
   }
 
   .service-card__image img {
-    height: 220px;
     max-width: 100%;
   }
 
