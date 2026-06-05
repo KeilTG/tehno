@@ -261,7 +261,7 @@ document.getElementById('consent-modal').addEventListener('click', (e) => {
     }
 });
 
-// === ОТПРАВКА ФОРМЫ С ПРОВЕРКОЙ ЧЕКБОКСА ===
+// === ОДИН ОБРАБОТЧИК ФОРМЫ ===
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('audit-form-element');
     const successDiv = document.getElementById('form-message');
@@ -269,28 +269,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const consentCheckbox = document.getElementById('consent-checkbox');
     const submitBtn = document.getElementById('submitBtn');
     
-    // Загружаем текст согласия
     loadConsent();
     
     if (form) {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // === ПРОВЕРКА ЧЕКБОКСА ===
+            // Проверка чекбокса
             if (!consentCheckbox.checked) {
                 errorDiv.innerHTML = '❌ Подтвердите согласие на обработку персональных данных';
                 errorDiv.style.display = 'block';
                 setTimeout(() => {
                     errorDiv.style.display = 'none';
                 }, 5000);
-                return; // === ЗДЕСЬ ОСТАНАВЛИВАЕМ ОТПРАВКУ ===
+                return;
             }
             
-            // Скрываем старые сообщения
             successDiv.style.display = 'none';
             errorDiv.style.display = 'none';
             
-            // Собираем данные
             const formData = new FormData(form);
             const data = {
                 client_name: formData.get('client_name'),
@@ -306,7 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const service = formData.get('service');
             if (service) data.message = `Услуга: ${service}\n\n${data.message}`;
             
-            // Блокируем кнопку
             const originalText = submitBtn.textContent;
             submitBtn.disabled = true;
             submitBtn.textContent = 'Отправка...';
