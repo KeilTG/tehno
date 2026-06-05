@@ -58,8 +58,6 @@
                         const phoneContact = data.find(contact => contact.contact_type === 'phone');
                         if (phoneContact && phoneContact.contact_value) {
                             const phoneNumber = phoneContact.contact_value;
-                            
-                            // Обновляем ссылку в хедере
                             const phoneLink = document.querySelector('.contact');
                             if (phoneLink) {
                                 phoneLink.href = `tel:${phoneNumber}`;
@@ -68,8 +66,6 @@
                                     phoneText.textContent = phoneNumber;
                                 }
                             }
-                            
-                            // Обновляем в мобильном меню, если есть
                             const mobilePhoneLinks = document.querySelectorAll('.mobile-menu .contact');
                             mobilePhoneLinks.forEach(link => {
                                 link.href = `tel:${phoneNumber}`;
@@ -83,6 +79,74 @@
                 })
                 .catch(error => console.warn('Не удалось загрузить контакты:', error));
         });
+    </script>
+
+    <!-- ПОПАП "КОРЗИНА ПУСТА" -->
+    <div id="empty-cart-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Корзина пуста</h2>
+                <button class="modal-close" id="empty-cart-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>В вашей корзине пока нет товаров.</p>
+                <p>Перейдите в <a href="/catalog.html">каталог</a>, чтобы выбрать подходящие услуги и оборудование.</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    .modal-container {
+        background: white;
+        max-width: 500px;
+        width: 90%;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+    }
+    .modal-body {
+        padding: 20px;
+    }
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+    }
+    </style>
+
+    <script>
+    function showEmptyCartModal() {
+        document.getElementById('empty-cart-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeEmptyCartModal() {
+        document.getElementById('empty-cart-modal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    document.getElementById('empty-cart-close').addEventListener('click', closeEmptyCartModal);
+    document.getElementById('empty-cart-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeEmptyCartModal();
+    });
+    window.showEmptyCartModal = showEmptyCartModal;
     </script>
 </body>
 </html>

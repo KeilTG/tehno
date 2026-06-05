@@ -104,6 +104,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function openCart() {
+        const items = loadCart();
+        if (!items.length) {
+            if (window.showEmptyCartModal) {
+                window.showEmptyCartModal();
+            }
+            return;
+        }
         overlay.classList.add('cart-overlay--visible');
         body.classList.add('cart-open');
         renderCart();
@@ -142,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         saveCart(items);
         renderCart();
+        updateCartCounter();
     }
 
     window.TechnoServiceCart = {
@@ -202,6 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         saveCart(items);
         renderCart();
+        updateCartCounter();
     });
 
     document.addEventListener('click', function (e) {
