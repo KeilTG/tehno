@@ -2,87 +2,59 @@
 
 {% block content %}
 <div class="content">
-
-    <section class="sv-hero">
+    <section class="amenities-title">
         <div class="container">
-            <div class="sv-hero__label">Наши услуги</div>
-            <h1 class="sv-hero__h1">Комплексные IT&#8209;решения</h1>
-            <p class="sv-hero__sub">Профессиональный аутсорсинг для вашего бизнеса</p>
+            <div class="amenities-text">
+                <h1>Наши услуги</h1>
+                <p>Комплексные решения для вашего бизнеса</p>
+            </div>
         </div>
     </section>
 
-    <div class="sv-body">
-        <div class="container sv-grid">
+    {% for service in services %}
+    <section class="service-section" data-service-id="{{ service.id }}">
+        <div class="container service-row {% if loop.index is even %}service-row--reverse{% endif %}">
 
-            {% for service in services %}
-            <div class="sv-card" data-service-id="{{ service.id }}">
+            <div class="service-info">
+                <img class="service-icon" src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
 
-                <div class="sv-card__img-wrap">
-                    <img src="{{ service.image_url or '/static/img/Image-one.png' }}" class="sv-card__img"
-                        alt="{{ service.name }}">
+                <h2 class="amenities-text_h2">{{ service.name }}</h2>
+
+                {% if service.description %}
+                <div class="service-description">
+                    <div class="service-description__text">{{ service.description }}</div>
                 </div>
+                {% endif %}
 
-                <div class="sv-card__body">
-
-                    <div class="sv-card__header">
-                        <div class="sv-card__icon-wrap">
-                            <img src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" class="sv-card__icon"
-                                alt="">
-                        </div>
-                        <div>
-                            <h2 class="sv-card__title">{{ service.name }}</h2>
-                            <div class="sv-card__category">Услуга</div>
-                        </div>
+                {% if service.price and service.price > 0 %}
+                <div class="service-price-wrap">
+                    <div class="service-price">
+                        <span class="service-price__value">{{ service.price }}</span>
+                        <span class="service-price__currency">₽</span>
+                        <span class="service-price__unit">/ услуга</span>
                     </div>
-
-                    {% if service.description %}
-                    <div class="sv-card__desc" id="desc-{{ service.id }}">{{ service.description }}</div>
-                    <button class="sv-card__expand" onclick="toggleDesc('desc-{{ service.id }}', this)">
-                        Подробнее <span class="sv-card__expand-arrow">▾</span>
-                    </button>
-                    {% endif %}
-
-                    <div class="sv-card__footer">
-                        <div class="sv-card__price-block">
-                            <div class="sv-card__price-label">Стоимость</div>
-                            {% if service.price and service.price > 0 %}
-                            <div class="sv-card__price-value">
-                                {{ service.price }} <span>₽ / услуга</span>
-                            </div>
-                            {% else %}
-                            <div class="sv-card__price-request">Цена по запросу</div>
-                            {% endif %}
-                        </div>
-                        <a href="/contacts.html#audit-form" class="sv-card__btn">
-                            Заказать
-                            <img src="/static/img/svg/arrow-right.svg" class="sv-card__btn-arrow" alt="">
-                        </a>
-                    </div>
-
                 </div>
+                {% else %}
+                <div class="service-price-wrap">
+                    <div class="service-price service-price--request">
+                        <span class="service-price__request-label">Цена по запросу</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <a href="/contacts.html#audit-form" class="service-order-btn">
+                    <p>Заказать услугу</p>
+                    <img src="/static/img/svg/arrow-right.svg" alt="">
+                </a>
             </div>
-            {% endfor %}
 
-            <div class="sv-cta">
-                <p class="sv-cta__text">Не нашли нужную услугу?</p>
-                <a href="/contacts.html" class="sv-cta__btn">Оставить заявку</a>
+            <div class="service-image-wrap">
+                <img src="{{ service.image_url or '/static/img/Image-one.png' }}" class="service-image"
+                    alt="{{ service.name }}">
             </div>
 
         </div>
-    </div>
-
+    </section>
+    {% endfor %}
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-    function toggleDesc(id, btn) {
-        const el = document.getElementById(id);
-        el.classList.toggle('sv-card__desc--expanded');
-        btn.classList.toggle('sv-card__expand--open');
-        const arrow = btn.querySelector('.sv-card__expand-arrow');
-        arrow.textContent = el.classList.contains('sv-card__desc--expanded') ? '▴' : '▾';
-        btn.childNodes[0].textContent = el.classList.contains('sv-card__desc--expanded') ? 'Свернуть ' : 'Подробнее ';
-    }
-</script>
 {% endblock %}
