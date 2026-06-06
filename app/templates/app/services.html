@@ -12,86 +12,43 @@
     </section>
 
     {% for service in services %}
-    <section style="margin: 60px 0;" data-service-id="{{ service.id }}">
-        <div class="container"
-            style="display: flex; align-items: center; gap: 60px; {% if loop.index is even %}flex-direction: row-reverse;{% endif %}">
-            <div style="flex: 1; {% if loop.index is even %}text-align: right;{% endif %}">
-                <img style="width: 60px; margin-bottom: 20px;"
-                    src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
-                <h2 style="font-size: 36px; margin-bottom: 20px; color: #0a2463;">{{ service.name }}</h2>
+    <section class="service-section" data-service-id="{{ service.id }}">
+        <div class="container service-row {% if loop.index is even %}service-row--reverse{% endif %}">
+            <div class="service-info {% if loop.index is even %}service-info--right{% endif %}">
+                <img class="service-icon" src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
+
+                <h2 class="amenities-text_h2">{{ service.name }}</h2>
 
                 {% if service.description %}
-                <div style="
-                    margin: 20px 0;
-                    padding: 25px;
-                    border: 2px solid #00c2d2;
-                    border-radius: 12px;
-                    background: #fafafa;
-                    line-height: 1.8;
-                    white-space: pre-line;
-                    text-align: left;
-                ">
-                    <div style="font-size: 16px; color: #333;">{{ service.description }}</div>
+                <div class="service-description">
+                    <div class="service-description__text">{{ service.description }}</div>
                 </div>
                 {% endif %}
 
-                <!-- ЦЕНА - КОМПАКТНАЯ -->
                 {% if service.price and service.price > 0 %}
-                <div
-                    style="margin: 20px 0; {% if loop.index is even %}display: flex; justify-content: flex-end;{% endif %}">
-                    <div style="
-                        display: inline-flex;
-                        align-items: baseline;
-                        gap: 4px;
-                        padding: 8px 20px;
-                        border: 2px solid #00c2d2;
-                        border-radius: 12px;
-                        background: rgba(0, 194, 210, 0.08);
-                    ">
-                        <span style="font-size: 22px; font-weight: 700; color: #0a2463;">{{ service.price }}</span>
-                        <span style="font-size: 14px; font-weight: 600; color: #00c2d2;">₽</span>
-                        <span style="font-size: 12px; color: #888; margin-left: 3px;">/ услуга</span>
+                <div class="service-price-wrap {% if loop.index is even %}service-price-wrap--right{% endif %}">
+                    <div class="service-price">
+                        <span class="service-price__value">{{ service.price }}</span>
+                        <span class="service-price__currency">₽</span>
+                        <span class="service-price__unit">/ услуга</span>
                     </div>
                 </div>
                 {% else %}
-                <div
-                    style="margin: 20px 0; {% if loop.index is even %}display: flex; justify-content: flex-end;{% endif %}">
-                    <div style="
-                        display: inline-flex;
-                        padding: 8px 20px;
-                        border: 2px dashed #00c2d2;
-                        border-radius: 12px;
-                        background: rgba(0, 194, 210, 0.05);
-                    ">
-                        <span style="font-size: 14px; font-weight: 500; color: #00c2d2;">Цена по запросу</span>
+                <div class="service-price-wrap {% if loop.index is even %}service-price-wrap--right{% endif %}">
+                    <div class="service-price service-price--request">
+                        <span class="service-price__request-label">Цена по запросу</span>
                     </div>
                 </div>
                 {% endif %}
 
-                <!-- КНОПКА - ЕЩЁ БОЛЬШЕ -->
-                <a href="/contacts.html#audit-form" class="button-order" style="
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 15px;
-                    background: #007aff;
-                    color: white;
-                    padding: 18px 48px;
-                    border-radius: 14px;
-                    text-decoration: none;
-                    font-weight: 700;
-                    font-size: 20px;
-                    margin-top: 20px;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
-                ">
-                    <p style="margin: 0;">Заказать услугу</p>
-                    <img src="/static/img/svg/arrow-right.svg" style="width: 24px; filter: brightness(0) invert(1);"
-                        alt="">
+                <a href="/contacts.html#audit-form" class="button-order service-order-btn">
+                    <p>Заказать услугу</p>
+                    <img src="/static/img/svg/arrow-right.svg" class="service-order-btn__icon" alt="">
                 </a>
             </div>
-            <div style="flex: 1;">
-                <img src="{{ service.image_url or '/static/img/Image-one.png' }}"
-                    style="width: 100%; max-width: 450px; border-radius: 20px;" alt="{{ service.name }}">
+            <div class="service-image-wrap">
+                <img src="{{ service.image_url or '/static/img/Image-one.png' }}" class="service-image"
+                    alt="{{ service.name }}">
             </div>
         </div>
     </section>
