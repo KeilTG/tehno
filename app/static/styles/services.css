@@ -260,7 +260,7 @@
     margin: 0;
 }
 
-.service-order-btn__icon {
+.service-order-btn img {
     width: 24px;
     filter: brightness(0) invert(1);
 }
