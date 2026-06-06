@@ -20,6 +20,10 @@
 
                 <h2 class="amenities-text_h2">{{ service.name }}</h2>
 
+                            <div class="service-image-wrap">
+                                <img src="{{ service.image_url or '/static/img/Image-one.png' }}" class="service-image" alt="{{ service.name }}">
+                            </div>
+
                 {% if service.description %}
                 <div class="service-description">
                     <div class="service-description__text">{{ service.description }}</div>
@@ -48,10 +52,7 @@
                 </a>
             </div>
 
-            <div class="service-image-wrap">
-                <img src="{{ service.image_url or '/static/img/Image-one.png' }}" class="service-image"
-                    alt="{{ service.name }}">
-            </div>
+
 
         </div>
     </section>
