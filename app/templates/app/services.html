@@ -1,94 +1,61 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="sp-root">
-    <div class="sp-hero">
-        <div class="sp-hero-label">Наши услуги</div>
-        <h1>Комплексные IT‑решения</h1>
-        <p>Профессиональный аутсорсинг для вашего бизнеса</p>
-    </div>
-
-    <div class="sp-body">
-        {% for service in services %}
-        <div class="sp-card">
-            {% if service.image_url %}
-            <img class="sp-card-img" src="{{ service.image_url }}" alt="{{ service.name }}">
-            {% else %}
-            <div class="sp-card-img-placeholder" style="background: linear-gradient(135deg, #0a2463 0%, #1e4080 100%);">
-                {{ service.name|slice:":2"|upper }}
-            </div>
-            {% endif %}
-
-            <div class="sp-card-body">
-                <div class="sp-card-header">
-                    <div class="sp-icon-wrap">
-                        {% if service.icon %}
-                        <img src="{{ service.icon }}" alt="" width="22" height="22">
-                        {% else %}
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke="currentColor">
-                            <rect x="2" y="3" width="20" height="14" rx="2" />
-                            <path d="M8 21h8M12 17v4" />
-                        </svg>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <div class="sp-card-title">{{ service.name }}</div>
-                        <div class="sp-card-subtitle">Аутсорсинг</div>
-                    </div>
-                </div>
-
-                <div class="sp-desc" id="desc{{ service.id }}">
-                    {{ service.description|default:"Описание услуги временно отсутствует. Пожалуйста, свяжитесь с нами."
-                    }}
-                </div>
-                <button class="sp-expand-btn" onclick="toggleDesc('desc{{ service.id }}', this)">
-                    Подробнее
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                        <path d="M6 9l6 6 6-6" />
-                    </svg>
-                </button>
-
-                <div class="sp-footer">
-                    <div class="sp-price-block">
-                        <div class="sp-price-label">Стоимость</div>
-                        {% if service.price and service.price > 0 %}
-                        <div class="sp-price-value">{{ service.price }} <span>₽ / услуга</span></div>
-                        {% else %}
-                        <div class="sp-price-request">Цена по запросу</div>
-                        {% endif %}
-                    </div>
-                    <a href="/contacts.html#audit-form" class="sp-btn">
-                        Заказать
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7" />
-                        </svg>
-                    </a>
-                </div>
+<div class="content">
+    <section class="amenities-title">
+        <div class="container">
+            <div class="amenities-text">
+                <h1>Наши услуги</h1>
+                <p>Комплексные решения для вашего бизнеса</p>
             </div>
         </div>
-        {% endfor %}
+    </section>
 
-        <div class="sp-card"
-            style="border: 2px dashed #e8edf5; background: transparent; align-items: center; padding: 32px; text-align: center;">
-            <div style="font-size: 13px; color: #a0aec0; margin-bottom: 12px;">Не нашли нужную услугу?</div>
-            <a href="/contacts.html" class="sp-btn"
-                style="background: transparent; color: #0a2463; border: 1.5px solid #0a2463;">
-                Оставить заявку
-                <svg viewBox="0 0 24 24" fill="none" stroke="#0a2463" stroke-width="2">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-            </a>
+    {% for service in services %}
+    <section class="service-section" data-service-id="{{ service.id }}">
+        <div class="container service-row {% if loop.index is even %}service-row--reverse{% endif %}">
+
+            <div class="service-info">
+                <img class="service-icon" src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
+
+                <h2 class="amenities-text_h2">{{ service.name }}</h2>
+
+                            <div class="service-image-wrap">
+                                <img src="{{ service.image_url or '/static/img/Image-one.png' }}" class="service-image" alt="{{ service.name }}">
+                            </div>
+
+                {% if service.description %}
+                <div class="service-description">
+                    <div class="service-description__text">{{ service.description }}</div>
+                </div>
+                {% endif %}
+
+                {% if service.price and service.price > 0 %}
+                <div class="service-price-wrap">
+                    <div class="service-price">
+                        <span class="service-price__value">{{ service.price }}</span>
+                        <span class="service-price__currency">₽</span>
+                        <span class="service-price__unit">/ услуга</span>
+                    </div>
+                </div>
+                {% else %}
+                <div class="service-price-wrap">
+                    <div class="service-price service-price--request">
+                        <span class="service-price__request-label">Цена по запросу</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <a href="/contacts.html#audit-form" class="service-order-btn">
+                    <p>Заказать услугу</p>
+                    <img src="/static/img/svg/arrow-right.svg" alt="">
+                </a>
+            </div>
+
+
+
         </div>
-    </div>
+    </section>
+    {% endfor %}
 </div>
-
-<script>
-    function toggleDesc(id, btn) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        el.classList.toggle('expanded');
-        btn.classList.toggle('open');
-        btn.childNodes[0].textContent = el.classList.contains('expanded') ? 'Свернуть ' : 'Подробнее ';
-    }
-</script>
 {% endblock %}
