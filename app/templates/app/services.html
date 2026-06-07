@@ -43,7 +43,7 @@
                     {% endif %}
                     <a href="/contacts.html#audit-form" class="service-btn">
                         <span>Заказать услугу</span>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <line x1="5" y1="12" x2="19" y2="12"></line>
                             <polyline points="12 5 19 12 12 19"></polyline>
                         </svg>
@@ -57,7 +57,7 @@
 
 <style>
 .amenities-title {
-    background: linear-gradient(135deg, #0a2463 0%, #1e3a8a 100%);
+    background: #0a2463;
     padding: 60px 0;
     text-align: center;
     color: white;
@@ -67,11 +67,12 @@
 .amenities-title h1 {
     font-size: 42px;
     margin-bottom: 15px;
+    font-weight: 600;
 }
 
 .amenities-title p {
     font-size: 18px;
-    opacity: 0.9;
+    opacity: 0.85;
 }
 
 .service-block {
@@ -98,11 +99,6 @@
 
 .service-right {
     flex: 1;
-    padding-top: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100%;
 }
 
 .service-header {
@@ -112,92 +108,78 @@
     margin-bottom: 25px;
 }
 
-.service-icon {
-    width: 55px;
-    height: 55px;
-    background: #eef2ff;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
 .service-icon img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
+    width: 48px;
+    height: 48px;
 }
 
 .service-title {
     font-size: 28px;
-    font-weight: 700;
+    font-weight: 600;
     color: #0a2463;
     margin: 0;
-    line-height: 1.2;
-}
-
-.service-image {
-    margin-top: 10px;
 }
 
 .service-image img {
     width: 100%;
     max-width: 450px;
-    border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
 }
 
 .service-description {
     font-size: 16px;
-    color: #5a6874;
-    line-height: 1.7;
+    color: #3a4a5c;
+    line-height: 1.6;
     margin-bottom: 30px;
-    text-align: left;
 }
 
 .service-footer {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 30px;
+    gap: 35px;
     flex-wrap: wrap;
-    margin-top: auto;
 }
 
 .service-price {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
-    color: #007aff;
+    color: #0a2463;
+    letter-spacing: -0.5px;
 }
 
 .service-price--request {
     font-size: 18px;
-    color: #8e9aaf;
     font-weight: 500;
+    color: #8e9aaf;
 }
 
 .service-btn {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 28px;
-    background: #007aff;
-    color: white;
-    border-radius: 40px;
+    padding: 0;
+    background: none;
+    color: #0a2463;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
-    transition: all 0.2s ease;
+    border-bottom: 1px solid #0a2463;
+    transition: all 0.2s;
 }
 
 .service-btn:hover {
-    background: #005fc1;
-    transform: scale(0.97);
+    color: #007aff;
+    border-bottom-color: #007aff;
+    gap: 12px;
 }
 
 .service-btn svg {
-    stroke: white;
+    stroke: #0a2463;
+}
+
+.service-btn:hover svg {
+    stroke: #007aff;
 }
 
 @media (max-width: 900px) {
@@ -206,23 +188,11 @@
         gap: 30px;
     }
     
-    .service-left {
-        width: 100%;
-    }
-    
-    .service-right {
-        width: 100%;
-    }
-    
-    .service-header {
-        justify-content: flex-start;
-    }
-    
     .service-image img {
         max-width: 100%;
     }
     
-    .service-footer {
+    .service-header {
         justify-content: flex-start;
     }
 }
@@ -245,28 +215,21 @@
     }
     
     .service-price {
-        font-size: 24px;
-    }
-    
-    .service-btn {
-        padding: 10px 20px;
-        font-size: 14px;
+        font-size: 28px;
     }
 }
 
 @media (max-width: 550px) {
     .service-footer {
         flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .service-btn {
-        justify-content: center;
+        align-items: flex-start;
+        gap: 15px;
     }
     
     .service-header {
         flex-direction: column;
-        text-align: center;
+        align-items: flex-start;
+        text-align: left;
     }
 }
 </style>
