@@ -76,7 +76,6 @@
 </div>
 
 <style>
-/* Общие стили для кейсов */
 .cases-hero {
     background: linear-gradient(135deg, #0a2463 0%, #1e3a8a 100%);
     padding: 60px 0;
@@ -169,16 +168,23 @@
     height: 18px;
 }
 
-/* Равные отступы для секций */
+/* ===== ВЫРОВНЕННЫЕ ОТСТУПЫ ДЛЯ СЕКЦИЙ ===== */
 .case-card__section {
-    margin-bottom: 24px;
+    margin-bottom: 0;
+    padding-top: 20px;
+    border-top: 1px solid #eef2f6;
+}
+
+.case-card__section:first-of-type {
+    border-top: none;
+    padding-top: 0;
 }
 
 .case-card__section-title {
     font-size: 14px;
     font-weight: 700;
     color: #0a2463;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     letter-spacing: 1px;
 }
 
