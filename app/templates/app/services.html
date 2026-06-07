@@ -71,18 +71,14 @@
     opacity: 0.9;
 }
 
-/* Контейнер с z-index контекстом */
 .services-container {
     position: relative;
     z-index: 1;
 }
 
-/* Горизонтальные карточки */
 .service-row {
     padding: 60px 0;
     border-bottom: 1px solid #eef2f6;
-    position: relative;
-    z-index: 1;
 }
 
 .service-row:last-child {
@@ -93,12 +89,8 @@
     display: flex;
     align-items: center;
     gap: 60px;
-    position: relative;
-    z-index: 1;
-    transition: all 0.3s ease;
 }
 
-/* Чётные ряды — картинка справа */
 .service-row--right .service-card {
     flex-direction: row-reverse;
 }
@@ -107,48 +99,23 @@
     flex: 1;
     overflow: hidden;
     border-radius: 20px;
-    position: relative;
-    z-index: 1;
 }
 
 .service-card__image img {
     width: 100%;
     max-width: 450px;
     border-radius: 20px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    transition: transform 0.4s ease, box-shadow 0.3s ease;
     display: block;
+    transition: transform 0.3s ease;
+}
+
+/* Только лёгкое увеличение картинки при наведении */
+.service-row:hover .service-card__image img {
+    transform: scale(1.02);
 }
 
 .service-card__content {
     flex: 1;
-    position: relative;
-    z-index: 1;
-    background: white;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-/* АНИМАЦИЯ ПРИ НАВЕДЕНИИ */
-.service-row:hover {
-    z-index: 100;
-}
-
-.service-row:hover .service-card {
-    z-index: 100;
-}
-
-.service-row:hover .service-card__content {
-    z-index: 101;
-}
-
-.service-row:hover .service-card__image img {
-    transform: scale(1.03);
-    box-shadow: 0 20px 35px rgba(0,0,0,0.2);
-}
-
-.service-row:hover .service-card__icon {
-    transform: scale(1.05);
 }
 
 .service-card__header {
@@ -167,7 +134,6 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: transform 0.2s ease;
 }
 
 .service-card__icon img {
@@ -259,15 +225,6 @@
     
     .service-card__price {
         font-size: 24px;
-    }
-    
-    /* Отключаем z-index анимацию на мобильных */
-    .service-row:hover {
-        z-index: auto;
-    }
-    
-    .service-row:hover .service-card__image img {
-        transform: none;
     }
 }
 
