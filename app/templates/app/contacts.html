@@ -67,7 +67,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="contacts-form__submit" id="submitBtn">Отправить заявку</button>
+                    <button type="submit" class="contacts-form__submit" id="submitBtn" disabled>Отправить заявку</button>
                     <p class="contacts-form__policy">Нажимая кнопку, вы соглашаетесь с 
                         <a href="#" id="policy-link">политикой конфиденциальности</a>
                     </p>
@@ -217,6 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const successDiv = document.getElementById('form-message');
     const errorDiv = document.getElementById('form-error');
 
+    // Загружаем текст согласия
     loadConsent();
 
     // Вспомогательная функция для показа ошибок
@@ -254,8 +255,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Обновление состояния кнопки
     function updateButtonState() {
-        const isValid = isNameValid() && isPhoneValid() && isEmailValid() && consentCheckbox.checked;
-        submitBtn.disabled = !isValid;
+        const isNameOk = isNameValid();
+        const isPhoneOk = isPhoneValid();
+        const isEmailOk = isEmailValid();
+        const isConsentOk = consentCheckbox.checked;
+        
+        console.log('Проверка:', { isNameOk, isPhoneOk, isEmailOk, isConsentOk });
+        
+        if (isNameOk && isPhoneOk && isEmailOk && isConsentOk) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
     }
 
     // Обработчики событий
