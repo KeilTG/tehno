@@ -34,7 +34,7 @@
                 <div class="service-footer">
                     {% if service.price and service.price > 0 %}
                     <div class="service-price">
-                        {{ "{:,}".format(service.price).replace(',', ' ') }} ₽
+                        {{ "{:,}".format(service.price).replace(',', ' ') }} <span class="service-price-currency">₽</span>
                     </div>
                     {% else %}
                     <div class="service-price service-price--request">
@@ -43,10 +43,7 @@
                     {% endif %}
                     <a href="/contacts.html#audit-form" class="service-btn">
                         <span>Заказать услугу</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
+                        <img src="/static/img/svg/arrow-right.svg" alt="">
                     </a>
                 </div>
             </div>
@@ -145,7 +142,11 @@
     font-size: 32px;
     font-weight: 700;
     color: #0a2463;
-    letter-spacing: -0.5px;
+}
+
+.service-price-currency {
+    font-size: 24px;
+    font-weight: 600;
 }
 
 .service-price--request {
@@ -158,28 +159,23 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 0;
-    background: none;
-    color: #0a2463;
+    background: #007aff;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 30px;
     text-decoration: none;
-    font-size: 16px;
     font-weight: 500;
-    border-bottom: 1px solid #0a2463;
     transition: all 0.2s;
 }
 
 .service-btn:hover {
-    color: #007aff;
-    border-bottom-color: #007aff;
-    gap: 12px;
+    background: #005fc1;
+    transform: translateY(-2px);
 }
 
-.service-btn svg {
-    stroke: #0a2463;
-}
-
-.service-btn:hover svg {
-    stroke: #007aff;
+.service-btn img {
+    width: 18px;
+    filter: brightness(0) invert(1);
 }
 
 @media (max-width: 900px) {
@@ -229,7 +225,11 @@
     .service-header {
         flex-direction: column;
         align-items: flex-start;
-        text-align: left;
+    }
+    
+    .service-btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 </style>
