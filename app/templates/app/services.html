@@ -97,6 +97,9 @@
 
 .service-right {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .service-header {
@@ -126,7 +129,7 @@
 }
 
 .service-description {
-    max-height: 100%;
+    flex: 1;
     margin-top: 0;
     margin-bottom: 30px;
     padding: 20px 25px;
@@ -146,6 +149,7 @@
     justify-content: flex-end;
     gap: 30px;
     flex-wrap: wrap;
+    margin-top: auto;
 }
 
 .service-price {
@@ -221,6 +225,14 @@
     .service-footer {
         justify-content: flex-start;
     }
+    
+    .service-right {
+        height: auto;
+    }
+    
+    .service-description {
+        flex: none;
+    }
 }
 
 @media (max-width: 768px) {
@@ -264,7 +276,6 @@
     
     .service-description {
         padding: 15px;
-        max-height: 300px;
     }
 }
 </style>
