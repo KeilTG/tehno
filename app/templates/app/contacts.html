@@ -13,7 +13,9 @@
 
     <section class="contacts-cards">
         <div class="container">
-            <div class="contacts-cards__grid" id="contacts-container"></div>
+            <div class="contacts-cards__grid" id="contacts-container">
+                <!-- Сюда загрузятся контакты из Directus через contacts.js -->
+            </div>
         </div>
     </section>
 
@@ -23,28 +25,35 @@
                 <h2 class="contacts-form__title">Получить бесплатный аудит</h2>
                 <div id="form-message" class="contacts-form__success" style="display:none;"></div>
                 <div id="form-error" class="contacts-form__error" style="display:none;"></div>
+                
                 <form id="audit-form-element" class="contacts-form__body" novalidate>
                     <label class="contacts-form__field">
-                        <span class="contacts-form__label">Ваше имя</span>
-                        <input type="text" name="client_name" required>
+                        <span class="contacts-form__label">Ваше имя <span class="required-star">*</span></span>
+                        <input type="text" name="client_name" id="client_name" required>
+                        <div class="field-error" id="name-error"></div>
                     </label>
+
                     <label class="contacts-form__field">
                         <span class="contacts-form__label">Компания</span>
-                        <input type="text" name="company">
+                        <input type="text" name="company" id="company">
                     </label>
+
                     <div class="contacts-form__row">
                         <label class="contacts-form__field contacts-form__field--half">
-                            <span class="contacts-form__label">Телефон *</span>
-                            <input type="tel" name="client_phone" required>
+                            <span class="contacts-form__label">Телефон <span class="required-star">*</span></span>
+                            <input type="tel" name="client_phone" id="client_phone" placeholder="+7 (___) ___-__-__" required>
+                            <div class="field-error" id="phone-error"></div>
                         </label>
                         <label class="contacts-form__field contacts-form__field--half">
-                            <span class="contacts-form__label">Email *</span>
-                            <input type="email" name="client_email" required>
+                            <span class="contacts-form__label">Email <span class="required-star">*</span></span>
+                            <input type="email" name="client_email" id="client_email" placeholder="example@domain.com" required>
+                            <div class="field-error" id="email-error"></div>
                         </label>
                     </div>
+
                     <label class="contacts-form__field">
                         <span class="contacts-form__label">Интересующая услуга</span>
-                        <select name="service">
+                        <select name="service" id="service">
                             <option value="">-- Выберите --</option>
                             <option value="IT Аутсорсинг">IT Аутсорсинг</option>
                             <option value="Печатный Аутсорсинг">Печатный Аутсорсинг</option>
@@ -52,21 +61,23 @@
                             <option value="Оборудование">Оборудование</option>
                         </select>
                     </label>
+
                     <label class="contacts-form__field">
                         <span class="contacts-form__label">Сообщение</span>
-                        <textarea name="message" rows="3"></textarea>
+                        <textarea name="message" id="message" rows="3"></textarea>
                     </label>
 
-                    <div class="contacts-form__consent">
+                    <!-- ЧЕКБОКС С СОГЛАСИЕМ -->
+                    <div class="contacts-form__consent" id="consent-container">
                         <label class="consent-checkbox">
                             <input type="checkbox" id="consent-checkbox">
-                            <span id="consent-text">Загрузка...</span>
+                            <span id="consent-text">Загрузка текста согласия...</span>
                         </label>
                     </div>
 
-                    <button type="submit" class="contacts-form__submit">Отправить заявку</button>
+                    <button type="submit" class="contacts-form__submit" id="submitBtn" disabled>Отправить заявку</button>
                     <p class="contacts-form__policy">Нажимая кнопку, вы соглашаетесь с 
-                        <a href="#" id="policy-link">политикой конфиденциальности</a>
+                        <a href="#" class="pp-trigger" id="pp-trigger">политикой конфиденциальности</a>
                     </p>
                 </form>
             </section>
@@ -88,7 +99,7 @@
                     </article>
                     <article class="contacts-faq__item">
                         <h3 class="contacts-faq__question">Обслуживаете ли вы компании за пределами Москвы?</h3>
-                        <p class="contacts-faq__answer">Да, мы работаем с клиентами по всей России.</p>
+                        <p class="contacts-faq__answer">Да, мы работаем с клиентами по всей России. Для удаленной поддержки география не имеет значения.</p>
                     </article>
                 </div>
                 <article class="contacts-schedule">
@@ -105,7 +116,7 @@
     </section>
 </div>
 
-<!-- Модалка политики -->
+<!-- Модалка политики конфиденциальности -->
 <div id="policy-modal" class="modal-overlay">
     <div class="modal-container">
         <div class="modal-header">
@@ -116,7 +127,7 @@
     </div>
 </div>
 
-<!-- Модалка согласия -->
+<!-- Модалка текста согласия -->
 <div id="consent-modal" class="modal-overlay">
     <div class="modal-container">
         <div class="modal-header">
@@ -128,75 +139,40 @@
 </div>
 
 <style>
-input, select, textarea {
-    border: 1px solid #D0D5DD;
-    border-radius: 6px;
-    padding: 10px 14px;
-    width: 100%;
-    box-sizing: border-box;
+.required-star {
+    color: #ff4444;
+    margin-left: 4px;
 }
-.contacts-form__success {
-    background: #d4edda;
-    color: #155724;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-.contacts-form__error {
-    background: #f8d7da;
-    color: #721c24;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-.consent-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-}
-.consent-checkbox input {
-    width: 18px;
-    height: 18px;
-}
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
+.field-error {
+    color: #ff4444;
+    font-size: 12px;
+    margin-top: 4px;
     display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
 }
-.modal-container {
-    background: white;
-    max-width: 600px;
-    width: 90%;
-    border-radius: 12px;
-    overflow: hidden;
+input:invalid, 
+select:invalid,
+textarea:invalid {
+    border-color: #ff4444;
 }
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
+input:focus:invalid,
+select:focus:invalid,
+textarea:focus:invalid {
+    border-color: #ff4444;
+    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
 }
-.modal-close {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
+.contacts-form__submit:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
 }
-.modal-body {
-    padding: 20px;
+.contacts-form__submit:disabled:hover {
+    background: #cccccc;
+    transform: none;
 }
 </style>
 
 <script>
-// Загрузка политики
+// --- Загрузка политики и согласия (как было) ---
 async function loadPolicy() {
     const res = await fetch('/api/privacy-policy');
     const data = await res.json();
@@ -204,7 +180,6 @@ async function loadPolicy() {
     document.getElementById('policy-content').innerHTML = data.content || 'Нет данных';
 }
 
-// Загрузка текста согласия
 async function loadConsent() {
     try {
         const res = await fetch('/api/consent-text');
@@ -258,22 +233,142 @@ document.getElementById('consent-modal').addEventListener('click', (e) => {
     }
 });
 
-// === ОДИН ОБРАБОТЧИК ФОРМЫ ===
+// --- ОСНОВНАЯ ЛОГИКА ФОРМЫ ---
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('audit-form-element');
+    const submitBtn = document.getElementById('submitBtn');
+    const consentCheckbox = document.getElementById('consent-checkbox');
+    const phoneInput = document.getElementById('client_phone');
+    const emailInput = document.getElementById('client_email');
+    const nameInput = document.getElementById('client_name');
+
+    const nameError = document.getElementById('name-error');
+    const phoneError = document.getElementById('phone-error');
+    const emailError = document.getElementById('email-error');
+    
     const successDiv = document.getElementById('form-message');
     const errorDiv = document.getElementById('form-error');
-    const consentCheckbox = document.getElementById('consent-checkbox');
-    const submitBtn = form.querySelector('button[type="submit"]');
-    
+
     loadConsent();
+
+    // --- 1. Валидация телефона (только цифры и +) ---
+    function validatePhone() {
+        let value = phoneInput.value;
+        let isValid = true;
+        let errorMsg = '';
+        
+        // Удаляем все символы, кроме цифр и +
+        let cleaned = value.replace(/[^\d+]/g, '');
+        if (value !== cleaned) {
+            phoneInput.value = cleaned;
+            value = cleaned;
+        }
+        
+        if (!value) {
+            isValid = false;
+            errorMsg = 'Телефон обязателен для заполнения';
+        } else if (value.length < 10) {
+            isValid = false;
+            errorMsg = 'Введите корректный номер телефона';
+        }
+        
+        if (!isValid) {
+            phoneError.textContent = errorMsg;
+            phoneError.style.display = 'block';
+            phoneInput.classList.add('invalid');
+        } else {
+            phoneError.style.display = 'none';
+            phoneInput.classList.remove('invalid');
+        }
+        return isValid;
+    }
+
+    // --- 2. Валидация email (обязательно @) ---
+    function validateEmail() {
+        const value = emailInput.value;
+        let isValid = true;
+        let errorMsg = '';
+        
+        if (!value) {
+            isValid = false;
+            errorMsg = 'Email обязателен для заполнения';
+        } else if (!value.includes('@')) {
+            isValid = false;
+            errorMsg = 'Email должен содержать символ @';
+        }
+        
+        if (!isValid) {
+            emailError.textContent = errorMsg;
+            emailError.style.display = 'block';
+            emailInput.classList.add('invalid');
+        } else {
+            emailError.style.display = 'none';
+            emailInput.classList.remove('invalid');
+        }
+        return isValid;
+    }
+
+    // --- 3. Валидация имени (обязательно) ---
+    function validateName() {
+        const value = nameInput.value.trim();
+        let isValid = true;
+        
+        if (!value) {
+            isValid = false;
+            nameError.textContent = 'Имя обязательно для заполнения';
+            nameError.style.display = 'block';
+            nameInput.classList.add('invalid');
+        } else {
+            nameError.style.display = 'none';
+            nameInput.classList.remove('invalid');
+        }
+        return isValid;
+    }
+
+    // --- 4. Общая проверка всех полей и чекбокса ---
+    function checkFormValidity() {
+        const isNameValid = validateName();
+        const isPhoneValid = validatePhone();
+        const isEmailValid = validateEmail();
+        const isConsentChecked = consentCheckbox.checked;
+        
+        // Кнопка активна ТОЛЬКО если все поля валидны И чекбокс отмечен
+        if (isNameValid && isPhoneValid && isEmailValid && isConsentChecked) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    }
+
+    // --- Вешаем обработчики на все поля и чекбокс ---
+    nameInput.addEventListener('input', checkFormValidity);
+    phoneInput.addEventListener('input', function() {
+        validatePhone();
+        checkFormValidity();
+    });
+    emailInput.addEventListener('input', function() {
+        validateEmail();
+        checkFormValidity();
+    });
+    consentCheckbox.addEventListener('change', checkFormValidity);
     
-    form.addEventListener('submit', async function(e) {
+    // Первоначальная проверка при загрузке
+    checkFormValidity();
+
+    // --- ОТПРАВКА ФОРМЫ (только если кнопка активна) ---
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Проверка чекбокса
+        // Дополнительная проверка на случай, если JS где-то сломался
         if (!consentCheckbox.checked) {
             errorDiv.innerHTML = '❌ Подтвердите согласие на обработку персональных данных';
+            errorDiv.style.display = 'block';
+            setTimeout(() => errorDiv.style.display = 'none', 5000);
+            return;
+        }
+        
+        if (!validateName() || !validatePhone() || !validateEmail()) {
+            errorDiv.innerHTML = '❌ Пожалуйста, заполните все обязательные поля корректно';
             errorDiv.style.display = 'block';
             setTimeout(() => errorDiv.style.display = 'none', 5000);
             return;
@@ -314,6 +409,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 successDiv.style.display = 'block';
                 form.reset();
                 consentCheckbox.checked = false;
+                // Обновить состояние кнопки после сброса
+                checkFormValidity();
                 setTimeout(() => successDiv.style.display = 'none', 5000);
             } else {
                 errorDiv.innerHTML = `❌ Ошибка: ${result.message || 'Что-то пошло не так'}`;
@@ -325,6 +422,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
+            // Повторно проверить валидность формы после отправки
+            checkFormValidity();
         }
     });
 });
