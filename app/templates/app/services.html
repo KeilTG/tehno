@@ -11,47 +11,37 @@
         </div>
     </section>
 
-    {% for service in services %}
-    <section class="service-block" data-service-id="{{ service.id }}">
-        <div class="container service-container">
-            <div class="service-left">
-                <div class="service-header">
-                    <div class="service-icon">
-                        <img src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
-                    </div>
-                    <h2 class="service-title">{{ service.name }}</h2>
-                </div>
-                <div class="service-image">
-                    <img src="{{ service.image_url or '/static/img/Image-one.png' }}" alt="{{ service.name }}">
-                </div>
+    <div class="services-grid">
+        {% for service in services %}
+        <div class="service-card" data-service-id="{{ service.id }}">
+            <div class="service-card__icon">
+                <img src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
             </div>
-            <div class="service-right">
-                <div class="service-right-spacer"></div>
-                {% if service.description %}
-                <div class="service-description">
-                    {{ service.description }}
+            <h3 class="service-card__title">{{ service.name }}</h3>
+            <div class="service-card__description">
+                {{ service.description|truncate(120) if service.description else 'Нет описания' }}
+            </div>
+            <div class="service-card__footer">
+                {% if service.price and service.price > 0 %}
+                <div class="service-card__price">
+                    {{ "{:,}".format(service.price).replace(',', ' ') }} ₽
+                </div>
+                {% else %}
+                <div class="service-card__price service-card__price--request">
+                    Цена по запросу
                 </div>
                 {% endif %}
-                <div class="service-footer">
-                    {% if service.price and service.price > 0 %}
-                    <div class="service-price">
-                        <span class="service-price-value">{{ "{:,}".format(service.price).replace(',', ' ') }}</span>
-                        <span class="service-price-currency">₽</span>
-                    </div>
-                    {% else %}
-                    <div class="service-price service-price--request">
-                        <span>Цена по запросу</span>
-                    </div>
-                    {% endif %}
-                    <a href="/contacts.html#audit-form" class="service-btn">
-                        <span>Заказать услугу</span>
-                        <img src="/static/img/svg/arrow-right.svg" alt="">
-                    </a>
-                </div>
+                <a href="/contacts.html#audit-form" class="service-card__btn">
+                    <span>Заказать</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
             </div>
         </div>
-    </section>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
 
 <style>
@@ -60,13 +50,12 @@
     padding: 60px 0;
     text-align: center;
     color: white;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .amenities-title h1 {
     font-size: 42px;
     margin-bottom: 15px;
-    font-weight: 600;
 }
 
 .amenities-title p {
@@ -74,160 +63,107 @@
     opacity: 0.9;
 }
 
-.service-block {
-    padding: 60px 0;
-    border-bottom: 1px solid #eef2f6;
-}
-
-.service-block:last-child {
-    border-bottom: none;
-}
-
-.service-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 60px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.service-left {
-    flex: 1;
-}
-
-.service-right {
-    flex: 1;
-}
-
-.service-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.service-icon img {
-    width: 48px;
-    height: 48px;
-}
-
-.service-title {
-    font-size: 28px;
-    font-weight: 600;
-    color: #0a2463;
-    margin: 0;
-}
-
-.service-image img {
-    width: 100%;
-    max-width: 450px;
-    border-radius: 12px;
-    display: block;
-}
-
-.service-right-spacer {
-    height: 73px; /* Высота блока .service-header (иконка 48px + отступ 25px) */
-}
-
-.service-description {
-    margin-top: 0;
-    margin-bottom: 30px;
-    padding: 20px 25px;
-    border: 2px solid #00c2d2;
-    border-radius: 12px;
-    background: #fafafa;
-    line-height: 1.6;
-    white-space: pre-line;
-    text-align: left;
-    box-sizing: border-box;
-}
-
-.service-footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 30px;
+    padding: 0 20px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    transition: all 0.3s ease;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
+    border-color: transparent;
+}
+
+.service-card__icon {
+    width: 70px;
+    height: 70px;
+    background: #eef2ff;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.service-card__icon img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.service-card__title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0a2463;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.service-card__description {
+    font-size: 14px;
+    color: #5a6874;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    flex-grow: 1;
+}
+
+.service-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
+    gap: 15px;
+    margin-top: auto;
 }
 
-.service-price {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 4px;
-    padding: 8px 16px;
-    border: 2px solid #00c2d2;
-    border-radius: 12px;
-    background: rgba(0, 194, 210, 0.05);
-}
-
-.service-price-value {
-    font-size: 28px;
+.service-card__price {
+    font-size: 24px;
     font-weight: 700;
     color: #0a2463;
 }
 
-.service-price-currency {
-    font-size: 18px;
-    font-weight: 600;
-    color: #00c2d2;
-}
-
-.service-price--request {
-    border-color: #00c2d2;
-    background: rgba(0, 194, 210, 0.05);
-}
-
-.service-price--request span {
+.service-card__price--request {
     font-size: 16px;
-    color: #00c2d2;
+    color: #8e9aaf;
     font-weight: 500;
 }
 
-.service-btn {
+.service-card__btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    padding: 10px 20px;
     background: #007aff;
     color: white;
-    padding: 12px 28px;
-    border-radius: 30px;
+    border-radius: 40px;
     text-decoration: none;
+    font-size: 14px;
     font-weight: 500;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
 }
 
-.service-btn:hover {
+.service-card__btn:hover {
     background: #005fc1;
-    transform: translateY(-2px);
+    transform: scale(0.96);
 }
 
-.service-btn img {
-    width: 18px;
-    filter: brightness(0) invert(1);
-}
-
-@media (max-width: 900px) {
-    .service-container {
-        flex-direction: column;
-        gap: 30px;
-    }
-    
-    .service-image img {
-        max-width: 100%;
-    }
-    
-    .service-header {
-        justify-content: flex-start;
-    }
-    
-    .service-footer {
-        justify-content: flex-start;
-    }
-    
-    .service-right-spacer {
-        display: none;
-    }
+.service-card__btn svg {
+    stroke: white;
 }
 
 @media (max-width: 768px) {
@@ -239,38 +175,37 @@
         font-size: 32px;
     }
     
-    .service-block {
-        padding: 40px 0;
+    .amenities-title p {
+        font-size: 16px;
     }
     
-    .service-title {
-        font-size: 24px;
+    .services-grid {
+        grid-template-columns: 1fr;
+        padding: 0 15px 40px;
+        gap: 20px;
     }
     
-    .service-price-value {
-        font-size: 24px;
+    .service-card {
+        padding: 20px;
+    }
+    
+    .service-card__title {
+        font-size: 20px;
+    }
+    
+    .service-card__price {
+        font-size: 20px;
     }
 }
 
-@media (max-width: 550px) {
-    .service-footer {
+@media (max-width: 480px) {
+    .service-card__footer {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
+        align-items: stretch;
     }
     
-    .service-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .service-btn {
-        width: 100%;
+    .service-card__btn {
         justify-content: center;
-    }
-    
-    .service-description {
-        padding: 15px;
     }
 }
 </style>
