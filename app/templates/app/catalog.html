@@ -110,34 +110,59 @@
         });
     }
 
-    // Обработчики кнопок (только через window.TechnoServiceCart)
+    // ЕДИНЫЙ ОБРАБОТЧИК ДЛЯ ВСЕХ КНОПОК
     document.querySelectorAll('.catalog-card__button').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            if (window.TechnoServiceCart && window.TechnoServiceCart.addFromCard) {
-                window.TechnoServiceCart.addFromCard(btn);
-                // Небольшая задержка, чтобы localStorage успел обновиться
-                setTimeout(() => {
-                    updateAllCartButtons();
-                }, 50);
+            
+            // Получаем данные из карточки
+            const card = btn.closest('.catalog-card');
+            const productId = btn.getAttribute('data-product-id');
+            const title = card.querySelector('.catalog-card__title').textContent;
+            const priceText = card.querySelector('.catalog-card__price-value').textContent;
+            const price = parseInt(priceText.replace(/\D/g, ''), 10);
+            const image = card.querySelector('.catalog-card__image').src;
+            
+            // Загружаем корзину
+            let cart = JSON.parse(localStorage.getItem('ts_cart') || '[]');
+            const existing = cart.find(item => item.id == productId);
+            
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    title: title,
+                    price: price,
+                    qty: 1,
+                    image: image,
+                    subtitle: 'Подписка'
+                });
             }
+            
+            // Сохраняем
+            localStorage.setItem('ts_cart', JSON.stringify(cart));
+            
+            // Обновляем счётчик в шапке
+            const counter = document.querySelector('[data-cart-count]');
+            if (counter) {
+                const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+                counter.textContent = totalCount;
+                if (totalCount > 0) {
+                    counter.classList.add('basket-btn__counter--visible');
+                }
+            }
+            
+            // Обновляем кнопку
+            const textSpan = btn.querySelector('.catalog-card__button-text');
+            const newQty = existing ? existing.qty + 1 : 1;
+            textSpan.textContent = `Добавлено! (${newQty})`;
+            btn.classList.add('btn-added');
         });
     });
     
     // Обновляем все кнопки при загрузке
     updateAllCartButtons();
-
-    // Стили для добавленной кнопки
-    const style = document.createElement('style');
-    style.textContent = `
-        .catalog-card__button.btn-added {
-            background: #009f35 !important;
-        }
-        .catalog-card__button.btn-added:hover {
-            background: #00a040 !important;
-        }
-    `;
-    document.head.appendChild(style);
 </script>
 {% endblock %}
