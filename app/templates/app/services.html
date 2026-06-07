@@ -34,11 +34,12 @@
                 <div class="service-footer">
                     {% if service.price and service.price > 0 %}
                     <div class="service-price">
-                        {{ "{:,}".format(service.price).replace(',', ' ') }} <span class="service-price-currency">₽</span>
+                        <span class="service-price-value">{{ "{:,}".format(service.price).replace(',', ' ') }}</span>
+                        <span class="service-price-currency">₽</span>
                     </div>
                     {% else %}
                     <div class="service-price service-price--request">
-                        Цена по запросу
+                        <span>Цена по запросу</span>
                     </div>
                     {% endif %}
                     <a href="/contacts.html#audit-form" class="service-btn">
@@ -123,36 +124,47 @@
     border-radius: 12px;
 }
 
+/* СТИЛИ ПО ТВОЕМУ ЗАПРОСУ */
 .service-description {
-    font-size: 16px;
-    color: #3a4a5c;
-    line-height: 1.6;
-    margin-bottom: 30px;
-}
-
-.service-footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 35px;
-    flex-wrap: wrap;
+    margin: 20px 0;
+    padding: 25px;
+    border: 2px solid #0a2463;
+    border-radius: 12px;
+    background: #fafafa;
+    line-height: 1.8;
+    white-space: pre-line;
+    text-align: left;
 }
 
 .service-price {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    padding: 4px 10px;
+    border: 2px solid #1e4c50;
+    border-radius: 12px;
+}
+
+.service-price-value {
     font-size: 32px;
     font-weight: 700;
     color: #0a2463;
 }
 
 .service-price-currency {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: 600;
+    color: #0a2463;
 }
 
 .service-price--request {
-    font-size: 18px;
-    font-weight: 500;
+    border-color: #8e9aaf;
+}
+
+.service-price--request span {
+    font-size: 16px;
     color: #8e9aaf;
+    font-weight: 500;
 }
 
 .service-btn {
@@ -210,7 +222,7 @@
         font-size: 24px;
     }
     
-    .service-price {
+    .service-price-value {
         font-size: 28px;
     }
 }
@@ -230,6 +242,10 @@
     .service-btn {
         width: 100%;
         justify-content: center;
+    }
+    
+    .service-description {
+        padding: 15px;
     }
 }
 </style>
