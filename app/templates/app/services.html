@@ -11,43 +11,45 @@
         </div>
     </section>
 
-    {% for service in services %}
-    <section class="service-row {% if loop.index is odd %}service-row--left{% else %}service-row--right{% endif %}">
-        <div class="container">
-            <div class="service-card">
-                <div class="service-card__image">
-                    <img src="{{ service.image_url or '/static/img/placeholder.png' }}" alt="{{ service.name }}">
-                </div>
-                <div class="service-card__content">
-                    <div class="service-card__header">
-                        <div class="service-card__icon">
-                            <img src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
-                        </div>
-                        <h2 class="service-card__title">{{ service.name }}</h2>
+    <div class="services-container">
+        {% for service in services %}
+        <section class="service-row {% if loop.index is odd %}service-row--left{% else %}service-row--right{% endif %}">
+            <div class="container">
+                <div class="service-card">
+                    <div class="service-card__image">
+                        <img src="{{ service.image_url or '/static/img/placeholder.png' }}" alt="{{ service.name }}">
                     </div>
-                    <div class="service-card__description">
-                        {{ service.description|truncate(300) if service.description else 'Нет описания' }}
-                    </div>
-                    <div class="service-card__footer">
-                        {% if service.price and service.price > 0 %}
-                        <div class="service-card__price">
-                            {{ "{:,}".format(service.price).replace(',', ' ') }} ₽
+                    <div class="service-card__content">
+                        <div class="service-card__header">
+                            <div class="service-card__icon">
+                                <img src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
+                            </div>
+                            <h2 class="service-card__title">{{ service.name }}</h2>
                         </div>
-                        {% else %}
-                        <div class="service-card__price service-card__price--request">
-                            Цена по запросу
+                        <div class="service-card__description">
+                            {{ service.description|truncate(300) if service.description else 'Нет описания' }}
                         </div>
-                        {% endif %}
-                        <a href="/contacts.html#audit-form" class="service-card__btn">
-                            <span>Заказать услугу</span>
-                            <img src="/static/img/svg/arrow-right.svg" alt="">
-                        </a>
+                        <div class="service-card__footer">
+                            {% if service.price and service.price > 0 %}
+                            <div class="service-card__price">
+                                {{ "{:,}".format(service.price).replace(',', ' ') }} ₽
+                            </div>
+                            {% else %}
+                            <div class="service-card__price service-card__price--request">
+                                Цена по запросу
+                            </div>
+                            {% endif %}
+                            <a href="/contacts.html#audit-form" class="service-card__btn">
+                                <span>Заказать услугу</span>
+                                <img src="/static/img/svg/arrow-right.svg" alt="">
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    {% endfor %}
+        </section>
+        {% endfor %}
+    </div>
 </div>
 
 <style>
@@ -69,11 +71,18 @@
     opacity: 0.9;
 }
 
-/* Горизонтальные карточки с анимацией */
+/* Контейнер с z-index контекстом */
+.services-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Горизонтальные карточки */
 .service-row {
     padding: 60px 0;
     border-bottom: 1px solid #eef2f6;
-    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
 }
 
 .service-row:last-child {
@@ -84,12 +93,9 @@
     display: flex;
     align-items: center;
     gap: 60px;
-    overflow: visible;
-    transition: transform 0.3s ease;
-}
-
-.service-row:hover {
-    transform: translateY(-4px);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
 }
 
 /* Чётные ряды — картинка справа */
@@ -101,7 +107,8 @@
     flex: 1;
     overflow: hidden;
     border-radius: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 1;
 }
 
 .service-card__image img {
@@ -113,13 +120,35 @@
     display: block;
 }
 
-.service-row:hover .service-card__image img {
-    transform: scale(1.03);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
-}
-
 .service-card__content {
     flex: 1;
+    position: relative;
+    z-index: 1;
+    background: white;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+/* АНИМАЦИЯ ПРИ НАВЕДЕНИИ */
+.service-row:hover {
+    z-index: 100;
+}
+
+.service-row:hover .service-card {
+    z-index: 100;
+}
+
+.service-row:hover .service-card__content {
+    z-index: 101;
+}
+
+.service-row:hover .service-card__image img {
+    transform: scale(1.03);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+}
+
+.service-row:hover .service-card__icon {
+    transform: scale(1.05);
 }
 
 .service-card__header {
@@ -139,10 +168,6 @@
     justify-content: center;
     flex-shrink: 0;
     transition: transform 0.2s ease;
-}
-
-.service-row:hover .service-card__icon {
-    transform: scale(1.05);
 }
 
 .service-card__icon img {
@@ -236,8 +261,13 @@
         font-size: 24px;
     }
     
+    /* Отключаем z-index анимацию на мобильных */
     .service-row:hover {
-        transform: translateY(0);
+        z-index: auto;
+    }
+    
+    .service-row:hover .service-card__image img {
+        transform: none;
     }
 }
 
