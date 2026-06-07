@@ -25,32 +25,25 @@
                 <h2 class="contacts-form__title">Получить бесплатный аудит</h2>
                 <div id="form-message" class="contacts-form__success" style="display:none;"></div>
                 <div id="form-error" class="contacts-form__error" style="display:none;"></div>
-                
                 <form id="audit-form-element" class="contacts-form__body" novalidate>
                     <label class="contacts-form__field">
-                        <span class="contacts-form__label">Ваше имя <span class="required-star">*</span></span>
+                        <span class="contacts-form__label">Ваше имя</span>
                         <input type="text" name="client_name" id="client_name" required>
-                        <div class="field-error" id="name-error"></div>
                     </label>
-
                     <label class="contacts-form__field">
                         <span class="contacts-form__label">Компания</span>
                         <input type="text" name="company" id="company">
                     </label>
-
                     <div class="contacts-form__row">
                         <label class="contacts-form__field contacts-form__field--half">
-                            <span class="contacts-form__label">Телефон <span class="required-star">*</span></span>
-                            <input type="tel" name="client_phone" id="client_phone" placeholder="+7 (___) ___-__-__" required>
-                            <div class="field-error" id="phone-error"></div>
+                            <span class="contacts-form__label">Телефон *</span>
+                            <input type="tel" name="client_phone" id="client_phone" required>
                         </label>
                         <label class="contacts-form__field contacts-form__field--half">
-                            <span class="contacts-form__label">Email <span class="required-star">*</span></span>
-                            <input type="email" name="client_email" id="client_email" placeholder="example@domain.com" required>
-                            <div class="field-error" id="email-error"></div>
+                            <span class="contacts-form__label">Email *</span>
+                            <input type="email" name="client_email" id="client_email" required>
                         </label>
                     </div>
-
                     <label class="contacts-form__field">
                         <span class="contacts-form__label">Интересующая услуга</span>
                         <select name="service" id="service">
@@ -61,7 +54,6 @@
                             <option value="Оборудование">Оборудование</option>
                         </select>
                     </label>
-
                     <label class="contacts-form__field">
                         <span class="contacts-form__label">Сообщение</span>
                         <textarea name="message" id="message" rows="3"></textarea>
@@ -75,9 +67,9 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="contacts-form__submit" id="submitBtn" disabled>Отправить заявку</button>
+                    <button type="submit" class="contacts-form__submit" id="submitBtn">Отправить заявку</button>
                     <p class="contacts-form__policy">Нажимая кнопку, вы соглашаетесь с 
-                        <a href="#" class="pp-trigger" id="pp-trigger">политикой конфиденциальности</a>
+                        <a href="#" id="policy-link">политикой конфиденциальности</a>
                     </p>
                 </form>
             </section>
@@ -139,27 +131,6 @@
 </div>
 
 <style>
-.required-star {
-    color: #ff4444;
-    margin-left: 4px;
-}
-.field-error {
-    color: #ff4444;
-    font-size: 12px;
-    margin-top: 4px;
-    display: none;
-}
-input:invalid, 
-select:invalid,
-textarea:invalid {
-    border-color: #ff4444;
-}
-input:focus:invalid,
-select:focus:invalid,
-textarea:focus:invalid {
-    border-color: #ff4444;
-    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
-}
 .contacts-form__submit:disabled {
     background: #cccccc;
     cursor: not-allowed;
@@ -172,7 +143,7 @@ textarea:focus:invalid {
 </style>
 
 <script>
-// --- Загрузка политики и согласия (как было) ---
+// Загрузка политики
 async function loadPolicy() {
     const res = await fetch('/api/privacy-policy');
     const data = await res.json();
@@ -180,6 +151,7 @@ async function loadPolicy() {
     document.getElementById('policy-content').innerHTML = data.content || 'Нет данных';
 }
 
+// Загрузка текста согласия
 async function loadConsent() {
     try {
         const res = await fetch('/api/consent-text');
@@ -233,7 +205,7 @@ document.getElementById('consent-modal').addEventListener('click', (e) => {
     }
 });
 
-// --- ОСНОВНАЯ ЛОГИКА ФОРМЫ ---
+// ========== ВАЛИДАЦИЯ ФОРМЫ ==========
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('audit-form-element');
     const submitBtn = document.getElementById('submitBtn');
@@ -241,136 +213,82 @@ document.addEventListener('DOMContentLoaded', function() {
     const phoneInput = document.getElementById('client_phone');
     const emailInput = document.getElementById('client_email');
     const nameInput = document.getElementById('client_name');
-
-    const nameError = document.getElementById('name-error');
-    const phoneError = document.getElementById('phone-error');
-    const emailError = document.getElementById('email-error');
     
     const successDiv = document.getElementById('form-message');
     const errorDiv = document.getElementById('form-error');
 
     loadConsent();
 
-    // --- 1. Валидация телефона (только цифры и +) ---
-    function validatePhone() {
-        let value = phoneInput.value;
-        let isValid = true;
-        let errorMsg = '';
-        
-        // Удаляем все символы, кроме цифр и +
-        let cleaned = value.replace(/[^\d+]/g, '');
-        if (value !== cleaned) {
+    // Вспомогательная функция для показа ошибок
+    function showError(message) {
+        errorDiv.innerHTML = message;
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    // Валидация телефона (только цифры и +)
+    function isPhoneValid() {
+        const value = phoneInput.value.trim();
+        if (!value) return false;
+        // Разрешаем только цифры и знак +
+        const cleaned = value.replace(/[^\d+]/g, '');
+        if (cleaned !== value) {
             phoneInput.value = cleaned;
-            value = cleaned;
         }
-        
-        if (!value) {
-            isValid = false;
-            errorMsg = 'Телефон обязателен для заполнения';
-        } else if (value.length < 10) {
-            isValid = false;
-            errorMsg = 'Введите корректный номер телефона';
-        }
-        
-        if (!isValid) {
-            phoneError.textContent = errorMsg;
-            phoneError.style.display = 'block';
-            phoneInput.classList.add('invalid');
-        } else {
-            phoneError.style.display = 'none';
-            phoneInput.classList.remove('invalid');
-        }
-        return isValid;
+        return cleaned.length >= 10;
     }
 
-    // --- 2. Валидация email (обязательно @) ---
-    function validateEmail() {
-        const value = emailInput.value;
-        let isValid = true;
-        let errorMsg = '';
-        
-        if (!value) {
-            isValid = false;
-            errorMsg = 'Email обязателен для заполнения';
-        } else if (!value.includes('@')) {
-            isValid = false;
-            errorMsg = 'Email должен содержать символ @';
-        }
-        
-        if (!isValid) {
-            emailError.textContent = errorMsg;
-            emailError.style.display = 'block';
-            emailInput.classList.add('invalid');
-        } else {
-            emailError.style.display = 'none';
-            emailInput.classList.remove('invalid');
-        }
-        return isValid;
+    // Валидация email (обязательно @)
+    function isEmailValid() {
+        const value = emailInput.value.trim();
+        if (!value) return false;
+        return value.includes('@');
     }
 
-    // --- 3. Валидация имени (обязательно) ---
-    function validateName() {
-        const value = nameInput.value.trim();
-        let isValid = true;
-        
-        if (!value) {
-            isValid = false;
-            nameError.textContent = 'Имя обязательно для заполнения';
-            nameError.style.display = 'block';
-            nameInput.classList.add('invalid');
-        } else {
-            nameError.style.display = 'none';
-            nameInput.classList.remove('invalid');
-        }
-        return isValid;
+    // Валидация имени
+    function isNameValid() {
+        return nameInput.value.trim().length > 0;
     }
 
-    // --- 4. Общая проверка всех полей и чекбокса ---
-    function checkFormValidity() {
-        const isNameValid = validateName();
-        const isPhoneValid = validatePhone();
-        const isEmailValid = validateEmail();
-        const isConsentChecked = consentCheckbox.checked;
-        
-        // Кнопка активна ТОЛЬКО если все поля валидны И чекбокс отмечен
-        if (isNameValid && isPhoneValid && isEmailValid && isConsentChecked) {
-            submitBtn.disabled = false;
-        } else {
-            submitBtn.disabled = true;
-        }
+    // Обновление состояния кнопки
+    function updateButtonState() {
+        const isValid = isNameValid() && isPhoneValid() && isEmailValid() && consentCheckbox.checked;
+        submitBtn.disabled = !isValid;
     }
 
-    // --- Вешаем обработчики на все поля и чекбокс ---
-    nameInput.addEventListener('input', checkFormValidity);
-    phoneInput.addEventListener('input', function() {
-        validatePhone();
-        checkFormValidity();
-    });
-    emailInput.addEventListener('input', function() {
-        validateEmail();
-        checkFormValidity();
-    });
-    consentCheckbox.addEventListener('change', checkFormValidity);
-    
-    // Первоначальная проверка при загрузке
-    checkFormValidity();
+    // Обработчики событий
+    nameInput.addEventListener('input', updateButtonState);
+    phoneInput.addEventListener('input', updateButtonState);
+    emailInput.addEventListener('input', updateButtonState);
+    consentCheckbox.addEventListener('change', updateButtonState);
 
-    // --- ОТПРАВКА ФОРМЫ (только если кнопка активна) ---
+    // Первоначальное состояние
+    updateButtonState();
+
+    // Отправка формы
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Дополнительная проверка на случай, если JS где-то сломался
+        // Финальная проверка перед отправкой
         if (!consentCheckbox.checked) {
-            errorDiv.innerHTML = '❌ Подтвердите согласие на обработку персональных данных';
-            errorDiv.style.display = 'block';
-            setTimeout(() => errorDiv.style.display = 'none', 5000);
+            showError('❌ Подтвердите согласие на обработку персональных данных');
             return;
         }
         
-        if (!validateName() || !validatePhone() || !validateEmail()) {
-            errorDiv.innerHTML = '❌ Пожалуйста, заполните все обязательные поля корректно';
-            errorDiv.style.display = 'block';
-            setTimeout(() => errorDiv.style.display = 'none', 5000);
+        if (!isNameValid()) {
+            showError('❌ Пожалуйста, укажите ваше имя');
+            return;
+        }
+        
+        if (!isPhoneValid()) {
+            showError('❌ Пожалуйста, укажите корректный номер телефона');
+            return;
+        }
+        
+        if (!isEmailValid()) {
+            showError('❌ Пожалуйста, укажите корректный email (должен содержать @)');
             return;
         }
         
@@ -409,21 +327,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 successDiv.style.display = 'block';
                 form.reset();
                 consentCheckbox.checked = false;
-                // Обновить состояние кнопки после сброса
-                checkFormValidity();
+                updateButtonState();
                 setTimeout(() => successDiv.style.display = 'none', 5000);
             } else {
-                errorDiv.innerHTML = `❌ Ошибка: ${result.message || 'Что-то пошло не так'}`;
-                errorDiv.style.display = 'block';
+                showError(`❌ Ошибка: ${result.message || 'Что-то пошло не так'}`);
             }
         } catch (err) {
-            errorDiv.innerHTML = '❌ Ошибка соединения. Попробуйте позже.';
-            errorDiv.style.display = 'block';
+            showError('❌ Ошибка соединения. Попробуйте позже.');
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
-            // Повторно проверить валидность формы после отправки
-            checkFormValidity();
+            updateButtonState();
         }
     });
 });
