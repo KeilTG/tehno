@@ -26,26 +26,28 @@
                 </div>
             </div>
             <div class="service-right">
-                {% if service.description %}
-                <div class="service-description">
-                    {{ service.description }}
-                </div>
-                {% endif %}
-                <div class="service-footer">
-                    {% if service.price and service.price > 0 %}
-                    <div class="service-price">
-                        <span class="service-price-value">{{ "{:,}".format(service.price).replace(',', ' ') }}</span>
-                        <span class="service-price-currency">₽</span>
-                    </div>
-                    {% else %}
-                    <div class="service-price service-price--request">
-                        <span>Цена по запросу</span>
+                <div class="service-right-inner">
+                    {% if service.description %}
+                    <div class="service-description">
+                        {{ service.description }}
                     </div>
                     {% endif %}
-                    <a href="/contacts.html#audit-form" class="service-btn">
-                        <span>Заказать услугу</span>
-                        <img src="/static/img/svg/arrow-right.svg" alt="">
-                    </a>
+                    <div class="service-footer">
+                        {% if service.price and service.price > 0 %}
+                        <div class="service-price">
+                            <span class="service-price-value">{{ "{:,}".format(service.price).replace(',', ' ') }}</span>
+                            <span class="service-price-currency">₽</span>
+                        </div>
+                        {% else %}
+                        <div class="service-price service-price--request">
+                            <span>Цена по запросу</span>
+                        </div>
+                        {% endif %}
+                        <a href="/contacts.html#audit-form" class="service-btn">
+                            <span>Заказать услугу</span>
+                            <img src="/static/img/svg/arrow-right.svg" alt="">
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,7 +86,7 @@
 
 .service-container {
     display: flex;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 60px;
     max-width: 1200px;
     margin: 0 auto;
@@ -93,10 +95,17 @@
 
 .service-left {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .service-right {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-right-inner {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -121,6 +130,12 @@
     margin: 0;
 }
 
+.service-image {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+}
+
 .service-image img {
     width: 100%;
     max-width: 450px;
@@ -130,7 +145,6 @@
 
 .service-description {
     flex: 1;
-    margin-top: 0;
     margin-bottom: 30px;
     padding: 20px 25px;
     border: 2px solid #00c2d2;
@@ -226,8 +240,8 @@
         justify-content: flex-start;
     }
     
-    .service-right {
-        height: auto;
+    .service-image {
+        flex: none;
     }
     
     .service-description {
