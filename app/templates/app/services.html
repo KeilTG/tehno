@@ -11,51 +11,200 @@
         </div>
     </section>
 
-    {% for service in services %}
-    <section class="service-section" data-service-id="{{ service.id }}">
-        <div class="container service-row {% if loop.index is even %}service-row--reverse{% endif %}">
-
-            <div class="service-info">
-                <img class="service-icon" src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
-
-                <h2 class="amenities-text_h2">{{ service.name }}</h2>
-
-                            <div class="service-image-wrap">
-                                <img src="{{ service.image_url or '/static/img/Image-one.png' }}" class="service-image" alt="{{ service.name }}">
-                            </div>
-
-                {% if service.description %}
-                <div class="service-description">
-                    <div class="service-description__text">{{ service.description }}</div>
-                </div>
-                {% endif %}
-
+    <div class="services-grid">
+        {% for service in services %}
+        <div class="service-card" data-service-id="{{ service.id }}">
+            <div class="service-card__icon">
+                <img src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
+            </div>
+            <h3 class="service-card__title">{{ service.name }}</h3>
+            <div class="service-card__description">
+                {{ service.description|truncate(120) }}
+            </div>
+            <div class="service-card__footer">
                 {% if service.price and service.price > 0 %}
-                <div class="service-price-wrap">
-                    <div class="service-price">
-                        <span class="service-price__value">{{ service.price }}</span>
-                        <span class="service-price__currency">₽</span>
-                        <span class="service-price__unit">/ услуга</span>
-                    </div>
+                <div class="service-card__price">
+                    {{ "{:,}".format(service.price).replace(',', ' ') }} ₽
                 </div>
                 {% else %}
-                <div class="service-price-wrap">
-                    <div class="service-price service-price--request">
-                        <span class="service-price__request-label">Цена по запросу</span>
-                    </div>
+                <div class="service-card__price service-card__price--request">
+                    Цена по запросу
                 </div>
                 {% endif %}
-
-                <a href="/contacts.html#audit-form" class="service-order-btn">
-                    <p>Заказать услугу</p>
-                    <img src="/static/img/svg/arrow-right.svg" alt="">
+                <a href="/contacts.html#audit-form" class="service-card__btn">
+                    <span>Заказать</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </a>
             </div>
-
-
-
         </div>
-    </section>
-    {% endfor %}
+        {% endfor %}
+    </div>
 </div>
+
+<style>
+.amenities-title {
+    background: linear-gradient(135deg, #0a2463 0%, #1e3a8a 100%);
+    padding: 60px 0;
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.amenities-title h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.amenities-title p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 0 20px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    transition: all 0.3s ease;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
+    border-color: transparent;
+}
+
+.service-card__icon {
+    width: 60px;
+    height: 60px;
+    background: #eef2ff;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.service-card__icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.service-card__title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0a2463;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.service-card__description {
+    font-size: 14px;
+    color: #5a6874;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    min-height: 65px;
+}
+
+.service-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: auto;
+}
+
+.service-card__price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #007aff;
+}
+
+.service-card__price--request {
+    font-size: 16px;
+    color: #8e9aaf;
+    font-weight: 500;
+}
+
+.service-card__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #007aff;
+    color: white;
+    border-radius: 40px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.service-card__btn:hover {
+    background: #005fc1;
+    transform: scale(0.96);
+}
+
+.service-card__btn svg {
+    stroke: white;
+}
+
+@media (max-width: 768px) {
+    .amenities-title {
+        padding: 40px 0;
+    }
+    
+    .amenities-title h1 {
+        font-size: 32px;
+    }
+    
+    .amenities-title p {
+        font-size: 16px;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+        padding: 0 15px 40px;
+        gap: 20px;
+    }
+    
+    .service-card {
+        padding: 20px;
+    }
+    
+    .service-card__title {
+        font-size: 20px;
+    }
+    
+    .service-card__price {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .service-card__footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .service-card__btn {
+        justify-content: center;
+    }
+}
+</style>
 {% endblock %}
