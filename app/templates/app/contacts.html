@@ -28,20 +28,20 @@
                 <form id="audit-form-element" class="contacts-form__body" novalidate>
                     <label class="contacts-form__field">
                         <span class="contacts-form__label">Ваше имя</span>
-                        <input type="text" name="client_name" id="client_name" required>
+                        <input type="text" name="client_name" id="client_name" placeholder="Иван Иванов" required>
                     </label>
                     <label class="contacts-form__field">
                         <span class="contacts-form__label">Компания</span>
-                        <input type="text" name="company" id="company">
+                        <input type="text" name="company" id="company" placeholder="Название компании">
                     </label>
                     <div class="contacts-form__row">
                         <label class="contacts-form__field contacts-form__field--half">
                             <span class="contacts-form__label">Телефон *</span>
-                            <input type="tel" name="client_phone" id="client_phone" required>
+                            <input type="tel" name="client_phone" id="client_phone" placeholder="+7 (___) ___-__-__" required>
                         </label>
                         <label class="contacts-form__field contacts-form__field--half">
                             <span class="contacts-form__label">Email *</span>
-                            <input type="email" name="client_email" id="client_email" required>
+                            <input type="email" name="client_email" id="client_email" placeholder="example@mail.ru" required>
                         </label>
                     </div>
                     <label class="contacts-form__field">
@@ -56,7 +56,7 @@
                     </label>
                     <label class="contacts-form__field">
                         <span class="contacts-form__label">Сообщение</span>
-                        <textarea name="message" id="message" rows="3"></textarea>
+                        <textarea name="message" id="message" rows="3" placeholder="Ваше сообщение..."></textarea>
                     </label>
 
                     <!-- ЧЕКБОКС С СОГЛАСИЕМ -->
@@ -131,6 +131,70 @@
 </div>
 
 <style>
+/* Стили для полей ввода — скруглённые квадраты, прозрачный фон */
+input, select, textarea {
+    border: 1px solid #D0D5DD;
+    border-radius: 6px;
+    padding: 10px 14px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #185FA5;
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.15);
+}
+
+.contacts-form__success {
+    background: #d4edda;
+    color: #155724;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.contacts-form__error {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.consent-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+}
+
+.consent-checkbox input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.consent-checkbox span {
+    flex: 1;
+}
+
+.consent-link {
+    color: #007aff;
+    text-decoration: none;
+}
+
+.consent-link:hover {
+    text-decoration: underline;
+}
+
 .contacts-form__submit:disabled {
     background: #cccccc;
     cursor: not-allowed;
@@ -139,6 +203,41 @@
 .contacts-form__submit:disabled:hover {
     background: #cccccc;
     transform: none;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-container {
+    background: white;
+    max-width: 600px;
+    width: 90%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+}
+.modal-body {
+    padding: 20px;
 }
 </style>
 
@@ -217,10 +316,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const successDiv = document.getElementById('form-message');
     const errorDiv = document.getElementById('form-error');
 
-    // Загружаем текст согласия
     loadConsent();
 
-    // Вспомогательная функция для показа ошибок
     function showError(message) {
         errorDiv.innerHTML = message;
         errorDiv.style.display = 'block';
@@ -229,11 +326,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
 
-    // Валидация телефона (только цифры и +)
     function isPhoneValid() {
         const value = phoneInput.value.trim();
         if (!value) return false;
-        // Разрешаем только цифры и знак +
         const cleaned = value.replace(/[^\d+]/g, '');
         if (cleaned !== value) {
             phoneInput.value = cleaned;
@@ -241,48 +336,34 @@ document.addEventListener('DOMContentLoaded', function() {
         return cleaned.length >= 10;
     }
 
-    // Валидация email (обязательно @)
     function isEmailValid() {
         const value = emailInput.value.trim();
         if (!value) return false;
         return value.includes('@');
     }
 
-    // Валидация имени
     function isNameValid() {
         return nameInput.value.trim().length > 0;
     }
 
-    // Обновление состояния кнопки
     function updateButtonState() {
-        const isNameOk = isNameValid();
-        const isPhoneOk = isPhoneValid();
-        const isEmailOk = isEmailValid();
-        const isConsentOk = consentCheckbox.checked;
-        
-        console.log('Проверка:', { isNameOk, isPhoneOk, isEmailOk, isConsentOk });
-        
-        if (isNameOk && isPhoneOk && isEmailOk && isConsentOk) {
+        if (isNameValid() && isPhoneValid() && isEmailValid() && consentCheckbox.checked) {
             submitBtn.disabled = false;
         } else {
             submitBtn.disabled = true;
         }
     }
 
-    // Обработчики событий
     nameInput.addEventListener('input', updateButtonState);
     phoneInput.addEventListener('input', updateButtonState);
     emailInput.addEventListener('input', updateButtonState);
     consentCheckbox.addEventListener('change', updateButtonState);
 
-    // Первоначальное состояние
     updateButtonState();
 
-    // Отправка формы
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        // Финальная проверка перед отправкой
         if (!consentCheckbox.checked) {
             showError('❌ Подтвердите согласие на обработку персональных данных');
             return;
