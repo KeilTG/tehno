@@ -11,51 +11,285 @@
         </div>
     </section>
 
-    {% for service in services %}
-    <section class="service-section" data-service-id="{{ service.id }}">
-        <div class="container service-row {% if loop.index is even %}service-row--reverse{% endif %}">
-
-            <div class="service-info">
-                <img class="service-icon" src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
-
-                <h2 class="amenities-text_h2">{{ service.name }}</h2>
-
-                            <div class="service-image-wrap">
-                                <img src="{{ service.image_url or '/static/img/Image-one.png' }}" class="service-image" alt="{{ service.name }}">
+    <div class="services-container">
+        {% for service in services %}
+        <section class="service-row {% if loop.index is odd %}service-row--left{% else %}service-row--right{% endif %}">
+            <div class="container">
+                <div class="service-card">
+                    <div class="service-card__image">
+                        <img src="{{ service.image_url or '/static/img/placeholder.png' }}" alt="{{ service.name }}">
+                    </div>
+                    <div class="service-card__content">
+                        <div class="service-card__header">
+                            <div class="service-card__icon">
+                                <img src="{{ service.icon or '/static/img/svg/first_icon.svg' }}" alt="">
                             </div>
-
-                {% if service.description %}
-                <div class="service-description">
-                    <div class="service-description__text">{{ service.description }}</div>
-                </div>
-                {% endif %}
-
-                {% if service.price and service.price > 0 %}
-                <div class="service-price-wrap">
-                    <div class="service-price">
-                        <span class="service-price__value">{{ service.price }}</span>
-                        <span class="service-price__currency">₽</span>
-                        <span class="service-price__unit">/ услуга</span>
+                            <h2 class="service-card__title">{{ service.name }}</h2>
+                        </div>
+                        <div class="service-card__description">
+                            {{ service.description|truncate(300) if service.description else 'Нет описания' }}
+                        </div>
+                        <div class="service-card__footer">
+                            {% if service.price and service.price > 0 %}
+                            <div class="service-card__price">
+                                {{ "{:,}".format(service.price).replace(',', ' ') }} ₽
+                            </div>
+                            {% else %}
+                            <div class="service-card__price service-card__price--request">
+                                Цена по запросу
+                            </div>
+                            {% endif %}
+                            <a href="/contacts.html#audit-form" class="service-card__btn">
+                                <span>Заказать услугу</span>
+                                <img src="/static/img/svg/arrow-right.svg" alt="">
+                            </a>
+                        </div>
                     </div>
                 </div>
-                {% else %}
-                <div class="service-price-wrap">
-                    <div class="service-price service-price--request">
-                        <span class="service-price__request-label">Цена по запросу</span>
-                    </div>
-                </div>
-                {% endif %}
-
-                <a href="/contacts.html#audit-form" class="service-order-btn">
-                    <p>Заказать услугу</p>
-                    <img src="/static/img/svg/arrow-right.svg" alt="">
-                </a>
             </div>
-
-
-
-        </div>
-    </section>
-    {% endfor %}
+        </section>
+        {% endfor %}
+    </div>
 </div>
+
+<style>
+.amenities-title {
+    background: linear-gradient(135deg, #0a2463 0%, #1e3a8a 100%);
+    padding: 60px 0;
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.amenities-title h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.amenities-title p {
+    font-size: 18px;
+    opacity: 0.9;
+}
+
+/* Контейнер с z-index контекстом */
+.services-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Горизонтальные карточки */
+.service-row {
+    padding: 60px 0;
+    border-bottom: 1px solid #eef2f6;
+    position: relative;
+    z-index: 1;
+}
+
+.service-row:last-child {
+    border-bottom: none;
+}
+
+.service-card {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+/* Чётные ряды — картинка справа */
+.service-row--right .service-card {
+    flex-direction: row-reverse;
+}
+
+.service-card__image {
+    flex: 1;
+    overflow: hidden;
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.service-card__image img {
+    width: 100%;
+    max-width: 450px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.4s ease, box-shadow 0.3s ease;
+    display: block;
+}
+
+.service-card__content {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    background: white;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+/* АНИМАЦИЯ ПРИ НАВЕДЕНИИ */
+.service-row:hover {
+    z-index: 100;
+}
+
+.service-row:hover .service-card {
+    z-index: 100;
+}
+
+.service-row:hover .service-card__content {
+    z-index: 101;
+}
+
+.service-row:hover .service-card__image img {
+    transform: scale(1.03);
+    box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+}
+
+.service-row:hover .service-card__icon {
+    transform: scale(1.05);
+}
+
+.service-card__header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.service-card__icon {
+    width: 55px;
+    height: 55px;
+    background: #eef2ff;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.service-card__icon img {
+    width: 32px;
+    height: 32px;
+}
+
+.service-card__title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0a2463;
+    margin: 0;
+}
+
+.service-card__description {
+    font-size: 16px;
+    color: #5a6874;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.service-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.service-card__price {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0a2463;
+}
+
+.service-card__price--request {
+    font-size: 18px;
+    color: #8e9aaf;
+    font-weight: 500;
+}
+
+.service-card__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #007aff;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 40px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.service-card__btn:hover {
+    background: #005fc1;
+    transform: translateY(-2px);
+}
+
+.service-card__btn img {
+    width: 18px;
+    filter: brightness(0) invert(1);
+}
+
+@media (max-width: 900px) {
+    .service-card {
+        flex-direction: column !important;
+        text-align: center;
+        gap: 30px;
+    }
+    
+    .service-card__header {
+        justify-content: center;
+    }
+    
+    .service-card__footer {
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    .service-card__image img {
+        max-width: 100%;
+    }
+    
+    .service-card__title {
+        font-size: 24px;
+    }
+    
+    .service-card__price {
+        font-size: 24px;
+    }
+    
+    /* Отключаем z-index анимацию на мобильных */
+    .service-row:hover {
+        z-index: auto;
+    }
+    
+    .service-row:hover .service-card__image img {
+        transform: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .amenities-title {
+        padding: 40px 0;
+    }
+    
+    .amenities-title h1 {
+        font-size: 32px;
+    }
+    
+    .service-row {
+        padding: 40px 0;
+    }
+}
+
+@media (max-width: 550px) {
+    .service-card__btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
 {% endblock %}

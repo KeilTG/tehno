@@ -214,11 +214,5 @@ document.addEventListener('DOMContentLoaded', function () {
         updateCartCounter();
     });
 
-    document.addEventListener('click', function (e) {
-        const button = e.target.closest('.catalog-card__button');
-        if (!button) return;
-        addItemFromCard(button);
-    });
-
     updateCartCounter();
 });
