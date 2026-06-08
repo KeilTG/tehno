@@ -216,10 +216,3 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateCartCounter();
 });
-
-// ========== ЭТОТ БЛОК НУЖНО УДАЛИТЬ ИЛИ ЗАКОММЕНТИРОВАТЬ ==========
-// document.addEventListener('click', function (e) {
-//     const button = e.target.closest('.catalog-card__button');
-//     if (!button) return;
-//     addItemFromCard(button);
-// });

@@ -187,6 +187,7 @@
 .service-card {
   background: white;
   padding: 32px;
+  margin: 20px 0 20px 0;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   text-align: center;
