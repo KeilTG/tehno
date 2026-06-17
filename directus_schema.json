@@ -1,4 +1,6 @@
 {
+  "version": 1,
+  "directus": "11.17.0",
   "collections": [
     {
       "collection": "content_pages",
@@ -26,21 +28,20 @@
         {"field": "is_active", "type": "boolean"}
       ]
     },
-    
     {
-  "collection": "services",
-  "schema": {"name": "services"},
-  "fields": [
-    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
-    {"field": "category_id", "type": "integer"},
-    {"field": "name", "type": "string"},
-    {"field": "description", "type": "text", "schema": {"nullable": true}},
-    {"field": "icon", "type": "string", "schema": {"nullable": true}},
-    {"field": "image_url", "type": "string", "schema": {"nullable": true}},
-    {"field": "price", "type": "float", "schema": {"nullable": true}},
-    {"field": "position", "type": "integer", "schema": {"default_value": 0, "nullable": true}}
-  ]
-},
+      "collection": "services",
+      "schema": {"name": "services"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "category_id", "type": "integer"},
+        {"field": "name", "type": "string"},
+        {"field": "description", "type": "text", "schema": {"nullable": true}},
+        {"field": "icon", "type": "string", "schema": {"nullable": true}},
+        {"field": "image_url", "type": "string", "schema": {"nullable": true}},
+        {"field": "price", "type": "float", "schema": {"nullable": true}},
+        {"field": "position", "type": "integer", "schema": {"default_value": 0, "nullable": true}}
+      ]
+    },
     {
       "collection": "contacts",
       "schema": {"name": "contacts"},
@@ -102,66 +103,66 @@
       ]
     },
     {
-  "collection": "catalog_categories",
-  "schema": {"name": "catalog_categories"},
-  "fields": [
-    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
-    {"field": "name", "type": "string"},
-    {"field": "description", "type": "text", "schema": {"nullable": true}},
-    {"field": "position", "type": "integer", "schema": {"default_value": 0}}
-  ]
-},
-{
-  "collection": "catalog_items",
-  "schema": {"name": "catalog_items"},
-  "fields": [
-    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
-    {"field": "category_id", "type": "integer"},
-    {"field": "name", "type": "string"},
-    {"field": "description", "type": "text", "schema": {"nullable": true}},
-    {"field": "price", "type": "float"},
-    {"field": "image_url", "type": "string", "schema": {"nullable": true}},
-    {"field": "position", "type": "integer", "schema": {"default_value": 0}}
-  ]
-},
-{
-  "collection": "about_content",
-  "schema": {"name": "about_content"},
-  "fields": [
-    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
-    {"field": "title", "type": "string", "schema": {"nullable": true}},
-    {"field": "content", "type": "text", "schema": {"nullable": true}},
-    {"field": "image_url", "type": "string", "schema": {"nullable": true}},
-    {"field": "updated_at", "type": "timestamp", "schema": {"nullable": true}}
-  ]
-},
-{
-  "collection": "cases",
-  "schema": {"name": "cases"},
-  "fields": [
-    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
-    {"field": "client", "type": "string"},
-    {"field": "industry", "type": "string", "schema": {"nullable": true}},
-    {"field": "employees", "type": "string", "schema": {"nullable": true}},
-    {"field": "challenge", "type": "text", "schema": {"nullable": true}},
-    {"field": "solution", "type": "text", "schema": {"nullable": true}},
-    {"field": "results", "type": "json", "schema": {"nullable": true}},
-    {"field": "quote_text", "type": "text", "schema": {"nullable": true}},
-    {"field": "quote_author", "type": "string", "schema": {"nullable": true}},
-    {"field": "quote_role", "type": "string", "schema": {"nullable": true}},
-    {"field": "image_url", "type": "string", "schema": {"nullable": true}},
-    {"field": "position", "type": "integer", "schema": {"default_value": 0}}
-  ]
-},
-{
-  "collection": "privacy_policy",
-  "schema": {"name": "privacy_policy"},
-  "fields": [
-    {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
-    {"field": "title", "type": "string"},
-    {"field": "content", "type": "text"},
-    {"field": "updated_at", "type": "timestamp", "schema": {"nullable": true}}
-  ]
-}
+      "collection": "catalog_categories",
+      "schema": {"name": "catalog_categories"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "name", "type": "string"},
+        {"field": "description", "type": "text", "schema": {"nullable": true}},
+        {"field": "position", "type": "integer", "schema": {"default_value": 0}}
+      ]
+    },
+    {
+      "collection": "catalog_items",
+      "schema": {"name": "catalog_items"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "category_id", "type": "integer"},
+        {"field": "name", "type": "string"},
+        {"field": "description", "type": "text", "schema": {"nullable": true}},
+        {"field": "price", "type": "float"},
+        {"field": "image_url", "type": "string", "schema": {"nullable": true}},
+        {"field": "position", "type": "integer", "schema": {"default_value": 0}}
+      ]
+    },
+    {
+      "collection": "about_content",
+      "schema": {"name": "about_content"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "title", "type": "string", "schema": {"nullable": true}},
+        {"field": "content", "type": "text", "schema": {"nullable": true}},
+        {"field": "image_url", "type": "string", "schema": {"nullable": true}},
+        {"field": "updated_at", "type": "timestamp", "schema": {"nullable": true}}
+      ]
+    },
+    {
+      "collection": "cases",
+      "schema": {"name": "cases"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "client", "type": "string"},
+        {"field": "industry", "type": "string", "schema": {"nullable": true}},
+        {"field": "employees", "type": "string", "schema": {"nullable": true}},
+        {"field": "challenge", "type": "text", "schema": {"nullable": true}},
+        {"field": "solution", "type": "text", "schema": {"nullable": true}},
+        {"field": "results", "type": "json", "schema": {"nullable": true}},
+        {"field": "quote_text", "type": "text", "schema": {"nullable": true}},
+        {"field": "quote_author", "type": "string", "schema": {"nullable": true}},
+        {"field": "quote_role", "type": "string", "schema": {"nullable": true}},
+        {"field": "image_url", "type": "string", "schema": {"nullable": true}},
+        {"field": "position", "type": "integer", "schema": {"default_value": 0}}
+      ]
+    },
+    {
+      "collection": "privacy_policy",
+      "schema": {"name": "privacy_policy"},
+      "fields": [
+        {"field": "id", "type": "integer", "schema": {"is_primary_key": true}},
+        {"field": "title", "type": "string"},
+        {"field": "content", "type": "text"},
+        {"field": "updated_at", "type": "timestamp", "schema": {"nullable": true}}
+      ]
+    }
   ]
 }
