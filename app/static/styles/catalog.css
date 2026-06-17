@@ -82,6 +82,7 @@
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 30px;
     margin-top: 40px;
+    padding-bottom: 30px;
 }
 
 .catalog-card{
@@ -556,4 +557,163 @@
     }
 }
 
+/* ========== ДОПОЛНИТЕЛЬНЫЙ АДАПТИВ ДЛЯ КАТАЛОГА ========== */
 
+/* Планшеты */
+@media (max-width: 768px) {
+    .catalog-card__footer {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 12px;
+    }
+    
+    .catalog-card__price {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    
+    .catalog-card__price-value {
+        font-size: 22px;
+    }
+    
+    .catalog-card__price-period {
+        font-size: 12px;
+    }
+    
+    .catalog-card__button {
+        width: auto;
+        min-width: 120px;
+        padding: 8px 16px;
+    }
+    
+    .catalog-card__button-text {
+        font-size: 13px;
+        white-space: nowrap;
+    }
+    
+    .catalog-card__content {
+        padding: 16px;
+    }
+    
+    .catalog-card__title {
+        font-size: 16px;
+        line-height: 1.4;
+    }
+    
+    .catalog-card__description {
+        font-size: 13px;
+        line-height: 1.45;
+        margin-bottom: 12px;
+    }
+}
+
+/* Мобильные телефоны (до 550px) */
+@media (max-width: 550px) {
+    .catalog-card__footer {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px;
+    }
+    
+    .catalog-card__price {
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .catalog-card__price-value {
+        font-size: 22px;
+    }
+    
+    .catalog-card__price-period {
+        font-size: 13px;
+    }
+    
+    .catalog-card__button {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 16px;
+    }
+    
+    .catalog-card__button-text {
+        white-space: nowrap;
+    }
+    
+    .catalog-card__content {
+        padding: 14px;
+    }
+    
+    .catalog-card__title {
+        font-size: 15px;
+    }
+    
+    .catalog-card__description {
+        font-size: 12px;
+        margin-bottom: 12px;
+    }
+}
+
+/* Очень маленькие телефоны (до 400px) */
+@media (max-width: 400px) {
+    .catalog-card__price-value {
+        font-size: 20px;
+    }
+    
+    .catalog-card__price-period {
+        font-size: 11px;
+    }
+    
+    .catalog-card__button-text {
+        font-size: 12px;
+        white-space: normal;
+        text-align: center;
+    }
+    
+    .catalog-card__button {
+        padding: 8px 12px;
+    }
+    
+    .catalog-tab {
+        width: auto;
+        padding: 0 16px;
+        margin-right: 10px;
+    }
+    
+    .catalog-tab p {
+        font-size: 14px;
+        white-space: nowrap;
+    }
+}
+
+/* Карточка модалки — адаптив */
+@media (max-width: 550px) {
+    .catalog-modal__bottom {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .catalog-modal__bottom-buttons {
+        justify-content: space-between;
+    }
+    
+    .catalog-modal__btn-primary,
+    .catalog-modal__btn-secondary {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+/* Запрещаем схлопывание и обрезание текста */
+.catalog-card__title,
+.catalog-card__description,
+.catalog-card__price-value,
+.catalog-card__price-period,
+.catalog-card__button-text {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.catalog-card__price {
+    flex-wrap: wrap;
+}

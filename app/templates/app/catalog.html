@@ -20,7 +20,7 @@
 
             <div class="catalog-grid">
                 {% for item in catalog_items %}
-                <article class="catalog-card card-hover" data-product-id="{{ item.id }}">
+                <article class="catalog-card" data-product-id="{{ item.id }}">
                     <div class="catalog-card__image-wrapper">
                         <img src="{{ item.image_url or '/static/img/placeholder.png' }}" alt="{{ item.name }}" class="catalog-card__image">
                     </div>
@@ -46,54 +46,258 @@
     </section>
 </div>
 
-<!-- Модальное окно для товара -->
-<div class="catalog-modal-overlay" id="productModal">
-    <div class="catalog-modal">
-        <div class="catalog-modal__header">
-            <h2 class="catalog-modal__title" id="modalTitle">Загрузка...</h2>
-            <button type="button" class="catalog-modal__close-icon" id="modalCloseBtn">&times;</button>
-        </div>
-        <div class="catalog-modal__body">
-            <div class="catalog-modal__left">
-                <div class="catalog-modal__left-image">
-                    <img id="modalImage" src="" alt="">
-                </div>
-                <div class="catalog-modal__price-panel">
-                    <div class="catalog-modal__price-label">Стоимость подписки</div>
-                    <div class="catalog-modal__price-main">
-                        <span class="catalog-modal__price-number" id="modalPrice">0</span>
-                        <span class="catalog-modal__price-currency">₽</span>
-                    </div>
-                    <div class="catalog-modal__price-note">в месяц</div>
-                </div>
-            </div>
-            <div class="catalog-modal__right">
-                <div class="catalog-modal__section">
-                    <div class="catalog-modal__section-title">Описание</div>
-                    <p class="catalog-modal__section-text" id="modalDescription"></p>
-                </div>
-                <div class="catalog-modal__divider"></div>
-                <div class="catalog-modal__section">
-                    <div class="catalog-modal__section-title">Возможности</div>
-                    <ul class="catalog-modal__features-list" id="modalFeatures"></ul>
-                </div>
-            </div>
-        </div>
-        <div class="catalog-modal__bottom">
-            <p class="catalog-modal__note">Подписка активируется после оформления заказа и подтверждения оплаты.</p>
-            <div class="catalog-modal__bottom-buttons">
-                <button type="button" class="catalog-modal__btn-secondary" id="modalCloseBtn2">Закрыть</button>
-                <button type="button" class="catalog-modal__btn-primary" id="modalAddToCart">
-                    <img src="/static/img/svg/basket-card-white.svg" class="catalog-modal__btn-primary-icon">
-                    <span>Добавить в корзину</span>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<style>
+.catalog-title {
+    background: linear-gradient(180deg, #0a2463 0%, #2e3a59 100%);
+}
+
+.catalog-title__h1 {
+    font-weight: 400;
+    font-size: 33px;
+    line-height: 111%;
+    color: #fff;
+    padding-top: 59px;
+    margin-bottom: 15px;
+}
+
+.catalog-title__p {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 140%;
+    color: #d1d5dc;
+    padding-bottom: 59px;
+}
+
+.catalog-section {
+    padding: 60px 0;
+}
+
+.catalog-tabs {
+    display: flex;
+}
+
+.catalog-tab {
+    display: flex;
+    width: 193px;
+    height: 48px;
+    background-color: #fff;
+    margin-right: 16px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.catalog-tab p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #364153;
+}
+
+.catalog-tab--active {
+    background: #0a2463;
+    color: white !important;
+    border-color: #0a2463;
+}
+
+.catalog-tab--active p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #fff;
+}
+
+.catalog-tab:hover {
+    transform: scale(1.06);
+    background-color: #eae8e8;
+}
+
+.catalog-tab--active:hover {
+    background-color: #0a2463;
+}
+
+.catalog-tab:active {
+    background-color: #dad8d8;
+}
+
+.catalog-tab--active:active {
+    background-color: #081a44;
+}
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+    overflow: visible;
+}
+
+.catalog-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    will-change: transform;
+}
+
+.catalog-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+.catalog-card__image-wrapper {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.catalog-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.catalog-card:hover .catalog-card__image {
+    transform: scale(1.04);
+}
+
+.catalog-card__content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.catalog-card__title {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    color: #0a2463;
+}
+
+.catalog-card__description {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 143%;
+    color: #4a5565;
+    margin-top: 10px;
+    margin-bottom: 16px;
+    flex-grow: 1;
+}
+
+.catalog-card__divider {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: 16px 0;
+}
+
+.catalog-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.catalog-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.catalog-card__price-value {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 133%;
+    color: #0a2463;
+    margin-right: 5px;
+}
+
+.catalog-card__price-period {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 133%;
+    color: #6a7282;
+}
+
+.catalog-card__button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #00c2d2;
+    border: none;
+    border-radius: 9px;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.catalog-card__button:hover {
+    background: #0ba5b3;
+    transform: scale(1.05);
+}
+
+.catalog-card__button-text {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    color: #fff;
+}
+
+.catalog-card__button-icon {
+    width: 18px;
+    height: 18px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 4vw;
+    }
+
+    .catalog-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .catalog-card__footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .catalog-card__button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .catalog-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .catalog-title__h1 {
+        font-size: 28px;
+    }
+
+    .catalog-title__p {
+        font-size: 16px;
+    }
+}
+</style>
 
 <script>
-    // Функция обновления состояния всех кнопок "В корзину" на странице
     function updateAllCartButtons() {
         const cart = JSON.parse(localStorage.getItem('ts_cart') || '[]');
         document.querySelectorAll('.catalog-card__button').forEach(btn => {
@@ -110,140 +314,21 @@
         });
     }
 
-    // Функция добавления в корзину с обновлением кнопки
-    function addToCart(productId, button) {
-        let cart = JSON.parse(localStorage.getItem('ts_cart') || '[]');
-        const existing = cart.find(item => item.id == productId);
-        
-        if (existing) {
-            existing.qty += 1;
-        } else {
-            const card = button.closest('.catalog-card');
-            const title = card.querySelector('.catalog-card__title').textContent;
-            const priceText = card.querySelector('.catalog-card__price-value').textContent;
-            const price = parseInt(priceText.replace(/\D/g, ''));
-            const image = card.querySelector('.catalog-card__image').src;
-            cart.push({ id: productId, title, price, qty: 1, image, subtitle: 'Подписка' });
-        }
-        
-        localStorage.setItem('ts_cart', JSON.stringify(cart));
-        
-        // Обновляем текст кнопки
-        const textSpan = button.querySelector('.catalog-card__button-text');
-        const newQty = existing ? existing.qty + 1 : 1;
-        textSpan.textContent = `Добавлено! (${newQty})`;
-        button.classList.add('btn-added');
-        
-        // Обновляем счётчик в шапке
-        if (window.TechnoServiceCart && window.TechnoServiceCart.updateCounter) {
-            window.TechnoServiceCart.updateCounter();
-        } else {
-            const counter = document.querySelector('[data-cart-count]');
-            if (counter) {
-                const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
-                counter.textContent = totalCount;
-                if (totalCount > 0) {
-                    counter.classList.add('basket-btn__counter--visible');
-                }
-            }
-        }
-    }
-
-    // Модальное окно для каталога
-    const productModal = document.getElementById('productModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalImage = document.getElementById('modalImage');
-    const modalPrice = document.getElementById('modalPrice');
-    const modalDescription = document.getElementById('modalDescription');
-    const modalFeatures = document.getElementById('modalFeatures');
-    let currentProductId = null;
-    
-    function openModal(productId) {
-        currentProductId = productId;
-        productModal.classList.add('catalog-modal-overlay--visible');
-        document.body.classList.add('catalog-modal-open');
-        
-        fetch(`/api/catalog-items/${productId}`)
-            .then(r => r.json())
-            .then(item => {
-                modalTitle.textContent = item.name;
-                modalImage.src = item.image_url || '/static/img/placeholder.png';
-                modalPrice.textContent = item.price;
-                modalDescription.textContent = item.description || 'Нет описания';
-            })
-            .catch(err => console.error('Ошибка загрузки товара:', err));
-        
-        fetch(`/api/catalog-features/by-item/${productId}`)
-            .then(r => r.json())
-            .then(features => {
-                if (features && features.length) {
-                    modalFeatures.innerHTML = features.map(f => `
-                        <li class="catalog-modal__features-item">
-                            <img src="/static/img/svg/check-point-icon.svg" alt="">
-                            <span>${f.feature_name}: ${f.feature_value}</span>
-                        </li>
-                    `).join('');
-                } else {
-                    modalFeatures.innerHTML = '<li class="catalog-modal__features-item">Нет дополнительных характеристик</li>';
-                }
-            })
-            .catch(err => {
-                console.warn('Нет характеристик:', err);
-                modalFeatures.innerHTML = '<li class="catalog-modal__features-item">Нет дополнительных характеристик</li>';
-            });
-    }
-    
-    function closeModal() {
-        productModal.classList.remove('catalog-modal-overlay--visible');
-        document.body.classList.remove('catalog-modal-open');
-    }
-    
-    // Обработчики клика по карточке (открытие модалки)
-    document.querySelectorAll('.catalog-card').forEach(card => {
-        card.addEventListener('click', (e) => {
-            if (e.target.closest('.catalog-card__button')) return;
-            const productId = card.getAttribute('data-product-id');
-            if (productId) openModal(productId);
-        });
-    });
-    
-    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
-    document.getElementById('modalCloseBtn2').addEventListener('click', closeModal);
-    productModal.addEventListener('click', (e) => {
-        if (e.target === productModal) closeModal();
-    });
-    
-    // Обработчик кнопки "В корзину" в модалке
-    document.getElementById('modalAddToCart').addEventListener('click', () => {
-        if (currentProductId) {
-            const card = document.querySelector(`.catalog-card[data-product-id="${currentProductId}"]`);
-            const cardButton = card?.querySelector('.catalog-card__button');
-            if (cardButton) {
-                addToCart(currentProductId, cardButton);
-                if (window.TechnoServiceCart && window.TechnoServiceCart.openCart) {
-                    window.TechnoServiceCart.openCart();
-                }
-                closeModal();
-            }
-        }
-    });
-    
-    // Обработчики кнопок "В корзину" на карточках
     document.querySelectorAll('.catalog-card__button').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            const productId = btn.getAttribute('data-product-id');
-            if (productId) {
-                addToCart(productId, btn);
+            if (window.TechnoServiceCart && window.TechnoServiceCart.addFromCard) {
+                window.TechnoServiceCart.addFromCard(btn);
+                setTimeout(() => {
+                    updateAllCartButtons();
+                }, 50);
             }
         });
     });
     
-    // Обновляем все кнопки при загрузке страницы
     updateAllCartButtons();
-    
-    // Стили для добавленной кнопки
+
     const style = document.createElement('style');
     style.textContent = `
         .catalog-card__button.btn-added {

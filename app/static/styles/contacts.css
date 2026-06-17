@@ -21,7 +21,6 @@
 
 /* Верхние карточки контактов */
 .contacts-cards{
-    padding: 48px 0 40px 0;
     background-color: #f9fafb;
 }
 
@@ -29,6 +28,8 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
+    margin-bottom: 25px;
+    margin-top: 25px
 }
 
 .contacts-card{

@@ -1,107 +1,154 @@
-/* Герой-секция */
+/* ================================================
+   ГЕРОЙ-СЕКЦИЯ — переработано
+   ================================================ */
 .former-swiper {
-  background: #0d2c5f; /* Тёмно-синий фон, как на макете */
+  background: #0d2c5f;
   color: white;
-  padding: 40px 0;
+  padding: 56px 0 48px;
+  overflow: hidden;
 }
 
 .rectangle-block {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 48px;
+  gap: 40px;
 }
 
-.rectangle-block-img {
-  width: 663px;
-  height: 434px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
-}
-
+/* Левая колонка — текст */
 .rectangle-block-content {
-  width: 664px;
+  flex: 1 1 0;
+  min-width: 0; /* ключ: не выпирает за flex-контейнер */
 }
 
 .rectangle-block-content-title {
-  font-family: Arial;
-  font-weight: 400;
-  font-size: 48px;
-  line-height: 100%;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 3.5vw, 52px);
+  line-height: 1.1;
   color: #fff;
   margin-bottom: 20px;
 }
 
 .rectangle-block-content-paragraph {
   font-weight: 400;
-  font-size: 20px;
-  line-height: 140%;
-  margin-bottom: 30px;
-  color: #d1d5dc;
-  width: 508px;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.55;
+  margin-bottom: 36px;
+  color: #b8c8e8;
+  max-width: 480px;
 }
 
 .rectangle-block-content-button {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .rectangle-block-content-button-audit-free,
 .rectangle-block-content-button-our-services {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   text-decoration: none;
-  transition: all 0.2s ease; 
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0 28px;
+  height: 52px;
+  transition: all 0.22s ease;
+  white-space: nowrap;
 }
 
 .rectangle-block-content-button-audit-free {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 298px;
-  height: 60px;
-  gap: 6px;
-  background: #00C2D2; 
-  color: white;
-}
-.rectangle-block-content-button-audit-free p{
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
+  gap: 8px;
+  background: #00C2D2;
   color: #fff;
 }
-.rectangle-block-content-button-audit-free img{
-  margin-top: 2px;
-  width: 20px;
-  height: 20px;
+.rectangle-block-content-button-audit-free p {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1;
 }
-
+.rectangle-block-content-button-audit-free img {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
 .rectangle-block-content-button-audit-free:hover {
-  background: #01acbb; /* Чуть темнее при наведении */
+  background: #01b5c4;
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 194, 210, 0.35);
 }
 
 .rectangle-block-content-button-our-services {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 161px;
-  height: 60px;
   background: transparent;
-  color: white;
-  border: 2px solid white;
-}
-
-.rectangle-block-content-button-our-services{
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
   color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.55);
+}
+.rectangle-block-content-button-our-services p {
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1;
+}
+.rectangle-block-content-button-our-services:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.rectangle-block-content-button-our-services:hover {
-  background: rgba(255, 255, 255, 0.1);
+/* Правая колонка — картинка */
+.rectangle-block-img {
+  flex: 0 0 46%;
+  max-width: 580px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28);
+  display: block;
+}
+
+/* Планшет */
+@media (max-width: 900px) {
+  .former-swiper {
+    padding: 40px 0;
+  }
+  .rectangle-block {
+    gap: 28px;
+  }
+  .rectangle-block-img {
+    flex: 0 0 42%;
+  }
+}
+
+/* Мобильный */
+@media (max-width: 640px) {
+  .former-swiper {
+    padding: 36px 0 40px;
+  }
+  .rectangle-block {
+    flex-direction: column;
+    gap: 28px;
+  }
+  .rectangle-block-content {
+    text-align: center;
+  }
+  .rectangle-block-content-paragraph {
+    max-width: 100%;
+  }
+  .rectangle-block-content-button {
+    justify-content: center;
+  }
+  .rectangle-block-img {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+  }
 }
 
 
@@ -140,6 +187,7 @@
 .service-card {
   background: white;
   padding: 32px;
+  margin: 20px 0 20px 0;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   text-align: center;
@@ -438,11 +486,12 @@
 }
 
 /* СЕКЦИЯ (РАБОТАЕМ ПО ВСЕМУ МИРУ) */
+/* СЕКЦИЯ (РАБОТАЕМ ПО ВСЕМУ МИРУ) */
 
 .rectangle-blue-2 {
-  background: var(--color-dark-blue);
+  background: linear-gradient(135deg, #0a1f5c 0%, #0d3080 40%, #0a6b8a 100%);
   color: white;
-  padding: 40px 0;
+  padding: 50px 0;
 }
 
 .rectangle-block-2-world {
@@ -461,62 +510,80 @@
   flex: 1;
 }
 
+/* Плашка "Международное присутствие" */
+.international-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 6px 14px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+}
+
+.international-badge img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.85;
+}
+
 .rectangle-block-2-all-world-title {
   font-size: 2.2rem;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   color: white;
 }
 
 .rectangle-block-2-all-world-paragraph {
-  font-size: 1.1rem;
-  margin-bottom: 40px;
-  opacity: 0.9;
-  color: #ccc;
+  font-size: 1rem;
+  margin-bottom: 36px;
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1.6;
+  max-width: 480px;
 }
 
 .rectangle-block-2-all-world-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
 }
 
 .rectangle-block-2-all-world-card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 24px 32px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 20px 24px;
   border-radius: 12px;
-  text-align: center;
-  min-width: 150px;
-  flex: 1 1 calc(25% - 15px);
-  backdrop-filter: blur(10px);
   transition: transform 0.3s ease, background 0.3s ease;
 }
 
 .rectangle-block-2-all-world-card:hover {
-  transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .rectangle-block-2-all-world-card-number {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: var(--color-teal);
-  margin-bottom: 8px;
+  color: #00C2D2;
+  margin-bottom: 4px;
+  line-height: 1;
 }
 
 .rectangle-block-2-all-world-card-text {
-  font-size: 0.9rem;
-  color: white;
-  opacity: 0.9;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
 }
 
 .rectangle-block-2-all-world-img {
   flex: 0 0 400px;
   height: 300px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
 }
 
 .rectangle-block-2-all-world-img img {
@@ -524,6 +591,7 @@
   height: 100%;
   object-fit: cover;
 }
+
 
 /* СЕКЦИЯ (ИСТОРИЯ КОМПАНИИ И ТАЙМЛАЙН) */
 
@@ -796,18 +864,15 @@
     display: none;
   }
 
-  .rectangle-block {
+  .rectangle-block-2-all-world {
     flex-direction: column;
-    text-align: center;
   }
-
-  .rectangle-block-img {
+  .rectangle-block-2-all-world-img {
+    flex: 0 0 100%;
     width: 100%;
-    height: auto;
   }
-
-  .rectangle-block-content-title {
-    font-size: 2rem;
+  .rectangle-block-2-all-world-stats {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .services-grid {
@@ -913,5 +978,172 @@
 
   .timeline-line {
     left: 20px;
+  }
+}
+
+/* ================================================
+   ПОПАП "ЧИТАТЬ ДАЛЕЕ"
+   ================================================ */
+
+.article-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.article-modal.is-open {
+  display: flex;
+}
+
+/* Затемнение фона */
+.article-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 36, 99, 0.55); /* цвет тёмно-синий бренда */
+  backdrop-filter: blur(3px);
+  animation: overlayIn 0.25s ease;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Окно попапа */
+.article-modal__window {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 48px 48px 40px;
+  box-shadow: 0 24px 64px rgba(10, 36, 99, 0.18);
+  animation: modalIn 0.28s cubic-bezier(0.34, 1.3, 0.64, 1);
+  scrollbar-width: thin;
+  scrollbar-color: #00C2D2 #f0f4f8;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Кнопка закрыть */
+.article-modal__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #f0f4f8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #4a5565;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.article-modal__close:hover {
+  background: #0a2463;
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+/* Тег-метка (категория) */
+.article-modal__tag {
+  display: inline-block;
+  background: rgba(0, 194, 210, 0.12);
+  color: #00C2D2;
+  border: 1px solid rgba(0, 194, 210, 0.3);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  padding: 4px 10px;
+  margin-bottom: 16px;
+}
+
+/* Заголовок */
+.article-modal__title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0a2463;
+  line-height: 1.25;
+  margin: 0 0 20px;
+}
+
+/* Разделитель */
+.article-modal__divider {
+  height: 2px;
+  background: linear-gradient(90deg, #00C2D2 0%, rgba(0,194,210,0) 100%);
+  border-radius: 2px;
+  margin-bottom: 28px;
+}
+
+/* Тело статьи */
+.article-modal__body {
+  font-size: 1rem;
+  color: #3a4557;
+  line-height: 1.75;
+}
+
+.article-modal__body p {
+  margin: 0 0 16px;
+}
+
+.article-modal__body h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0a2463;
+  margin: 28px 0 12px;
+}
+
+.article-modal__body ul {
+  padding-left: 0;
+  list-style: none;
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.article-modal__body ul li {
+  position: relative;
+  padding-left: 22px;
+  color: #3a4557;
+}
+
+.article-modal__body ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  background: #00C2D2;
+  border-radius: 50%;
+}
+
+/* Адаптив для попапа */
+@media (max-width: 768px) {
+  .article-modal__window {
+    padding: 32px 24px 28px;
+    max-height: 90vh;
+  }
+
+  .article-modal__title {
+    font-size: 1.3rem;
+    padding-right: 28px;
   }
 }
